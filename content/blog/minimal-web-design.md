@@ -4,8 +4,6 @@ description: "Exploring the principles and benefits of minimal web design in tod
 date: "2024-01-20"
 ---
 
-# The Art of Minimal Web Design
-
 In an era where websites are increasingly bloated with features, animations, and distractions, minimal web design stands as a breath of fresh air. But what exactly makes a design "minimal," and why should we care?
 
 ## What is Minimal Design?

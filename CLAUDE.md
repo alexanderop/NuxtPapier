@@ -9,10 +9,11 @@ This is a Nuxt 3 application called "NuxtPapier" built with Vue 3 and TypeScript
 - **Nuxt 3.17.5** with compatibility version 4 and devtools enabled
 - **Package Manager**: pnpm (specified version 9.9.0)
 - **Content Management**: @nuxt/content for content-driven features
-- **Styling**: UnoCSS for atomic CSS
+- **Styling**: UnoCSS for atomic CSS with dark mode support
 - **Icons**: @nuxt/icon for icon management
 - **Images**: @nuxt/image for optimized image handling
 - **Linting**: ESLint with @antfu/eslint-config (formatters, UnoCSS, and Vue support)
+- **Dark Mode**: @nuxtjs/color-mode for theme management
 
 ## Development Commands
 
@@ -85,6 +86,22 @@ This project has access to **Context7** - an MCP (Model Context Protocol) server
 
 **Usage**: When working with libraries like Nuxt, Vue, UnoCSS, or any other dependencies, Context7 can provide the most current documentation and examples to ensure code implementations follow the latest best practices and API specifications.
 
+## Content Management
+
+This project uses **Nuxt Content v3** for markdown-driven content with custom enhancements:
+
+### Content Hooks
+
+- **Date formatting** is handled automatically via `content:file:afterParse` hook in `nuxt.config.ts`
+- **Custom properties** are added to content files during build time
+- **No client-side date formatting** needed - all formatting happens at build time
+
+### Content Structure
+
+- Blog posts should include frontmatter with `date`, `title`, and `description` fields
+- Formatted dates are automatically available as `formattedDate` property
+- Content follows Bear Blog's minimal markdown styling approach
+
 ### Puppeteer MCP
 
 This project has access to **Puppeteer** - an MCP (Model Context Protocol) server that provides browser automation capabilities for testing and quality assurance. Puppeteer can be used to:
@@ -98,6 +115,48 @@ This project has access to **Puppeteer** - an MCP (Model Context Protocol) serve
 **Usage**: When you need to test the application functionality, validate UI behavior, or capture screenshots for documentation, Puppeteer MCP provides comprehensive browser automation capabilities.
 
 ## Development Guidelines
+
+### Color System and Styling Guidelines
+
+**IMPORTANT: Always use OKLCH color format for all color definitions in this project.**
+
+- **Never use hex colors** (#222, #f2f2f2, etc.) - convert them to OKLCH format
+- **OKLCH provides better perceptual uniformity** and color manipulation capabilities
+- **Examples**:
+  - `#222` → `oklch(0.25 0.00 0)`
+  - `#f2f2f2` → `oklch(0.96 0.00 0)`
+  - `#ddd` → `oklch(0.85 0.00 0)`
+
+**UnoCSS Best Practices:**
+
+- **Use UnoCSS shortcuts** defined in `uno.config.ts` instead of inline styles or scoped CSS
+- **Define reusable shortcuts** for common patterns (e.g., `article-title`, `nav-link`)
+- **Leverage Wind4 preset** with proper dark mode support using `dark:` variants
+- **Organize shortcuts** by category: layout, typography, components, etc.
+
+### Component Architecture
+
+This project follows **Atomic Design** principles for component organization:
+
+- **Atoms** (`components/atoms/`): Basic building blocks - buttons, inputs, labels
+  - Naming: `Atom[ComponentName].vue` (e.g., `AtomButton.vue`, `AtomDarkModeToggle.vue`)
+- **Molecules** (`components/molecules/`): Groups of atoms - form fields, cards, navigation items
+  - Naming: `Molecule[ComponentName].vue` (e.g., `MoleculeSearchBar.vue`)
+- **Organisms** (`components/organisms/`): Complex UI sections - headers, sidebars, forms
+  - Naming: `Organism[ComponentName].vue` (e.g., `OrganismHeader.vue`)
+- **Templates** (`components/templates/`): Page layouts
+  - Naming: `Template[LayoutName].vue` (e.g., `TemplateBlog.vue`)
+- **Pages** (`pages/`): Actual pages/routes
+  - Naming: Follow Nuxt conventions
+
+### Dark Mode Implementation
+
+The project uses a class-based dark mode system:
+
+- **UnoCSS**: Configured with `dark: 'class'` for class-based dark mode
+- **Color Mode Module**: Handles theme persistence and system preference detection
+- **Usage**: Use `dark:` prefix for dark mode styles (e.g., `dark:bg-gray-800`)
+- **Shortcuts**: Use predefined shortcuts like `bg-base`, `text-base`, `border-base` for automatic dark mode support
 
 ### Commit Message Convention
 
