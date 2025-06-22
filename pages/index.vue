@@ -1,5 +1,4 @@
-<script setup>
-// Fetch recent blog posts
+<script setup lang="ts">
 const { data: recentPosts } = await useAsyncData('recent-posts', () =>
   queryCollection('blog')
     .order('date', 'DESC')
@@ -28,7 +27,7 @@ const { data: recentPosts } = await useAsyncData('recent-posts', () =>
       <div v-if="recentPosts && recentPosts.length > 0" class="space-y-8">
         <article
           v-for="article in recentPosts"
-          :key="article._path"
+          :key="article.path"
           class="group"
         >
           <h4 class="mb-2">
