@@ -8,18 +8,19 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxt/content',
+    '@unocss/nuxt',
   ],
   content: {
     build: {
       markdown: {
         toc: {
           depth: 3,
-          searchDepth: 3
+          searchDepth: 3,
         },
         highlight: {
-          theme: 'github-light'
-        }
-      }
-    }
+          theme: 'github-light',
+        },
+      },
+    },
   },
 })

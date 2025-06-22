@@ -1,139 +1,74 @@
 <template>
-  <div id="app">
+  <div id="app" class="text-gray-800 leading-relaxed font-sans bg-white min-h-screen">
     <NuxtRouteAnnouncer />
-    <NuxtPage />
+    <div class="mx-auto px-4 py-8 max-w-4xl lg:px-8 sm:px-6">
+      <NuxtPage />
+    </div>
   </div>
 </template>
 
 <style>
-/* Global Bear Blog inspired styles */
-* {
-  box-sizing: border-box;
-}
+/* UnoCSS will handle most styling, keeping minimal global styles */
 
-html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.6;
-  color: #333;
-}
-
-body {
-  margin: 0;
-  padding: 1rem;
-  background-color: #fff;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-#app {
-  min-height: 100vh;
-}
-
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  line-height: 1.2;
-  margin-top: 0;
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-h2 {
-  font-size: 1.5rem;
-}
-
-h3 {
-  font-size: 1.25rem;
-}
-
-p {
-  margin-bottom: 1rem;
-}
-
-/* Links */
-a {
-  color: #333;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Content rendering styles */
+/* Content rendering prose styles */
 .prose {
-  max-width: none;
+  @apply max-w-none text-gray-700 leading-7;
 }
 
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5,
-.prose h6 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+.prose h1 {
+  @apply text-3xl font-bold text-gray-900 mt-8 mb-4 leading-tight;
+}
+
+.prose h2 {
+  @apply text-2xl font-semibold text-gray-900 mt-8 mb-4 leading-tight;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold text-gray-900 mt-6 mb-3 leading-tight;
+}
+
+.prose h4 {
+  @apply text-lg font-semibold text-gray-900 mt-6 mb-3 leading-tight;
 }
 
 .prose p {
-  margin-bottom: 1rem;
+  @apply mb-4 text-gray-700 leading-relaxed;
 }
 
 .prose ul,
 .prose ol {
-  margin-bottom: 1rem;
-  padding-left: 2rem;
+  @apply mb-4 pl-8 space-y-2;
 }
 
 .prose li {
-  margin-bottom: 0.5rem;
+  @apply text-gray-700;
 }
 
 .prose blockquote {
-  border-left: 4px solid #ddd;
-  margin: 1rem 0;
-  padding-left: 1rem;
-  color: #666;
+  @apply border-l-4 border-gray-300 ml-0 mb-4 pl-4 text-gray-600 italic;
 }
 
 .prose code {
-  background-color: #f5f5f5;
-  padding: 0.2rem 0.4rem;
-  border-radius: 3px;
-  font-size: 0.9em;
+  @apply bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm font-mono;
 }
 
 .prose pre {
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 5px;
-  overflow-x: auto;
-  margin: 1rem 0;
+  @apply bg-gray-50 p-4 rounded-lg overflow-x-auto mb-4 border border-gray-200;
 }
 
 .prose pre code {
-  background-color: transparent;
-  padding: 0;
+  @apply bg-transparent p-0 text-sm;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  body {
-    padding: 0.5rem;
-  }
+.prose a {
+  @apply text-primary-600 hover:text-primary-700 hover:underline transition-colors;
+}
 
-  h1 {
-    font-size: 1.5rem;
-  }
+.prose strong {
+  @apply font-semibold text-gray-900;
+}
 
-  h2 {
-    font-size: 1.25rem;
-  }
+.prose em {
+  @apply italic;
 }
 </style>

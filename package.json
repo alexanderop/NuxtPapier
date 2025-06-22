@@ -25,6 +25,8 @@
     "@nuxt/eslint-config": "^1.4.1",
     "@unocss/eslint-plugin": "^66.2.3",
     "@unocss/nuxt": "^66.2.3",
+    "@unocss/preset-wind3": "^66.2.3",
+    "@unocss/preset-wind4": "^66.2.3",
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
     "unocss": "^66.2.3"

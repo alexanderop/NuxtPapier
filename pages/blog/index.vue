@@ -16,110 +16,63 @@ function formatDate(date) {
 
 <template>
   <div>
-    <header class="header">
-      <h1 class="site-title">
+    <!-- Header -->
+    <header class="mb-12 pb-6 border-b border-gray-200">
+      <h1 class="text-4xl text-gray-900 font-bold mb-3">
         NuxtPapier
       </h1>
-      <nav class="nav">
-        <NuxtLink to="/" class="nav-link">
+      <nav class="flex gap-6">
+        <NuxtLink
+          to="/"
+          class="text-gray-600 font-medium transition-colors duration-200 hover:text-gray-900"
+          :class="{ 'text-gray-900 font-semibold': $route.path === '/' }"
+        >
           Home
         </NuxtLink>
-        <NuxtLink to="/blog" class="nav-link">
+        <NuxtLink
+          to="/blog"
+          class="text-gray-600 font-medium transition-colors duration-200 hover:text-gray-900"
+          :class="{ 'text-gray-900 font-semibold': $route.path.startsWith('/blog') }"
+        >
           Blog
         </NuxtLink>
       </nav>
     </header>
 
-    <main class="main">
-      <h2 class="page-title">
+    <!-- Main Content -->
+    <main class="max-w-3xl">
+      <h2 class="text-3xl text-gray-900 font-bold mb-12">
         All Posts
       </h2>
 
-      <div v-if="blogPosts && blogPosts.length > 0">
-        <div v-for="article in blogPosts" :key="article._path" class="post-item">
-          <h3>
-            <NuxtLink :to="article.path" class="post-title">
+      <div v-if="blogPosts && blogPosts.length > 0" class="space-y-12">
+        <article
+          v-for="article in blogPosts"
+          :key="article._path"
+          class="group pb-8 border-b border-gray-100 last:border-b-0"
+        >
+          <h3 class="mb-3">
+            <NuxtLink
+              :to="article.path"
+              class="text-xl text-gray-900 font-semibold transition-colors duration-200 hover:text-primary-600 group-hover:underline"
+            >
               {{ article.title }}
             </NuxtLink>
           </h3>
-          <p class="post-date">
+          <time class="text-sm text-gray-500 mb-3 block">
             {{ formatDate(article.date) }}
-          </p>
-          <p class="post-description">
+          </time>
+          <p class="text-gray-600 leading-relaxed">
             {{ article.description }}
           </p>
-        </div>
+        </article>
       </div>
-      <div v-else class="no-posts">
-        <p>No blog posts found. Check back soon!</p>
+
+      <div v-else class="py-16 text-center">
+        <p class="text-lg text-gray-500">
+          No blog posts found. Check back soon!
+        </p>
       </div>
     </main>
   </div>
 </template>
-
-<style scoped>
-.header {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
-}
-
-.site-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.nav {
-  margin-top: 0.5rem;
-}
-
-.nav-link {
-  margin-right: 1rem;
-  text-decoration: none;
-  color: #333;
-}
-
-.nav-link:hover {
-  text-decoration: underline;
-}
-
-.main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.page-title {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.post-item {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
-}
-
-.post-title {
-  text-decoration: none;
-  color: #333;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.post-title:hover {
-  text-decoration: underline;
-}
-
-.post-date {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
-}
-
-.post-description {
-  color: #555;
-  line-height: 1.5;
-}
-</style>

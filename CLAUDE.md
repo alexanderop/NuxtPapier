@@ -85,6 +85,18 @@ This project has access to **Context7** - an MCP (Model Context Protocol) server
 
 **Usage**: When working with libraries like Nuxt, Vue, UnoCSS, or any other dependencies, Context7 can provide the most current documentation and examples to ensure code implementations follow the latest best practices and API specifications.
 
+### Puppeteer MCP
+
+This project has access to **Puppeteer** - an MCP (Model Context Protocol) server that provides browser automation capabilities for testing and quality assurance. Puppeteer can be used to:
+
+- Navigate to web pages and take screenshots for visual testing
+- Interact with web elements (click, fill forms, hover, etc.)
+- Execute JavaScript in the browser context for dynamic testing
+- Perform automated browser testing of the application
+- Validate UI functionality and user interactions
+
+**Usage**: When you need to test the application functionality, validate UI behavior, or capture screenshots for documentation, Puppeteer MCP provides comprehensive browser automation capabilities.
+
 ## Development Guidelines
 
 ### Commit Message Convention
@@ -94,6 +106,7 @@ This project follows **Conventional Commits** specification for all commit messa
 **Format**: `<type>(<scope>): <description>`
 
 **Types**:
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation only changes
@@ -104,6 +117,7 @@ This project follows **Conventional Commits** specification for all commit messa
 - `chore`: Changes to the build process or auxiliary tools
 
 **Examples**:
+
 ```
 feat(content): migrate to Nuxt Content v3 API
 fix(blog): correct post link routing

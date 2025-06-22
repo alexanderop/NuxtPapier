@@ -17,114 +17,60 @@ function formatDate(date) {
 
 <template>
   <div>
-    <header class="header">
-      <h1 class="site-title">
+    <!-- Header -->
+    <header class="mb-12 pb-6 border-b border-gray-200">
+      <h1 class="text-4xl text-gray-900 font-bold mb-3">
         NuxtPapier
       </h1>
-      <nav class="nav">
-        <NuxtLink to="/" class="nav-link">
+      <nav class="flex gap-6">
+        <NuxtLink
+          to="/"
+          class="text-gray-600 font-medium transition-colors duration-200 hover:text-gray-900"
+          :class="{ 'text-gray-900 font-semibold': $route.path === '/' }"
+        >
           Home
         </NuxtLink>
-        <NuxtLink to="/blog" class="nav-link">
+        <NuxtLink
+          to="/blog"
+          class="text-gray-600 font-medium transition-colors duration-200 hover:text-gray-900"
+          :class="{ 'text-gray-900 font-semibold': $route.path.startsWith('/blog') }"
+        >
           Blog
         </NuxtLink>
       </nav>
     </header>
 
-    <main class="main">
-      <article class="article">
-        <header class="article-header">
-          <h1 class="article-title">
+    <!-- Main Content -->
+    <main class="max-w-3xl">
+      <article>
+        <!-- Article Header -->
+        <header class="mb-12">
+          <h1 class="text-4xl text-gray-900 leading-tight font-bold mb-4">
             {{ data.title }}
           </h1>
-          <p class="article-date">
+          <time class="text-sm text-gray-500">
             {{ formatDate(data.date) }}
-          </p>
+          </time>
         </header>
 
-        <div class="article-content">
+        <!-- Article Content -->
+        <div class="prose">
           <ContentRenderer :value="data" />
         </div>
       </article>
 
-      <nav class="article-nav">
-        <NuxtLink to="/blog" class="back-link">
-          ← Back to all posts
+      <!-- Navigation -->
+      <nav class="mt-16 pt-8 border-t border-gray-200">
+        <NuxtLink
+          to="/blog"
+          class="text-sm text-gray-600 inline-flex transition-colors duration-200 items-center hover:text-gray-900"
+        >
+          <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to all posts
         </NuxtLink>
       </nav>
     </main>
   </div>
 </template>
-
-<style scoped>
-.header {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
-}
-
-.site-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.nav {
-  margin-top: 0.5rem;
-}
-
-.nav-link {
-  margin-right: 1rem;
-  text-decoration: none;
-  color: #333;
-}
-
-.nav-link:hover {
-  text-decoration: underline;
-}
-
-.main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.article-header {
-  margin-bottom: 2rem;
-}
-
-.article-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.2;
-}
-
-.article-date {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.article-content {
-  line-height: 1.7;
-  color: #333;
-}
-
-.article-nav {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid #eee;
-}
-
-.back-link {
-  text-decoration: none;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-  color: #333;
-}
-</style>

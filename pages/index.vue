@@ -17,123 +17,76 @@ function formatDate(date) {
 
 <template>
   <div>
-    <header class="header">
-      <h1 class="site-title">
+    <!-- Header -->
+    <header class="mb-12 pb-6 border-b border-gray-200">
+      <h1 class="text-4xl text-gray-900 font-bold mb-3">
         NuxtPapier
       </h1>
-      <nav class="nav">
-        <NuxtLink to="/" class="nav-link">
+      <nav class="flex gap-6">
+        <NuxtLink
+          to="/"
+          class="text-gray-600 font-medium transition-colors duration-200 hover:text-gray-900"
+          :class="{ 'text-gray-900 font-semibold': $route.path === '/' }"
+        >
           Home
         </NuxtLink>
-        <NuxtLink to="/blog" class="nav-link">
+        <NuxtLink
+          to="/blog"
+          class="text-gray-600 font-medium transition-colors duration-200 hover:text-gray-900"
+          :class="{ 'text-gray-900 font-semibold': $route.path.startsWith('/blog') }"
+        >
           Blog
         </NuxtLink>
       </nav>
     </header>
 
-    <main class="main">
-      <section class="intro">
-        <h2>Welcome to my blog</h2>
-        <p>This is a minimal blog inspired by Bear Blog, built with Nuxt 3 and focused on content over noise.</p>
+    <!-- Main Content -->
+    <main class="max-w-3xl">
+      <!-- Introduction -->
+      <section class="mb-16">
+        <h2 class="text-2xl text-gray-900 font-semibold mb-4">
+          Welcome to my blog
+        </h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          This is a minimal blog inspired by Bear Blog, built with Nuxt 3 and focused on content over noise.
+        </p>
       </section>
 
-      <section class="recent-posts">
-        <h3>Recent Posts</h3>
-        <div v-if="recentPosts && recentPosts.length > 0">
-          <div v-for="article in recentPosts" :key="article._path" class="post-preview">
-            <h4>
-              <NuxtLink :to="article.path" class="post-title">
+      <!-- Recent Posts -->
+      <section>
+        <h3 class="text-xl text-gray-900 font-semibold mb-8">
+          Recent Posts
+        </h3>
+
+        <div v-if="recentPosts && recentPosts.length > 0" class="space-y-8">
+          <article
+            v-for="article in recentPosts"
+            :key="article._path"
+            class="group"
+          >
+            <h4 class="mb-2">
+              <NuxtLink
+                :to="article.path"
+                class="text-lg text-gray-900 font-medium transition-colors duration-200 hover:text-primary-600 group-hover:underline"
+              >
                 {{ article.title }}
               </NuxtLink>
             </h4>
-            <p class="post-date">
+            <time class="text-sm text-gray-500 mb-2 block">
               {{ formatDate(article.date) }}
-            </p>
-            <p class="post-description">
+            </time>
+            <p class="text-gray-600 leading-relaxed">
               {{ article.description }}
             </p>
-          </div>
+          </article>
         </div>
-        <div v-else class="no-posts">
-          <p>No blog posts found. Check back soon!</p>
+
+        <div v-else class="py-12 text-center">
+          <p class="text-gray-500">
+            No blog posts found. Check back soon!
+          </p>
         </div>
       </section>
     </main>
   </div>
 </template>
-
-<style scoped>
-.header {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
-}
-
-.site-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.nav {
-  margin-top: 0.5rem;
-}
-
-.nav-link {
-  margin-right: 1rem;
-  text-decoration: none;
-  color: #333;
-}
-
-.nav-link:hover {
-  text-decoration: underline;
-}
-
-.main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.intro {
-  margin-bottom: 3rem;
-}
-
-.intro h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.recent-posts h3 {
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-}
-
-.post-preview {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
-}
-
-.post-title {
-  text-decoration: none;
-  color: #333;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.post-title:hover {
-  text-decoration: underline;
-}
-
-.post-date {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
-}
-
-.post-description {
-  color: #555;
-  line-height: 1.5;
-}
-</style>
