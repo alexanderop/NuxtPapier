@@ -7,6 +7,10 @@ const currentYear = new Date().getFullYear()
 <template>
   <div id="app" class="text-base leading-6 font-sans bg-base min-h-screen transition-colors duration-300">
     <NuxtRouteAnnouncer />
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link sr-only focus:text-white focus:px-4 focus:py-2 focus:rounded focus:bg-blue-600 focus:no-underline focus:left-4 focus:top-4 focus:absolute focus:z-50 focus:not-sr-only">
+      Skip to main content
+    </a>
     <div class="container-main p-5 max-w-720px">
       <!-- Header -->
       <header class="header-main">
@@ -16,7 +20,7 @@ const currentYear = new Date().getFullYear()
           </h1>
           <AtomDarkModeToggle />
         </div>
-        <nav class="flex gap-6">
+        <nav class="flex gap-6" aria-label="Main navigation">
           <NuxtLink
             to="/"
             class="nav-link"
@@ -35,7 +39,7 @@ const currentYear = new Date().getFullYear()
       </header>
 
       <!-- Main Content -->
-      <main>
+      <main id="main-content">
         <slot />
       </main>
 

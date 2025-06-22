@@ -6,6 +6,13 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'en',
+      },
+    },
+  },
   modules: [
     '@nuxt/content',
     '@nuxt/icon',
