@@ -23,12 +23,14 @@ useSeoMeta({
         <h1 class="article-title">
           {{ page?.title }}
         </h1>
-        <time class="article-date">
-          {{ page?.formattedDate }}
-        </time>
-        <span class="article-reading-time">
-          {{ page?.readingTime }} min read
-        </span>
+        <div class="flex items-center">
+          <time class="article-date">
+            {{ page?.formattedDate }}
+          </time>
+          <span v-if="page?.readingTime" class="article-reading-time">
+            • {{ page?.readingTime }} min read
+          </span>
+        </div>
       </header>
 
       <!-- Article Content -->

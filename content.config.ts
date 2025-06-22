@@ -9,7 +9,7 @@ export default defineContentConfig({
         title: z.string(),
         description: z.string(),
         date: z.string(),
-        readingTime: z.number(),
+        readingTime: z.number().optional(),
         formattedDate: z.string(),
       }),
     }),

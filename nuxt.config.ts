@@ -35,23 +35,43 @@ export default defineNuxtConfig({
     storageKey: 'nuxt-color-mode',
   },
   hooks: {
-    'content:file:afterParse': (ctx) => {
-      const { file , content} = ctx
-      if (!file.date) return
-      // @ts-expect-error - Nuxt Content hook file type
-      // Add formatted date to all content files
-      content.formattedDate = new Date(file.date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
+    'content:file:afterParse': function (ctx) {
+      const { file, content } = ctx
 
-      // Add reading time
-      const wordsPerMinute = 180
-      const text = typeof file.body === 'string' ? file.body : ''
-      const wordCount = text.split(/\s+/).length
+      if (file.id.endsWith('.md')) {
+        // Add formatted date from frontmatter
+        if (content.date) {
+          content.formattedDate = new Date(content.date as string).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        }
 
-      content.readingTime = Math.ceil(wordCount / wordsPerMinute)
+        // Add reading time calculation
+        const wordsPerMinute = 180
+        // Get text content from the body property
+        let text = ''
+        if (typeof content.body === 'string') {
+          text = content.body
+        }
+        else if (content.body && typeof (content.body as any).children === 'object') {
+          // Extract text from AST nodes
+          const extractText = (nodes: any[]): string => {
+            return nodes.map((node) => {
+              if (node.type === 'text')
+                return node.value || ''
+              if (node.children)
+                return extractText(node.children)
+              return ''
+            }).join(' ')
+          }
+          text = extractText((content.body as any).children || [])
+        }
+
+        const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
+        content.readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute))
+      }
     },
   },
 })

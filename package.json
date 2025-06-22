@@ -10,7 +10,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint --fix",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "clean:content": "rm -rf .nuxt/content/blog"
   },
   "dependencies": {
     "@nuxt/content": "3.6.1",

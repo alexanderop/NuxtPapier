@@ -25,7 +25,6 @@ export default defineConfig({
     }),
     presetTypography({
       cssExtend: {
-        // Bear Blog exact typography styling
         'p': {
           'line-height': '1.5',
           'margin-bottom': '1em',
@@ -175,6 +174,13 @@ export default defineConfig({
   ],
   theme: {
     colors: {
+      // Dark theme colors converted to OKLCH
+      background: 'oklch(0.08 0.03 251)', // #000123
+      accent: 'oklch(0.62 0.16 251)', // #617bff
+      foreground: 'oklch(0.92 0.01 251)', // #eaedf3
+      muted: 'oklch(0.18 0.04 251)', // #0c0e4f
+      border: 'oklch(0.42 0.12 251)', // #303f8a
+      
       primary: {
         50: 'oklch(0.97 0.02 258)',
         100: 'oklch(0.94 0.05 258)',
@@ -231,6 +237,7 @@ export default defineConfig({
     ['article-header', 'mb-8'],
     ['article-title', 'text-2xl font-bold text-heading dark:text-heading-dark leading-tight mb-2 mt-0'],
     ['article-date', 'font-mono text-sm text-content-muted dark:text-content-muted-dark'],
+    ['article-reading-time', 'font-mono text-sm text-content-muted dark:text-content-muted-dark ml-2 opacity-75'],
 
     // Typography shortcuts
     ['heading-text', 'font-bold text-heading dark:text-heading-dark'],
@@ -239,10 +246,10 @@ export default defineConfig({
     ['code-style', 'bg-code-bg dark:bg-code-bg-dark text-code-text dark:text-code-text-dark'],
 
     // Base layout shortcuts
-    ['bg-base', 'bg-white dark:bg-gray-900'],
-    ['bg-surface', 'bg-gray-50 dark:bg-gray-800'],
-    ['text-base', 'text-gray-900 dark:text-gray-100'],
+    ['bg-base', 'bg-white dark:bg-background'],
+    ['bg-surface', 'bg-gray-50 dark:bg-muted'],
+    ['text-base', 'text-gray-900 dark:text-foreground'],
     ['text-muted', 'text-gray-600 dark:text-gray-400'],
-    ['border-base', 'border-gray-200 dark:border-gray-700'],
+    ['border-base', 'border-gray-200 dark:border-border'],
   ],
 })
