@@ -163,7 +163,6 @@ export default defineConfig({
     presetWebFonts({
       themeKey: 'font',
       fonts: {
-        sans: ['Verdana', 'sans-serif'],
         mono: 'JetBrains Mono:400,500,600,700',
       },
     }),
@@ -180,7 +179,7 @@ export default defineConfig({
       foreground: 'oklch(0.92 0.01 251)', // #eaedf3
       muted: 'oklch(0.18 0.04 251)', // #0c0e4f
       border: 'oklch(0.42 0.12 251)', // #303f8a
-      
+
       primary: {
         50: 'oklch(0.97 0.02 258)',
         100: 'oklch(0.94 0.05 258)',
