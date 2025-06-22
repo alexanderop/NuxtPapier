@@ -228,7 +228,7 @@ export default defineConfig({
   shortcuts: [
     // Layout shortcuts
     ['container-main', 'mx-auto relative'],
-    ['header-main', 'mb-12 pb-6 border-b border-base'],
+    ['header-main', 'mb-12 pb-6'],
     ['nav-link', 'text-muted font-medium transition-colors duration-200 hover:text-base'],
     ['nav-active', 'font-semibold text-base'],
 

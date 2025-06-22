@@ -44,7 +44,7 @@ const currentYear = new Date().getFullYear()
       </main>
 
       <!-- Footer -->
-      <footer class="mt-16 pt-8 border-t border-base">
+      <footer class="mt-16 pt-8">
         <div class="text-sm text-muted text-center">
           <p>&copy; {{ currentYear }} NuxtPapier. Built with Nuxt 3.</p>
         </div>

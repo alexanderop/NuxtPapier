@@ -40,7 +40,7 @@ useSeoMeta({
     </article>
 
     <!-- Navigation -->
-    <nav class="mt-16 pt-8 border-t border-base">
+    <nav class="mt-16 pt-8">
       <NuxtLink
         to="/blog"
         class="text-sm text-muted inline-flex transition-colors duration-200 items-center hover:text-base"
