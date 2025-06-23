@@ -1,7 +1,16 @@
 <script setup>
-import DarkModeToggle from '~/components/DarkModeToggle.vue'
+import { ref } from 'vue'
+import ThemeCustomizer from '~/components/ThemeCustomizer.vue'
+
+// Initialize theme on page load
+useTheme()
 
 const currentYear = new Date().getFullYear()
+const showThemeCustomizer = ref(false)
+
+function toggleThemeCustomizer() {
+  showThemeCustomizer.value = !showThemeCustomizer.value
+}
 </script>
 
 <template>
@@ -18,7 +27,13 @@ const currentYear = new Date().getFullYear()
           <h1 class="text-4xl text-heading font-bold">
             NuxtPapier
           </h1>
-          <DarkModeToggle />
+          <button
+            class="btn-secondary"
+            title="Customize theme"
+            @click="toggleThemeCustomizer"
+          >
+            <Icon name="ph:palette" class="h-4 w-4" />
+          </button>
         </div>
         <nav class="flex gap-6" aria-label="Main navigation">
           <NuxtLink
@@ -50,5 +65,64 @@ const currentYear = new Date().getFullYear()
         </div>
       </footer>
     </div>
+
+    <!-- Theme Customizer Panel -->
+    <Teleport to="body">
+      <Transition name="theme-panel">
+        <div
+          v-if="showThemeCustomizer"
+          class="theme-panel-overlay"
+          @click="showThemeCustomizer = false"
+        >
+          <div
+            class="theme-panel"
+            @click.stop
+          >
+            <ThemeCustomizer />
+            <button
+              class="theme-panel-close"
+              title="Close theme customizer"
+              @click="showThemeCustomizer = false"
+            >
+              <Icon name="ph:x" class="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
+
+<style>
+.theme-panel-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-end p-4;
+}
+
+.theme-panel {
+  @apply relative mt-16 mr-4;
+}
+
+.theme-panel-close {
+  @apply absolute -top-2 -right-2 w-6 h-6 bg-surface border border-border rounded-full flex items-center justify-center text-muted hover:text-text hover:border-brand-500 transition-colors;
+}
+
+.theme-panel-enter-active,
+.theme-panel-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.theme-panel-enter-from,
+.theme-panel-leave-to {
+  opacity: 0;
+}
+
+.theme-panel-enter-active .theme-panel,
+.theme-panel-leave-active .theme-panel {
+  transition: transform 0.3s ease;
+}
+
+.theme-panel-enter-from .theme-panel,
+.theme-panel-leave-to .theme-panel {
+  transform: translateX(100%);
+}
+</style>
