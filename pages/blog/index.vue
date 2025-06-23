@@ -14,37 +14,43 @@ function formatDate(date: string) {
 
 // Group posts by year
 const postsByYear = computed(() => {
-  if (!blogPosts.value) return []
-  
+  if (!blogPosts.value)
+    return []
+
   const grouped = blogPosts.value.reduce((acc, post) => {
     const year = new Date(post.date).getFullYear()
-    if (!acc[year]) acc[year] = []
+    if (!acc[year])
+      acc[year] = []
     acc[year].push(post)
     return acc
   }, {} as Record<number, typeof blogPosts.value>)
-  
+
   // Convert to array and sort by year descending
   return Object.entries(grouped)
-    .map(([year, posts]) => ({ year: parseInt(year), posts }))
+    .map(([year, posts]) => ({ year: Number.parseInt(year), posts }))
     .sort((a, b) => b.year - a.year)
 })
 </script>
 
 <template>
   <div>
-    <div v-if="postsByYear.length > 0">
+    <div v-if="postsByYear.length > 0" class="space-y-8">
       <div v-for="yearGroup in postsByYear" :key="yearGroup.year">
-        <h2>{{ yearGroup.year }}</h2>
-        <div>
+        <h2 class="text-lg text-heading font-semibold mb-2">
+          {{ yearGroup.year }}
+        </h2>
+        <div class="space-y-1">
           <article
             v-for="article in yearGroup.posts"
             :key="article.path"
+            class="flex gap-4"
           >
-            <time>
+            <time class="text-sm text-muted">
               {{ formatDate(article.date) }}
             </time>
             <NuxtLink
               :to="article.path"
+              class="text-body transition-colors hover:text-brand-500"
             >
               {{ article.title }}
             </NuxtLink>
@@ -54,7 +60,7 @@ const postsByYear = computed(() => {
     </div>
 
     <div v-else>
-      <p>
+      <p class="text-muted">
         No posts yet.
       </p>
     </div>

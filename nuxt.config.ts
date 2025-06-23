@@ -6,6 +6,9 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
+  css: [
+    '~/assets/css/theme.css',
+  ],
   app: {
     head: {
       htmlAttrs: {
