@@ -172,3 +172,26 @@
   outline-offset: 2px;
   box-shadow: 0 0 0 4px oklch(var(--focus-ring-offset));
 }
+
+/* ==========================================================================
+   TYPOGRAPHY SYSTEM (AstroPaper Style)
+   ========================================================================== */
+html {
+  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: oklch(var(--color-text));
+  background-color: oklch(var(--color-background));
+}
+
+code, pre, kbd, samp {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, "Menlo", "Monaco", "Cascadia Code", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+}

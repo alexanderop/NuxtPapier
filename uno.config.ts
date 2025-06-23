@@ -70,7 +70,8 @@ export default defineConfig({
     presetWebFonts({
       themeKey: 'font',
       fonts: {
-        mono: 'JetBrains Mono:400,500,600,700',
+        sans: 'IBM Plex Sans:400,500,600,700',
+        mono: 'IBM Plex Mono:400,500,600,700',
       },
     }),
   ],
