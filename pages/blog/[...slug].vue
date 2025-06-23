@@ -19,33 +19,32 @@ useSeoMeta({
   <div>
     <article v-if="page">
       <!-- Article Header -->
-      <header class="article-header">
-        <h1 class="article-title">
+      <header>
+        <h1>
           {{ page?.title }}
         </h1>
-        <div class="flex items-center">
-          <time class="article-date">
+        <div>
+          <time>
             {{ page?.formattedDate }}
           </time>
-          <span v-if="page?.readingTime" class="article-reading-time">
+          <span v-if="page?.readingTime">
             • {{ page?.readingTime }} min read
           </span>
         </div>
       </header>
 
       <!-- Article Content -->
-      <div class="prose">
+      <div>
         <ContentRenderer v-if="page" :value="page" />
       </div>
     </article>
 
     <!-- Navigation -->
-    <nav class="mt-16 pt-8">
+    <nav>
       <NuxtLink
         to="/blog"
-        class="text-sm text-muted inline-flex transition-colors duration-200 items-center hover:text-base"
       >
-        <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Back to all posts

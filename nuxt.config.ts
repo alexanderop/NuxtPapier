@@ -17,7 +17,6 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/icon',
     '@unocss/nuxt',
-    '@nuxtjs/color-mode',
   ],
   content: {
     build: {
@@ -34,12 +33,6 @@ export default defineNuxtConfig({
         },
       },
     },
-  },
-  colorMode: {
-    preference: 'system',
-    fallback: 'light',
-    classSuffix: '',
-    storageKey: 'nuxt-color-mode',
   },
   hooks: {
     'content:file:afterParse': function (ctx) {

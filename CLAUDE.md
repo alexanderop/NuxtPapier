@@ -9,11 +9,10 @@ This is a Nuxt 3 application called "NuxtPapier" built with Vue 3 and TypeScript
 - **Nuxt 3.17.5** with compatibility version 4 and devtools enabled
 - **Package Manager**: pnpm (specified version 9.9.0)
 - **Content Management**: @nuxt/content for content-driven features
-- **Styling**: UnoCSS for atomic CSS with dark mode support
+- **Styling**: UnoCSS for atomic CSS
 - **Icons**: @nuxt/icon for icon management
 - **Images**: @nuxt/image for optimized image handling
 - **Linting**: ESLint with @antfu/eslint-config (formatters, UnoCSS, and Vue support)
-- **Dark Mode**: @nuxtjs/color-mode for theme management
 
 ## Development Commands
 
@@ -131,32 +130,10 @@ This project has access to **Puppeteer** - an MCP (Model Context Protocol) serve
 
 - **Use UnoCSS shortcuts** defined in `uno.config.ts` instead of inline styles or scoped CSS
 - **Define reusable shortcuts** for common patterns (e.g., `article-title`, `nav-link`)
-- **Leverage Wind4 preset** with proper dark mode support using `dark:` variants
+- **Leverage Wind4 preset**
 - **Organize shortcuts** by category: layout, typography, components, etc.
 
-### Component Architecture
 
-This project follows **Atomic Design** principles for component organization:
-
-- **Atoms** (`components/atoms/`): Basic building blocks - buttons, inputs, labels
-  - Naming: `Atom[ComponentName].vue` (e.g., `AtomButton.vue`, `AtomDarkModeToggle.vue`)
-- **Molecules** (`components/molecules/`): Groups of atoms - form fields, cards, navigation items
-  - Naming: `Molecule[ComponentName].vue` (e.g., `MoleculeSearchBar.vue`)
-- **Organisms** (`components/organisms/`): Complex UI sections - headers, sidebars, forms
-  - Naming: `Organism[ComponentName].vue` (e.g., `OrganismHeader.vue`)
-- **Templates** (`components/templates/`): Page layouts
-  - Naming: `Template[LayoutName].vue` (e.g., `TemplateBlog.vue`)
-- **Pages** (`pages/`): Actual pages/routes
-  - Naming: Follow Nuxt conventions
-
-### Dark Mode Implementation
-
-The project uses a class-based dark mode system:
-
-- **UnoCSS**: Configured with `dark: 'class'` for class-based dark mode
-- **Color Mode Module**: Handles theme persistence and system preference detection
-- **Usage**: Use `dark:` prefix for dark mode styles (e.g., `dark:bg-gray-800`)
-- **Shortcuts**: Use predefined shortcuts like `bg-base`, `text-base`, `border-base` for automatic dark mode support
 
 ### Commit Message Convention
 

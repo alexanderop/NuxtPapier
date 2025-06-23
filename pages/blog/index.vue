@@ -32,21 +32,19 @@ const postsByYear = computed(() => {
 
 <template>
   <div>
-    <div v-if="postsByYear.length > 0" class="space-y-8">
+    <div v-if="postsByYear.length > 0">
       <div v-for="yearGroup in postsByYear" :key="yearGroup.year">
-        <h2 class="text-lg font-semibold mb-2">{{ yearGroup.year }}</h2>
-        <div class="space-y-1">
+        <h2>{{ yearGroup.year }}</h2>
+        <div>
           <article
             v-for="article in yearGroup.posts"
             :key="article.path"
-            class="flex gap-4"
           >
-            <time class="text-sm text-muted">
+            <time>
               {{ formatDate(article.date) }}
             </time>
             <NuxtLink
               :to="article.path"
-              class="text-base hover:underline"
             >
               {{ article.title }}
             </NuxtLink>
@@ -56,7 +54,7 @@ const postsByYear = computed(() => {
     </div>
 
     <div v-else>
-      <p class="text-muted">
+      <p>
         No posts yet.
       </p>
     </div>
