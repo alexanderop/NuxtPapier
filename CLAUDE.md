@@ -120,9 +120,7 @@ This project has access to **Puppeteer** - an MCP (Model Context Protocol) serve
 
 ### TypeScript Style Guide
 
-This project follows strict TypeScript practices. For comprehensive TypeScript guidelines, conventions, and best practices specific to this Nuxt 3 + Vue 3 project, see:
-
-**📋 [TypeScript Style Guide](.claude/docs/TYPESCRIPT_GUIDE.md)**
+This project follows strict TypeScript practices. For comprehensive TypeScript guidelines, conventions, and best practices specific to this Nuxt 3 + Vue 3 project, see @.claude/docs/TYPESCRIPT_GUIDE.md
 
 Key highlights:
 
@@ -134,9 +132,7 @@ Key highlights:
 
 ### Vue 3.5 Best Practices
 
-This project leverages Vue 3.5's latest features and APIs. For modern Vue patterns and the preferred APIs introduced in Vue 3.5, see:
-
-**🚀 [Vue 3.5 Style Guide](.claude/docs/VUE_STYLE_GUIDE.md)**
+This project leverages Vue 3.5's latest features and APIs. For modern Vue patterns and the preferred APIs introduced in Vue 3.5, see @.claude/docs/VUE_STYLE_GUIDE.md
 
 Key highlights:
 
@@ -149,9 +145,7 @@ Key highlights:
 
 ### Theme Customization System
 
-This project uses a flexible theming system with OKLCH colors and VueUse for dark mode management. For complete theming and UnoCSS guidance, see:
-
-**🎨 [Theming & UnoCSS Guide](.claude/docs/THEMING_GUIDE.md)**
+This project uses a flexible theming system with OKLCH colors and VueUse for dark mode management. For complete theming and UnoCSS guidance, see @.claude/docs/THEMING_GUIDE.md
 
 Key highlights:
 
@@ -186,7 +180,6 @@ fix(blog): correct post link routing
 docs(readme): update installation instructions
 chore(deps): update dependencies to latest versions
 ```
-
 
 ## Workflow
 

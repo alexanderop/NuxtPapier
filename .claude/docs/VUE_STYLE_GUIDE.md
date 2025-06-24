@@ -11,8 +11,8 @@ This guide outlines Vue 3 best practices with emphasis on the new APIs introduce
 ```vue
 <script setup lang="ts">
 // Modern approach with reactive destructuring
-const { 
-  count = 0, 
+const {
+  count = 0,
   title = 'Default Title',
   items = [] as string[]
 } = defineProps<{
@@ -46,22 +46,24 @@ const props = withDefaults(
 ### Important Notes on Reactive Props Destructure
 
 1. **Watching Destructured Props**: Always wrap in a getter
+
    ```ts
    // ❌ Wrong
    watch(count, (newCount) => {})
-   
+
    // ✅ Correct
    watch(() => count, (newCount) => {})
    ```
 
 2. **Passing to Composables**: Use getters or toValue()
+
    ```ts
    // Composable should handle with toValue()
    function useCounter(count: MaybeRefOrGetter<number>) {
      const value = toValue(count)
      // ...
    }
-   
+
    // Usage
    useCounter(() => count)
    ```
@@ -82,7 +84,7 @@ const dynamicRef = useTemplateRef<HTMLElement>(() => `item-${activeId.value}`)
 </script>
 
 <template>
-  <input ref="input" />
+  <input ref="input">
   <MyComponent ref="myComponent" />
   <div :ref="`item-${activeId}`" />
 </template>
@@ -112,7 +114,7 @@ const inputId = useId()
 <template>
   <form :id="formId">
     <label :for="inputId">Email:</label>
-    <input :id="inputId" type="email" />
+    <input :id="inputId" type="email">
   </form>
 </template>
 ```
@@ -123,21 +125,22 @@ const inputId = useId()
 
 ```vue
 <script setup lang="ts">
-import { watch, onWatcherCleanup } from 'vue'
+import { onWatcherCleanup, watch } from 'vue'
 
 watch(() => props.userId, async (userId) => {
   const controller = new AbortController()
-  
+
   onWatcherCleanup(() => {
     controller.abort()
   })
-  
+
   try {
-    const response = await fetch(`/api/users/${userId}`, { 
-      signal: controller.signal 
+    const response = await fetch(`/api/users/${userId}`, {
+      signal: controller.signal
     })
     // Handle response
-  } catch (e) {
+  }
+  catch (e) {
     if (e.name !== 'AbortError') {
       console.error(e)
     }
@@ -156,7 +159,7 @@ watch(() => props.userId, async (userId) => {
   <Teleport defer target="#modal-container">
     <ModalContent />
   </Teleport>
-  
+
   <!-- This container is rendered after the teleport -->
   <div id="modal-container" />
 </template>
@@ -170,7 +173,7 @@ watch(() => props.userId, async (userId) => {
 
 ```vue
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const count = ref(0)
 const doubled = computed(() => count.value * 2)
@@ -193,7 +196,7 @@ interface Props {
   onUpdate?: (user: User) => void
 }
 
-const { 
+const {
   user,
   isActive = false,
   onUpdate
@@ -208,8 +211,8 @@ const {
 ```vue
 <script setup lang="ts">
 const emit = defineEmits<{
-  update: [value: string]
-  delete: [id: number]
+  'update': [value: string]
+  'delete': [id: number]
   'update:modelValue': [value: boolean]
 }>()
 </script>
@@ -223,15 +226,15 @@ const emit = defineEmits<{
 // composables/useCounter.ts
 export function useCounter(initial: MaybeRefOrGetter<number> = 0) {
   const count = ref(toValue(initial))
-  
+
   function increment() {
     count.value++
   }
-  
+
   function decrement() {
     count.value--
   }
-  
+
   return {
     count: readonly(count),
     increment,
@@ -245,7 +248,7 @@ export function useCounter(initial: MaybeRefOrGetter<number> = 0) {
 #### ✅ For SSR applications
 
 ```ts
-import { defineAsyncComponent, hydrateOnVisible, hydrateOnIdle } from 'vue'
+import { defineAsyncComponent, hydrateOnIdle, hydrateOnVisible } from 'vue'
 
 // Hydrate when visible
 const LazyChart = defineAsyncComponent({
@@ -268,7 +271,7 @@ const LazyFooter = defineAsyncComponent({
 <template>
   <!-- Date will differ between server and client -->
   <time data-allow-mismatch>{{ new Date().toLocaleString() }}</time>
-  
+
   <!-- Specific mismatch types -->
   <div data-allow-mismatch="class style">
     <!-- Content with dynamic classes/styles -->
@@ -282,9 +285,9 @@ const LazyFooter = defineAsyncComponent({
 
 ```vue
 <script setup lang="ts">
-// 1. Imports
-import { ref, computed } from 'vue'
 import type { User } from '~/types'
+// 1. Imports
+import { computed, ref } from 'vue'
 
 // 2. Props interface
 interface Props {
@@ -336,19 +339,21 @@ function handleSubmit() {
 ## 🚨 Anti-Patterns to Avoid
 
 1. **Don't use `reactive()` for primitives**
+
    ```ts
    // ❌ Wrong
    const count = reactive(0)
-   
+
    // ✅ Correct
    const count = ref(0)
    ```
 
 2. **Don't destructure reactive objects**
+
    ```ts
    // ❌ Wrong - loses reactivity
    const { name, email } = reactive(user)
-   
+
    // ✅ Correct
    const user = reactive({ name: '', email: '' })
    // Or use toRefs()
@@ -356,12 +361,13 @@ function handleSubmit() {
    ```
 
 3. **Don't forget cleanup in watchers**
+
    ```ts
    // ❌ Wrong - memory leak
    watch(source, () => {
      const timer = setInterval(() => {}, 1000)
    })
-   
+
    // ✅ Correct
    watch(source, () => {
      const timer = setInterval(() => {}, 1000)
@@ -394,7 +400,7 @@ const { data: posts, pending, error } = await useFetch('/api/posts')
 
 // With transform
 const { data: user } = await useFetch('/api/user', {
-  transform: (data) => ({
+  transform: data => ({
     ...data,
     fullName: `${data.firstName} ${data.lastName}`
   })

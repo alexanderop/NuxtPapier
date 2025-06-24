@@ -6,14 +6,11 @@ const toggleDark = useToggle(isDark)
 </script>
 
 <template>
-  <button
+  <BaseButton
+    variant="ghost"
+    :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
+    icon-only
     aria-label="Toggle dark mode"
-    class="p-2 rounded-lg bg-surface transition-colors hover:bg-brand-200 dark:hover:bg-brand-800"
     @click="toggleDark()"
-  >
-    <Icon
-      :name="isDark ? 'lucide:moon' : 'lucide:sun'"
-      class="text-brand-600 h-5 w-5 dark:text-brand-400"
-    />
-  </button>
+  />
 </template>

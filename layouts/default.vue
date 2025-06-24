@@ -28,21 +28,19 @@ function toggleThemeCustomizer() {
             NuxtPapier
           </h1>
           <div class="flex gap-2 items-center">
-            <button
-              class="btn-secondary flex gap-2 items-center"
+            <BaseButton
               title="Search (Press /)"
               @click="isSearchOpen = true"
             >
-              <Icon name="ph:magnifying-glass" class="h-4 w-4" />
-              <kbd class="text-xs px-1.5 py-0.5 rounded bg-brand-200 dark:bg-brand-700">/</kbd>
-            </button>
-            <button
-              class="btn-secondary"
+              <BaseIcon name="ph:magnifying-glass" size="sm" />
+              <BaseKbd keys="/" />
+            </BaseButton>
+            <BaseButton
+              icon="ph:palette"
+              icon-only
               title="Customize theme"
               @click="toggleThemeCustomizer"
-            >
-              <Icon name="ph:palette" class="h-4 w-4" />
-            </button>
+            />
           </div>
         </div>
         <nav class="flex gap-6" aria-label="Main navigation">
@@ -97,7 +95,7 @@ function toggleThemeCustomizer() {
               title="Close theme customizer"
               @click="showThemeCustomizer = false"
             >
-              <Icon name="ph:x" class="h-4 w-4" />
+              <BaseIcon name="ph:x" size="sm" />
             </button>
           </div>
         </div>

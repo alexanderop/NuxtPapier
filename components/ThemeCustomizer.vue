@@ -34,13 +34,14 @@ function getPreviewColor(shade: number) {
       <h3 class="text-sm text-heading font-medium">
         Theme Customizer
       </h3>
-      <button
-        class="text-xs btn-secondary px-2 py-1"
+      <BaseButton
+        variant="secondary"
+        size="sm"
         title="Reset to default theme"
         @click="resetTheme"
       >
         Reset
-      </button>
+      </BaseButton>
     </div>
 
     <div class="customizer-controls space-y-4">
@@ -52,21 +53,12 @@ function getPreviewColor(shade: number) {
           <span class="text-sm text-muted">
             {{ isDark ? 'Dark Mode' : 'Light Mode' }}
           </span>
-          <button
-            class="appearance-toggle"
-            :class="{ active: isDark }"
+          <BaseToggle
+            :model-value="isDark"
+            :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
             aria-label="Toggle dark mode"
-            @click="toggleDark()"
-          >
-            <div class="toggle-track">
-              <div class="toggle-thumb">
-                <Icon
-                  :name="isDark ? 'lucide:moon' : 'lucide:sun'"
-                  class="h-3 w-3"
-                />
-              </div>
-            </div>
-          </button>
+            @update:model-value="toggleDark()"
+          />
         </div>
       </div>
 
@@ -195,25 +187,5 @@ function getPreviewColor(shade: number) {
 
 .swatch {
   @apply w-8 h-8 rounded-lg border border-border;
-}
-
-.appearance-toggle {
-  @apply relative inline-flex items-center justify-center w-12 h-6 transition-colors duration-200 ease-in-out;
-}
-
-.toggle-track {
-  @apply w-full h-full bg-surface border border-border rounded-full relative transition-colors duration-200 ease-in-out;
-}
-
-.appearance-toggle.active .toggle-track {
-  @apply bg-brand-500 border-brand-500;
-}
-
-.toggle-thumb {
-  @apply absolute left-0.5 top-0.5 w-5 h-5 bg-background rounded-full shadow-sm transition-transform duration-200 ease-in-out flex items-center justify-center text-muted;
-}
-
-.appearance-toggle.active .toggle-thumb {
-  @apply transform translate-x-6 text-brand-50;
 }
 </style>

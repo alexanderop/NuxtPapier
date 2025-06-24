@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Fuse from 'fuse.js'
 
-const isOpen = defineModel<boolean>()
+const isOpen = defineModel<boolean>({ required: true })
 const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
 const searchResults = useTemplateRef<HTMLDivElement>('searchResults')
 
@@ -37,37 +37,39 @@ function useSearch() {
   async function navigateToResult(path: string) {
     isOpen.value = false
     const route = useRoute()
-    
+
     // Check if path contains a hash (section anchor)
     if (path.includes('#')) {
       const hashIndex = path.lastIndexOf('#')
       const pagePath = path.substring(0, hashIndex)
       const hash = path.substring(hashIndex + 1)
-      
+
       // Extract just the path portion (remove /blog prefix if present)
       const cleanPath = pagePath.replace(/^\/blog/, '')
       const fullPath = `/blog${cleanPath}`
-      
+
       // Check if we're already on the same page
       if (route.path === fullPath) {
         // Just scroll to the section
         await nextTick()
         await scrollToElement(hash)
-      } else {
+      }
+      else {
         // Navigate to the page with hash in URL
         await navigateTo(`${fullPath}#${hash}`)
-        
+
         // Wait for route change and content to load
         await nextTick()
-        
+
         // Wait for navigation to complete and content to render
         await new Promise(resolve => setTimeout(resolve, 300))
-        
+
         // Try to scroll to the element
         const element = document.getElementById(hash)
         if (element) {
           await scrollToElement(hash)
-        } else {
+        }
+        else {
           // If element not found immediately, wait for dynamic content
           const observer = new MutationObserver((mutations, obs) => {
             const targetElement = document.getElementById(hash)
@@ -76,13 +78,13 @@ function useSearch() {
               scrollToElement(hash)
             }
           })
-          
+
           // Observe the entire document for changes
           observer.observe(document.body, {
             childList: true,
-            subtree: true
+            subtree: true,
           })
-          
+
           // Disconnect observer after timeout
           setTimeout(() => {
             observer.disconnect()
@@ -90,35 +92,36 @@ function useSearch() {
           }, 2000)
         }
       }
-    } else {
+    }
+    else {
       // No hash, just navigate to the page
       const fullPath = path.startsWith('/blog') ? path : `/blog${path}`
       await navigateTo(fullPath)
     }
   }
-  
+
   // Helper function for smooth scrolling
   async function scrollToElement(elementId: string) {
     // Small delay to ensure layout is complete
     await nextTick()
-    
+
     const element = document.getElementById(elementId)
     if (!element) {
       console.warn(`Element with ID "${elementId}" not found`)
       return
     }
-    
+
     // Calculate the target position with offset for header
     const rect = element.getBoundingClientRect()
     const absoluteTop = rect.top + window.pageYOffset
     const targetY = Math.max(0, absoluteTop - 120) // 120px offset for header with min 0
-    
+
     // Use native smooth scrolling
     window.scrollTo({
       top: targetY,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
-    
+
     // Add visual feedback by briefly highlighting the element
     element.classList.add('highlight-target')
     setTimeout(() => {
@@ -142,17 +145,18 @@ function useSearch() {
           const itemBottom = itemTop + selectedItem.offsetHeight
           const containerHeight = searchResults.value.offsetHeight
           const scrollTop = searchResults.value.scrollTop
-          
+
           // Only scroll if item is outside visible area
           if (itemTop < scrollTop) {
             searchResults.value.scrollTo({
               top: itemTop,
-              behavior: 'smooth'
+              behavior: 'smooth',
             })
-          } else if (itemBottom > scrollTop + containerHeight) {
+          }
+          else if (itemBottom > scrollTop + containerHeight) {
             searchResults.value.scrollTo({
               top: itemBottom - containerHeight,
-              behavior: 'smooth'
+              behavior: 'smooth',
             })
           }
         }
@@ -204,12 +208,13 @@ function useSearch() {
 
   // Highlight matching text
   function highlightText(text: string, searchQuery: string): string {
-    if (!searchQuery || !text) return text
-    
+    if (!searchQuery || !text)
+      return text
+
     // Escape special regex characters in the search query
     const escapedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const regex = new RegExp(`(${escapedQuery})`, 'gi')
-    
+
     return text.replace(regex, '<mark>$1</mark>')
   }
 
@@ -221,88 +226,70 @@ function useSearch() {
     highlightText,
   }
 }
-
-function handleBackdropClick(e: MouseEvent) {
-  if (e.target === e.currentTarget) {
-    isOpen.value = false
-  }
-}
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="search">
-      <div
-        v-if="isOpen"
-        class="search-overlay"
-        @click="handleBackdropClick"
-      >
-        <div class="search-container">
-          <div class="search-header">
-            <Icon name="ph:magnifying-glass" class="search-icon" />
-            <input
-              ref="searchInput"
-              v-model="query"
-              type="text"
-              placeholder="Search blog posts..."
-              class="search-input"
-              @keydown.escape="isOpen = false"
-            >
-            <kbd class="search-hint">ESC</kbd>
-          </div>
-
-          <div
-            v-if="results.length > 0"
-            ref="searchResults"
-            class="search-results"
-          >
-            <button
-              v-for="(result, index) in results"
-              :key="result.item.id"
-              :data-search-item="index"
-              class="search-result" :class="[{ 'search-result-active': index === selectedIndex }]"
-              @click="navigateToResult(result.item.id)"
-              @mouseenter="selectedIndex = index"
-            >
-              <div class="search-result-content">
-                <h3 class="search-result-title" v-html="highlightText(result.item.title, query)" />
-                <p class="search-result-text" v-html="highlightText(`${result.item.content?.slice(0, 150)}...`, query)" />
-              </div>
-              <Icon
-                v-if="index === selectedIndex"
-                name="ph:arrow-right"
-                class="search-result-arrow"
-              />
-            </button>
-          </div>
-
-          <div v-else-if="query && results.length === 0" class="search-empty">
-            <p class="text-muted">
-              No results found for "{{ query }}"
-            </p>
-          </div>
-
-          <div v-else class="search-footer">
-            <span class="search-footer-hint">
-              <kbd>↑</kbd> <kbd>↓</kbd> to navigate
-            </span>
-            <span class="search-footer-hint">
-              <kbd>Enter</kbd> to select
-            </span>
-          </div>
-        </div>
+  <BaseModal v-model="isOpen" position="center">
+    <div class="search-container">
+      <div class="search-header">
+        <BaseIcon name="ph:magnifying-glass" class="search-icon" />
+        <input
+          ref="searchInput"
+          v-model="query"
+          type="text"
+          placeholder="Search blog posts..."
+          class="search-input"
+          @keydown.escape="isOpen = false"
+        >
+        <BaseKbd keys="ESC" class="search-hint" />
       </div>
-    </Transition>
-  </Teleport>
+
+      <div
+        v-if="results.length > 0"
+        ref="searchResults"
+        class="search-results"
+      >
+        <button
+          v-for="(result, index) in results"
+          :key="result.item.id"
+          :data-search-item="index"
+          class="search-result" :class="[{ 'search-result-active': index === selectedIndex }]"
+          @click="navigateToResult(result.item.id)"
+          @mouseenter="selectedIndex = index"
+        >
+          <div class="search-result-content">
+            <h3 class="search-result-title" v-html="highlightText(result.item.title, query)" />
+            <p class="search-result-text" v-html="highlightText(`${result.item.content?.slice(0, 150)}...`, query)" />
+          </div>
+          <BaseIcon
+            v-if="index === selectedIndex"
+            name="ph:arrow-right"
+            class="search-result-arrow"
+          />
+        </button>
+      </div>
+
+      <div v-else-if="query && results.length === 0" class="search-empty">
+        <p class="text-muted">
+          No results found for "{{ query }}"
+        </p>
+      </div>
+
+      <div v-else class="search-footer">
+        <span class="search-footer-hint">
+          <BaseKbd :keys="['↑', '↓']" /> to navigate
+        </span>
+        <span class="search-footer-hint">
+          <BaseKbd keys="Enter" /> to select
+        </span>
+      </div>
+    </div>
+  </BaseModal>
 </template>
 
 <style scoped>
-.search-overlay {
-  @apply fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center pt-20 px-4;
-}
-
 .search-container {
-  @apply w-full max-w-2xl bg-surface rounded-lg shadow-2xl overflow-hidden;
+  @apply w-full;
 }
 
 .search-header {
@@ -318,7 +305,7 @@ function handleBackdropClick(e: MouseEvent) {
 }
 
 .search-hint {
-  @apply text-xs bg-brand-100 dark:bg-brand-800 text-muted px-2 py-1 rounded;
+  @apply ml-2;
 }
 
 .search-results {
@@ -359,34 +346,6 @@ function handleBackdropClick(e: MouseEvent) {
 
 .search-footer-hint {
   @apply flex items-center gap-1;
-}
-
-.search-footer-hint kbd {
-  @apply bg-brand-100 dark:bg-brand-800 px-1.5 py-0.5 rounded text-xs;
-}
-
-/* Transitions */
-.search-enter-active,
-.search-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.search-enter-from,
-.search-leave-to {
-  opacity: 0;
-}
-
-.search-enter-active .search-container,
-.search-leave-active .search-container {
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.search-enter-from .search-container,
-.search-leave-to .search-container {
-  transform: translateY(-20px);
-  opacity: 0;
 }
 
 /* Highlighted search matches */
