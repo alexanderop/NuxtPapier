@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'
-import ThemeCustomizer from '~/components/ThemeCustomizer.vue'
-
 // Initialize theme on page load
 useTheme()
+
+// Initialize global shortcuts
+const { isSearchOpen } = useGlobalShortcuts()
 
 const currentYear = new Date().getFullYear()
 const showThemeCustomizer = ref(false)
@@ -27,13 +27,23 @@ function toggleThemeCustomizer() {
           <h1 class="text-4xl text-heading font-bold">
             NuxtPapier
           </h1>
-          <button
-            class="btn-secondary"
-            title="Customize theme"
-            @click="toggleThemeCustomizer"
-          >
-            <Icon name="ph:palette" class="h-4 w-4" />
-          </button>
+          <div class="flex gap-2 items-center">
+            <button
+              class="btn-secondary flex gap-2 items-center"
+              title="Search (Press /)"
+              @click="isSearchOpen = true"
+            >
+              <Icon name="ph:magnifying-glass" class="h-4 w-4" />
+              <kbd class="text-xs px-1.5 py-0.5 rounded bg-brand-200 dark:bg-brand-700">/</kbd>
+            </button>
+            <button
+              class="btn-secondary"
+              title="Customize theme"
+              @click="toggleThemeCustomizer"
+            >
+              <Icon name="ph:palette" class="h-4 w-4" />
+            </button>
+          </div>
         </div>
         <nav class="flex gap-6" aria-label="Main navigation">
           <NuxtLink
@@ -65,6 +75,9 @@ function toggleThemeCustomizer() {
         </div>
       </footer>
     </div>
+
+    <!-- Search Modal -->
+    <BlogSearch v-model="isSearchOpen" />
 
     <!-- Theme Customizer Panel -->
     <Teleport to="body">

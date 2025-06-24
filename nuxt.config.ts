@@ -16,11 +16,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: [
-    '@nuxt/content',
-    '@nuxt/icon',
-    '@unocss/nuxt',
-  ],
+  modules: ['@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt'],
   content: {
     build: {
       markdown: {
@@ -34,6 +30,15 @@ export default defineNuxtConfig({
             dark: 'github-dark',
           },
         },
+      },
+    },
+    renderer: {
+      anchorLinks: {
+        h2: true,
+        h3: true,
+        h4: true,
+        h5: true,
+        h6: true,
       },
     },
   },

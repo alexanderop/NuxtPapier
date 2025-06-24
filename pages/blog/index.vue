@@ -49,7 +49,7 @@ const postsByYear = computed(() => {
               {{ formatDate(article.date) }}
             </time>
             <NuxtLink
-              :to="article.path"
+              :to="article.path.startsWith('/blog') ? article.path : `/blog${article.path}`"
               class="text-body transition-colors hover:text-brand-500"
             >
               {{ article.title }}

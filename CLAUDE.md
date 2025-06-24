@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 This is a Nuxt 3 application called "NuxtPapier" built with Vue 3 and TypeScript. The project uses:
+The Goal of this Project is to create a minimalistic Blog Starter For developers
 
 - **Nuxt 3.17.5** with compatibility version 4 and devtools enabled
 - **Package Manager**: pnpm (specified version 9.9.0)
@@ -13,6 +14,7 @@ This is a Nuxt 3 application called "NuxtPapier" built with Vue 3 and TypeScript
 - **Icons**: @nuxt/icon for icon management
 - **Images**: @nuxt/image for optimized image handling
 - **Linting**: ESLint with @antfu/eslint-config (formatters, UnoCSS, and Vue support)
+- **Utilities**: @vueuse/nuxt for Vue composition utilities
 
 ## Development Commands
 
@@ -66,6 +68,7 @@ pnpm typecheck
 - **Linting**: Uses Anthony Fu's ESLint config with Vue, UnoCSS, and formatters enabled
 - **Server**: Has a dedicated server directory with its own TypeScript configuration
 - **Static assets**: Public directory contains favicon and robots.txt
+- **VueUse Auto-imports**: VueUse composables are auto-imported in Nuxt 3 and don't require explicit imports. Common functions like `useMagicKeys`, `useActiveElement`, `whenever`, `onKeyStroke`, and many others are available globally throughout the application. This is enabled by the `@vueuse/nuxt` module configured in `nuxt.config.ts`
 
 ## Key Dependencies
 
@@ -115,106 +118,48 @@ This project has access to **Puppeteer** - an MCP (Model Context Protocol) serve
 
 ## Development Guidelines
 
+### TypeScript Style Guide
+
+This project follows strict TypeScript practices. For comprehensive TypeScript guidelines, conventions, and best practices specific to this Nuxt 3 + Vue 3 project, see:
+
+**📋 [TypeScript Style Guide](.claude/docs/TYPESCRIPT_GUIDE.md)**
+
+Key highlights:
+
+- Strict TypeScript configuration with no `any` types
+- Proper typing for Vue 3 components, props, and emits
+- Nuxt 3 specific patterns for server routes, plugins, and middleware
+- ESLint integration with `@antfu/eslint-config`
+- API response standardization and utility types
+
+### Vue 3.5 Best Practices
+
+This project leverages Vue 3.5's latest features and APIs. For modern Vue patterns and the preferred APIs introduced in Vue 3.5, see:
+
+**🚀 [Vue 3.5 Style Guide](.claude/docs/VUE_STYLE_GUIDE.md)**
+
+Key highlights:
+
+- Reactive Props Destructure with native default values
+- `useTemplateRef()` for type-safe template refs
+- `useId()` for SSR-safe unique identifiers
+- `onWatcherCleanup()` for proper side effect cleanup
+- Lazy hydration strategies for optimal SSR performance
+- Modern composition patterns and best practices
+
 ### Theme Customization System
 
-This project uses a flexible theming system with OKLCH colors and VueUse for dark mode management.
+This project uses a flexible theming system with OKLCH colors and VueUse for dark mode management. For complete theming and UnoCSS guidance, see:
 
-#### Quick Brand Color Change
+**🎨 [Theming & UnoCSS Guide](.claude/docs/THEMING_GUIDE.md)**
 
-To change your brand colors, simply modify the `--brand-hue` variable in `assets/css/theme.css`:
+Key highlights:
 
-```css
-:root {
-  --brand-hue: 220; /* Change this number (0-360) */
-}
-```
-
-**Common Brand Hues:**
-
-- **Blue**: 220 (default)
-- **Green**: 142
-- **Purple**: 275
-- **Orange**: 25
-- **Red**: 0
-- **Teal**: 180
-- **Pink**: 320
-
-#### Advanced Customization
-
-For more control, you can modify individual color values:
-
-```css
-:root {
-  --brand-500: 62% 0.18 var(--brand-hue); /* Primary color */
-  /* Adjust lightness (first value) and chroma (second value) */
-}
-```
-
-#### Using Semantic Color Classes
-
-Use these semantic color classes in your components:
-
-```vue
-<template>
-  <div class="text-text bg-background">
-    <h1 class="text-heading">
-      Title
-    </h1>
-    <p class="text-body">
-      Body text
-    </p>
-    <p class="text-muted">
-      Muted text
-    </p>
-    <button class="btn-primary">
-      Primary Button
-    </button>
-    <div class="surface-card">
-      Card content
-    </div>
-  </div>
-</template>
-```
-
-**Available Color Classes:**
-
-- `bg-background` / `text-text` - Main background and text
-- `bg-surface` / `text-muted` - Secondary surfaces and muted text
-- `bg-brand-{50-950}` - Brand color variations
-- `border-border` - Border colors
-
-**Available Shortcuts:**
-
-- `container-main` - Main container with responsive padding
-- `btn-primary` / `btn-secondary` - Button styles
-- `text-heading` / `text-body` / `text-muted` - Typography
-- `surface-primary` / `surface-secondary` / `surface-card` - Surface styles
-
-#### Dark Mode Implementation
-
-Dark mode is handled automatically using VueUse's `useDark()` composable:
-
-```vue
-<script setup>
-import { useDark, useToggle } from '@vueuse/core'
-
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
-</script>
-```
-
-The system automatically:
-
-- Detects system preference on first visit
-- Persists user choice in localStorage
-- Applies appropriate color variables for light/dark modes
-
-**UnoCSS Best Practices:**
-
-- **Use semantic color classes** instead of direct color values
-- **Use UnoCSS shortcuts** defined in `uno.config.ts` for common patterns
-- **Leverage OKLCH colors** for better color manipulation and accessibility
-- **Use dark: variants** sparingly - most theming is handled by CSS variables
+- Quick brand color customization with CSS custom properties
+- Semantic color classes for consistent theming
+- Automatic dark mode with VueUse integration
+- UnoCSS shortcuts and best practices
+- OKLCH color system for better accessibility
 
 ### Commit Message Convention
 
@@ -241,3 +186,14 @@ fix(blog): correct post link routing
 docs(readme): update installation instructions
 chore(deps): update dependencies to latest versions
 ```
+
+
+## Workflow
+
+Always plan first if something from vueUse when something is
+related to vue can help you
+Always use context7 and get up to date information on the libaries you want to use on how to use them
+
+## localhost:3000
+
+you dont need to run localhost:3000 it will always run
