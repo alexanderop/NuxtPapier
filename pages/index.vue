@@ -2,6 +2,11 @@
 const { data: recentPosts } = await useAsyncData('recent-posts', () =>
   queryCollection('blog')
     .order('date', 'DESC')
+    .orWhere(query =>
+      query
+        .where('draft', '<>', true)
+        .where('draft', 'IS NULL'),
+    )
     .limit(3)
     .all())
 </script>

@@ -2,9 +2,8 @@ import type { H3Event } from 'h3'
 import { Feed } from 'feed'
 import { siteConfig } from '~/utils/site.config'
 import { tryCatch } from '~/utils/tryCatch'
+import { BlogCollectionItem } from '@nuxt/content'
 
-// queryCollection should be auto-imported by @nuxt/content
-declare const queryCollection: any
 
 export async function generateFeed(event: H3Event) {
   const feed = new Feed({
@@ -31,10 +30,15 @@ export async function generateFeed(event: H3Event) {
   })
 
   // Use queryCollection with event as first argument for server context
-  let posts: any[] = []
+  let posts: BlogCollectionItem[] = []
 
-  const result = await tryCatch<any[]>(
+  const result = await tryCatch<BlogCollectionItem[]>(
     queryCollection(event, 'blog')
+      .orWhere(query =>
+        query
+          .where('draft', '<>', true)
+          .where('draft', 'IS NULL'),
+      )
       .order('date', 'DESC')
       .all(),
   )

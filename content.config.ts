@@ -11,6 +11,7 @@ export default defineContentConfig({
         date: z.string(),
         readingTime: z.number().optional(),
         formattedDate: z.string(),
+        draft: z.boolean().optional(),
       }),
     }),
   },

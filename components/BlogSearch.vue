@@ -13,7 +13,13 @@ function useSearch() {
 
   // Fetch search data
   const { data: searchData } = useAsyncData('search-data', () =>
-    queryCollectionSearchSections('blog'))
+    queryCollection('blog')
+      .orWhere(query =>
+        query
+          .where('draft', '<>', true)
+          .where('draft', 'IS NULL'),
+      )
+      .all())
 
   // Initialize Fuse.js
   const fuse = computed(() => {
