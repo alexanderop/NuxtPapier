@@ -52,26 +52,6 @@ export default defineConfig({
     'surface-primary': 'bg-background text-text',
     'surface-secondary': 'bg-surface text-text',
     'surface-card': 'bg-surface border border-border rounded-lg p-6',
-
-    // Animation shortcuts
-    'animate-fade': 'animate opacity-0',
-    'animate-fade-up': 'animate opacity-0 translate-y-4',
-    'animate-fade-down': 'animate opacity-0 -translate-y-4',
-    'animate-fade-left': 'animate opacity-0 translate-x-4',
-    'animate-fade-right': 'animate opacity-0 -translate-x-4',
-    'animate-scale': 'animate opacity-0 scale-95',
-    'animate-blur': 'animate opacity-0 blur-sm',
-
-    // Animation utility shortcuts
-    'animate-show': 'opacity-100 translate-y-0 translate-x-0 scale-100 blur-0',
-    'animate-delay-100': '[transition-delay:100ms]',
-    'animate-delay-200': '[transition-delay:200ms]',
-    'animate-delay-300': '[transition-delay:300ms]',
-    'animate-delay-400': '[transition-delay:400ms]',
-    'animate-delay-500': '[transition-delay:500ms]',
-
-    // Hover arrow shortcut
-    'hover-arrow': 'group relative inline-flex items-center gap-2',
   },
   presets: [
     presetWind4({

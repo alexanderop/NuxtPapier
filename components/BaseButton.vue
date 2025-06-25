@@ -5,7 +5,6 @@ interface Props {
   icon?: string
   iconOnly?: boolean
   title?: string
-  animate?: boolean | 'spin' | 'bounce' | 'pulse' | 'wiggle'
 }
 
 const {
@@ -14,7 +13,6 @@ const {
   icon,
   iconOnly = false,
   title,
-  animate = true,
 } = defineProps<Props>()
 
 const variantClasses = {
@@ -36,29 +34,7 @@ const iconSizeClasses = {
 const buttonClass = computed(() => {
   const variantClass = variantClasses[variant]
   const sizeClass = iconOnly ? iconSizeClasses[size] : sizeClasses[size]
-  const animateClass = animate && icon ? 'group' : ''
-  return `${variantClass} ${sizeClass} ${animateClass} rounded-lg font-medium transition-colors inline-flex items-center justify-center gap-2`
-})
-
-const iconClass = computed(() => {
-  if (!animate || !icon) return ''
-  
-  // Default animations based on icon type
-  if (animate === true) {
-    if (icon.includes('palette') || icon.includes('gear') || icon.includes('settings')) {
-      return 'icon-spin'
-    }
-    if (icon.includes('magnifying') || icon.includes('search')) {
-      return 'icon-pulse'
-    }
-    if (icon.includes('bell') || icon.includes('notification')) {
-      return 'icon-wiggle'
-    }
-    return 'icon-bounce'
-  }
-  
-  // Specific animation type
-  return `icon-${animate}`
+  return `${variantClass} ${sizeClass} rounded-lg font-medium transition-colors inline-flex items-center justify-center gap-2`
 })
 </script>
 
@@ -71,7 +47,6 @@ const iconClass = computed(() => {
       v-if="icon"
       :name="icon"
       :size="size === 'sm' ? 'sm' : 'md'"
-      :class="iconClass"
     />
     <slot v-if="!iconOnly" />
   </button>

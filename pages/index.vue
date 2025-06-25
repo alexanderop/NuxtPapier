@@ -14,7 +14,7 @@ const { data: recentPosts } = await useAsyncData('recent-posts', () =>
 <template>
   <div>
     <!-- Introduction -->
-    <section class="animate-immediate mb-16" data-animate="fade-up">
+    <section class="mb-16">
       <h2 class="text-2xl text-heading mb-4">
         Welcome to my blog
       </h2>
@@ -24,38 +24,32 @@ const { data: recentPosts } = await useAsyncData('recent-posts', () =>
     </section>
 
     <!-- Recent Posts -->
-    <section class="animate" data-animate="fade-up" data-delay="200">
+    <section>
       <div class="mb-8 flex items-center justify-between">
         <h3 class="text-xl text-heading">
           Recent Posts
         </h3>
         <NuxtLink
           to="/feeds"
-          class="text-muted opacity-60 transition-all hover:text-brand-500 hover:opacity-100 group"
+          class="text-muted opacity-60 transition-all hover:text-brand-500 hover:opacity-100"
           title="Subscribe to RSS feed"
         >
-          <BaseIcon name="ph:rss-simple" size="md" class="icon-pulse" />
+          <BaseIcon name="ph:rss-simple" size="md" />
         </NuxtLink>
       </div>
 
-      <div v-if="recentPosts && recentPosts.length > 0" class="space-y-8" data-stagger="100">
+      <div v-if="recentPosts && recentPosts.length > 0" class="space-y-8">
         <article
-          v-for="(article, index) in recentPosts"
+          v-for="article in recentPosts"
           :key="article.path"
-          class="animate group"
-          data-animate="fade-left"
-          :style="{ transitionDelay: `${300 + (index * 100)}ms` }"
+          class="group"
         >
           <h4 class="mb-2">
             <NuxtLink
               :to="article.path"
-              class="hover-arrow text-lg text-body font-medium transition-colors group-hover:text-brand-500 pr-6"
+              class="text-lg text-body font-medium transition-colors group-hover:text-brand-500"
             >
-              <span>{{ article.title }}</span>
-              <svg viewBox="0 0 24 24" class="h-4 w-4 -right-6 top-1/2 absolute fill-none stroke-2 stroke-current -translate-y-1/2">
-                <line x1="5" y1="12" x2="19" y2="12" class="arrow-shaft" />
-                <polyline points="12 5 19 12 12 19" class="arrow-head" />
-              </svg>
+              {{ article.title }}
             </NuxtLink>
           </h4>
           <time class="text-sm text-muted mb-2 block">
@@ -67,7 +61,7 @@ const { data: recentPosts } = await useAsyncData('recent-posts', () =>
         </article>
       </div>
 
-      <div v-else class="animate py-12 text-center" data-animate="fade">
+      <div v-else class="py-12 text-center">
         <p class="text-muted">
           No blog posts found. Check back soon!
         </p>

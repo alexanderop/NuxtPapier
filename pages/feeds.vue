@@ -26,27 +26,24 @@ const feeds = [
 
 <template>
   <div>
-    <h1 class="text-3xl text-heading font-bold mb-4 animate-immediate" data-animate="fade-up">
+    <h1 class="text-3xl text-heading font-bold mb-4">
       Subscribe to {{ siteConfig.name }}
     </h1>
-    <p class="text-lg text-body mb-8 animate-immediate" data-animate="fade-up" data-delay="100">
+    <p class="text-lg text-body mb-8">
       Choose your preferred feed format to stay updated with the latest posts.
     </p>
 
-    <div class="space-y-4" data-stagger="100">
+    <div class="space-y-4">
       <div
-        v-for="(feed, index) in feeds"
+        v-for="feed in feeds"
         :key="feed.url"
-        class="p-6 surface-card rounded-lg animate"
-        data-animate="fade-left"
-        :style="{ transitionDelay: `${200 + (index * 100)}ms` }"
+        class="p-6 surface-card rounded-lg"
       >
-        <div class="flex gap-4 items-start group">
+        <div class="flex gap-4 items-start">
           <BaseIcon
             :name="feed.icon"
             size="lg"
             class="text-brand-500 mt-1"
-            :class="feed.icon.includes('rss') ? 'icon-pulse' : feed.icon.includes('atom') ? 'icon-spin' : 'icon-bounce'"
           />
           <div class="flex-1">
             <h2 class="text-xl text-heading font-semibold mb-1">
@@ -58,9 +55,9 @@ const feeds = [
             <div class="flex gap-4 items-center">
               <a
                 :href="feed.url"
-                class="text-brand-500 inline-flex gap-2 transition-colors items-center hover:text-brand-600 group/link"
+                class="text-brand-500 inline-flex gap-2 transition-colors items-center hover:text-brand-600"
               >
-                <BaseIcon name="ph:download" size="sm" class="transition-transform group-hover/link:translate-y-1" />
+                <BaseIcon name="ph:download" size="sm" />
                 Subscribe
               </a>
               <code class="text-sm text-muted px-2 py-1 rounded bg-surface">
@@ -72,7 +69,7 @@ const feeds = [
       </div>
     </div>
 
-    <div class="surface-secondary mt-8 p-6 rounded-lg animate" data-animate="fade-up" data-delay="500">
+    <div class="surface-secondary mt-8 p-6 rounded-lg">
       <h3 class="text-lg text-heading font-semibold mb-2">
         How to use feeds
       </h3>

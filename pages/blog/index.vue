@@ -40,43 +40,31 @@ const postsByYear = computed(() => {
 <template>
   <div>
     <div v-if="postsByYear.length > 0" class="space-y-8">
-      <div
-        v-for="(yearGroup, yearIndex) in postsByYear"
-        :key="yearGroup.year"
-        class="animate"
-        data-animate="fade-up"
-        :style="{ transitionDelay: `${yearIndex * 100}ms` }"
-      >
+      <div v-for="yearGroup in postsByYear" :key="yearGroup.year">
         <h2 class="text-lg text-heading font-semibold mb-2">
           {{ yearGroup.year }}
         </h2>
-        <div class="space-y-1" data-stagger="50">
+        <div class="space-y-1">
           <article
-            v-for="(article, articleIndex) in yearGroup.posts"
+            v-for="article in yearGroup.posts"
             :key="article.path"
-            class="animate flex gap-4"
-            data-animate="fade-left"
-            :style="{ transitionDelay: `${(yearIndex * 100) + (articleIndex * 50)}ms` }"
+            class="flex gap-4"
           >
             <time class="text-sm text-muted">
               {{ formatDate(article.date) }}
             </time>
             <NuxtLink
               :to="article.path.startsWith('/blog') ? article.path : `/blog${article.path}`"
-              class="hover-arrow text-body transition-colors hover:text-brand-500 pr-6"
+              class="text-body transition-colors hover:text-brand-500"
             >
-              <span>{{ article.title }}</span>
-              <svg viewBox="0 0 24 24" class="h-4 w-4 -right-6 top-1/2 absolute fill-none stroke-2 stroke-current -translate-y-1/2">
-                <line x1="5" y1="12" x2="19" y2="12" class="arrow-shaft" />
-                <polyline points="12 5 19 12 12 19" class="arrow-head" />
-              </svg>
+              {{ article.title }}
             </NuxtLink>
           </article>
         </div>
       </div>
     </div>
 
-    <div v-else class="animate" data-animate="fade">
+    <div v-else>
       <p class="text-muted">
         No posts yet.
       </p>

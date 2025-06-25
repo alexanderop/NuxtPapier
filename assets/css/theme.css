@@ -148,28 +148,6 @@
   --error-500: 59% 0.18 0; /* Red with proper lightness */
   --success-500: 59% 0.18 142; /* Green with proper lightness */
   --warning-500: 59% 0.15 60; /* Yellow-orange with reduced chroma */
-
-  /* ==========================================================================
-     ANIMATION VARIABLES
-     Timing and easing functions for consistent animations
-     ========================================================================== */
-
-  /* Timing */
-  --animation-duration-fast: 200ms;
-  --animation-duration-base: 300ms;
-  --animation-duration-medium: 500ms;
-  --animation-duration-slow: 700ms;
-  --animation-duration-slower: 1000ms;
-
-  /* Easing functions */
-  --animation-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --animation-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --animation-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-  /* Stagger delays for list animations */
-  --animation-stagger-fast: 50ms;
-  --animation-stagger-base: 100ms;
-  --animation-stagger-slow: 150ms;
 }
 
 .dark {
