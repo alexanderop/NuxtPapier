@@ -30,7 +30,7 @@ useSeoMeta({
   <div>
     <article v-if="page">
       <!-- Article Header -->
-      <header class="mb-8">
+      <header class="mb-8 animate-immediate" data-animate="fade-up">
         <h1 class="text-3xl text-heading font-bold mb-4">
           {{ page?.title }}
         </h1>
@@ -45,18 +45,18 @@ useSeoMeta({
       </header>
 
       <!-- Article Content -->
-      <div class="max-w-none prose">
+      <div class="max-w-none prose animate" data-animate="fade" data-delay="200">
         <ContentRenderer v-if="page" :value="page" />
       </div>
     </article>
 
     <!-- Navigation -->
-    <nav class="mt-16 pt-8">
+    <nav class="mt-16 pt-8 animate" data-animate="fade-up" data-delay="300">
       <NuxtLink
         to="/blog"
-        class="text-sm text-muted inline-flex transition-colors items-center hover:text-brand-500"
+        class="text-sm text-muted inline-flex transition-colors items-center hover:text-brand-500 group"
       >
-        <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Back to all posts

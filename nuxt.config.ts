@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   },
   css: [
     '~/assets/css/theme.css',
+    '~/assets/css/animations.css',
   ],
   app: {
     head: {

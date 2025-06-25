@@ -24,26 +24,30 @@ function toggleThemeCustomizer() {
       <!-- Header -->
       <header class="py-8">
         <div class="mb-6 flex items-center justify-between">
-          <h1 class="text-4xl text-heading font-bold">
+          <h1 class="animate-immediate text-4xl text-heading font-bold" data-animate="fade-right">
             {{ siteConfig.name }}
           </h1>
           <div class="flex gap-2 items-center">
-            <BaseButton
-              title="Search (Press /)"
-              @click="isSearchOpen = true"
-            >
-              <BaseIcon name="ph:magnifying-glass" size="sm" />
-              <BaseKbd keys="/" />
-            </BaseButton>
-            <BaseButton
-              icon="ph:palette"
-              icon-only
-              title="Customize theme"
-              @click="toggleThemeCustomizer"
-            />
+            <div class="animate-immediate" data-animate="fade-left" data-delay="100">
+              <BaseButton
+                title="Search (Press /)"
+                @click="isSearchOpen = true"
+              >
+                <BaseIcon name="ph:magnifying-glass" size="sm" />
+                <BaseKbd keys="/" />
+              </BaseButton>
+            </div>
+            <div class="animate-immediate" data-animate="fade-left" data-delay="200">
+              <BaseButton
+                icon="ph:palette"
+                icon-only
+                title="Customize theme"
+                @click="toggleThemeCustomizer"
+              />
+            </div>
           </div>
         </div>
-        <nav class="flex gap-6" aria-label="Main navigation">
+        <nav class="animate-immediate flex gap-6" data-animate="fade-up" data-delay="300" aria-label="Main navigation">
           <NuxtLink
             to="/"
             class="text-body transition-colors hover:text-brand-500"
@@ -65,14 +69,14 @@ function toggleThemeCustomizer() {
       </main>
 
       <!-- Footer -->
-      <footer class="mt-16 pt-8 border-t border-border">
+      <footer class="animate mt-16 pt-8 border-t border-border" data-animate="fade-up">
         <div class="text-center">
           <p class="text-sm text-muted mb-2">
             {{ siteConfig.copyright || `© ${currentYear} ${siteConfig.name}` }}
           </p>
           <p class="text-sm">
-            <NuxtLink to="/feeds" class="text-muted inline-flex gap-1 transition-colors items-center hover:text-brand-500">
-              <BaseIcon name="ph:rss" size="xs" />
+            <NuxtLink to="/feeds" class="text-muted inline-flex gap-1 transition-colors items-center hover:text-brand-500 group">
+              <BaseIcon name="ph:rss" size="xs" class="icon-pulse" />
               Subscribe
             </NuxtLink>
           </p>
@@ -82,6 +86,9 @@ function toggleThemeCustomizer() {
 
     <!-- Search Modal -->
     <BlogSearch v-model="isSearchOpen" />
+
+    <!-- Back to Top Button -->
+    <BaseBackToTop />
 
     <!-- Theme Customizer Panel -->
     <Teleport to="body">
