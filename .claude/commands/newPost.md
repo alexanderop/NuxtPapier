@@ -15,8 +15,8 @@ Please:
    - draft: true
    - The description
    - Author: Alex Opalic
-4. Location is content/blog
-5. Dont do any linting or typecheck
-6. Only add the Frontendmatter
+3. Location is content/blog
+4. Dont do any linting or typecheck
+5. Only add the Frontendmatter
 
 Ensure all formatting follows UK English standards.

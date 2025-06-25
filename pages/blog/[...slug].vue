@@ -20,7 +20,7 @@ useSeoMeta({
   ogUrl: pageUrl,
   ogType: 'article',
   articlePublishedTime: page.value.date || undefined,
-  articleAuthor: siteConfig.author.name,
+  articleAuthor: [siteConfig.author.name],
   twitterTitle: page.value.title,
   twitterDescription: page.value.description,
 })

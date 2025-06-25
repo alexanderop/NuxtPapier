@@ -1,9 +1,8 @@
+import type { BlogCollectionItem } from '@nuxt/content'
 import type { H3Event } from 'h3'
 import { Feed } from 'feed'
 import { siteConfig } from '~/utils/site.config'
 import { tryCatch } from '~/utils/tryCatch'
-import { BlogCollectionItem } from '@nuxt/content'
-
 
 export async function generateFeed(event: H3Event) {
   const feed = new Feed({
@@ -33,6 +32,7 @@ export async function generateFeed(event: H3Event) {
   let posts: BlogCollectionItem[] = []
 
   const result = await tryCatch<BlogCollectionItem[]>(
+    // @ts-expect-error - queryCollection works with event in server contextg
     queryCollection(event, 'blog')
       .orWhere(query =>
         query

@@ -26,7 +26,7 @@ function useSearch() {
     if (!searchData.value)
       return null
     return new Fuse(searchData.value, {
-      keys: ['title', 'content'],
+      keys: ['title', 'description'],
       threshold: 0.3,
       includeScore: true,
     })
@@ -265,7 +265,7 @@ function useSearch() {
         >
           <div class="search-result-content">
             <h3 class="search-result-title" v-html="highlightText(result.item.title, query)" />
-            <p class="search-result-text" v-html="highlightText(`${result.item.content?.slice(0, 150)}...`, query)" />
+            <p class="search-result-text" v-html="highlightText(`${result.item.description?.slice(0, 150) || ''}...`, query)" />
           </div>
           <BaseIcon
             v-if="index === selectedIndex"

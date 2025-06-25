@@ -2,6 +2,11 @@
 const { data: blogPosts } = await useAsyncData('blog-posts', () => {
   return queryCollection('blog')
     .order('date', 'DESC')
+    .orWhere(query =>
+      query
+        .where('draft', '<>', true)
+        .where('draft', 'IS NULL'),
+    )
     .all()
 })
 
