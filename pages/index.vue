@@ -14,15 +14,24 @@ const { data: recentPosts } = await useAsyncData('recent-posts', () =>
         Welcome to my blog
       </h2>
       <p class="text-lg text-body">
-        This is a minimal blog inspired by Bear Blog, built with Nuxt 3 and focused on content over noise.
+        {{ siteConfig.description }}
       </p>
     </section>
 
     <!-- Recent Posts -->
     <section>
-      <h3 class="text-xl text-heading mb-8">
-        Recent Posts
-      </h3>
+      <div class="mb-8 flex items-center justify-between">
+        <h3 class="text-xl text-heading">
+          Recent Posts
+        </h3>
+        <NuxtLink
+          to="/feeds"
+          class="text-muted opacity-60 transition-all hover:text-brand-500 hover:opacity-100"
+          title="Subscribe to RSS feed"
+        >
+          <BaseIcon name="ph:rss-simple" size="md" />
+        </NuxtLink>
+      </div>
 
       <div v-if="recentPosts && recentPosts.length > 0" class="space-y-8">
         <article

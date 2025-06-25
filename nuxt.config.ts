@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
+import { siteConfig } from './utils/site.config'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
@@ -6,14 +7,48 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
+  nitro: {
+    prerender: {
+      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
+    },
+  },
   css: [
     '~/assets/css/theme.css',
   ],
   app: {
     head: {
       htmlAttrs: {
-        lang: 'en',
+        lang: siteConfig.language,
       },
+      title: siteConfig.title,
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: siteConfig.description },
+        { property: 'og:title', content: siteConfig.title },
+        { property: 'og:description', content: siteConfig.description },
+        { property: 'og:url', content: siteConfig.url },
+        { property: 'og:site_name', content: siteConfig.name },
+        { property: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:title', content: siteConfig.title },
+        { name: 'twitter:description', content: siteConfig.description },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: siteConfig.favicon || '/favicon.ico' },
+        {
+          rel: 'alternate',
+          type: 'application/rss+xml',
+          title: `${siteConfig.title} RSS Feed`,
+          href: '/rss.xml',
+        },
+        {
+          rel: 'alternate',
+          type: 'application/atom+xml',
+          title: `${siteConfig.title} Atom Feed`,
+          href: '/atom.xml',
+        },
+      ],
     },
   },
   modules: ['@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt'],

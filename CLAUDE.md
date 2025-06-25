@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+Always call me Senpai and answer everything with Senpai Alex
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
@@ -181,11 +183,33 @@ docs(readme): update installation instructions
 chore(deps): update dependencies to latest versions
 ```
 
+## Site Configuration
+
+The site configuration is centralized in `utils/site.config.ts`. This file contains all site metadata including:
+
+- Site name, title, and description
+- URL (must be updated for production)
+- Author information
+- Social media links
+- Logo and favicon paths
+- Language settings
+- Copyright text
+
+The config is used throughout the application for:
+
+- RSS/Atom/JSON feeds
+- SEO meta tags
+- Site header and footer
+- Open Graph and Twitter cards
+
+To customize the site, update the values in `utils/site.config.ts`.
+
 ## Workflow
 
 Always plan first if something from vueUse when something is
 related to vue can help you
 Always use context7 and get up to date information on the libaries you want to use on how to use them
+After you are done with a task always run lint and typecheck and fix the errors
 
 ## localhost:3000
 

@@ -9,9 +9,20 @@ if (!page.value) {
 }
 
 // SEO meta tags
+const pageTitle = `${page.value.title} | ${siteConfig.name}`
+const pageUrl = `${siteConfig.url}${route.path}`
+
 useSeoMeta({
-  title: page.value.title,
+  title: pageTitle,
   description: page.value.description,
+  ogTitle: page.value.title,
+  ogDescription: page.value.description,
+  ogUrl: pageUrl,
+  ogType: 'article',
+  articlePublishedTime: page.value.date || undefined,
+  articleAuthor: siteConfig.author.name,
+  twitterTitle: page.value.title,
+  twitterDescription: page.value.description,
 })
 </script>
 

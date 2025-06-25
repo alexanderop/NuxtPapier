@@ -25,7 +25,7 @@ function toggleThemeCustomizer() {
       <header class="py-8">
         <div class="mb-6 flex items-center justify-between">
           <h1 class="text-4xl text-heading font-bold">
-            NuxtPapier
+            {{ siteConfig.name }}
           </h1>
           <div class="flex gap-2 items-center">
             <BaseButton
@@ -67,8 +67,14 @@ function toggleThemeCustomizer() {
       <!-- Footer -->
       <footer class="mt-16 pt-8 border-t border-border">
         <div class="text-center">
-          <p class="text-sm text-muted">
-            &copy; {{ currentYear }} NuxtPapier. Built with Nuxt 3.
+          <p class="text-sm text-muted mb-2">
+            {{ siteConfig.copyright || `© ${currentYear} ${siteConfig.name}` }}
+          </p>
+          <p class="text-sm">
+            <NuxtLink to="/feeds" class="text-muted inline-flex gap-1 transition-colors items-center hover:text-brand-500">
+              <BaseIcon name="ph:rss" size="xs" />
+              Subscribe
+            </NuxtLink>
           </p>
         </div>
       </footer>
