@@ -42,14 +42,14 @@ defineArticle({
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <div class="mx-auto px-4 py-16 max-w-4xl lg:px-8 sm:px-6">
     <article v-if="page">
       <!-- Article Header -->
-      <header class="text-center mb-16">
-        <h1 class="text-5xl sm:text-6xl lg:text-7xl text-text font-bold mb-6 leading-tight">
+      <header class="mb-16 text-center">
+        <h1 class="text-5xl text-text leading-tight font-bold mb-6 lg:text-7xl sm:text-6xl">
           {{ page?.title }}
         </h1>
-        <div class="text-muted flex items-center justify-center gap-2 text-lg">
+        <div class="text-lg text-muted flex gap-2 items-center justify-center">
           <time>
             {{ page?.formattedDate }}
           </time>
@@ -60,7 +60,7 @@ defineArticle({
       </header>
 
       <!-- Separator Line -->
-      <hr class="border-t border-border mb-16">
+      <hr class="mb-16 border-t border-border">
 
       <!-- Article Content -->
       <div class="prose">
@@ -72,7 +72,7 @@ defineArticle({
     <nav class="mt-24 pt-8">
       <NuxtLink
         to="/blog"
-        class="text-muted inline-flex transition-colors items-center hover:text-brand-500 text-lg"
+        class="text-lg text-muted inline-flex transition-colors items-center hover:text-brand-500"
       >
         <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />

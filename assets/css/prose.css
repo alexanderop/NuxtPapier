@@ -14,7 +14,7 @@
 }
 
 /* Headings */
-.prose :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"] *)) {
+.prose :where(h1, h2, h3, h4, h5, h6):not(:where([class~='not-prose'] *)) {
   color: oklch(var(--color-text));
   font-weight: 700;
   position: relative;
@@ -22,31 +22,31 @@
 }
 
 /* Paragraphs */
-.prose :where(p):not(:where([class~="not-prose"] *)) {
+.prose :where(p):not(:where([class~='not-prose'] *)) {
   color: oklch(var(--color-text));
   line-height: 1.8;
   font-size: 1.25rem;
 }
 
 /* Links */
-.prose :where(a):not(:where([class~="not-prose"] *)):not(.anchor) {
+.prose :where(a):not(:where([class~='not-prose'] *)):not(.anchor) {
   color: oklch(var(--brand-500));
   text-decoration: none;
   font-weight: 500;
 }
 
-.prose :where(a):not(:where([class~="not-prose"] *)):not(.anchor):hover {
+.prose :where(a):not(:where([class~='not-prose'] *)):not(.anchor):hover {
   text-decoration: underline;
 }
 
 /* Strong text */
-.prose :where(strong):not(:where([class~="not-prose"] *)) {
+.prose :where(strong):not(:where([class~='not-prose'] *)) {
   color: oklch(var(--color-text));
   font-weight: 600;
 }
 
 /* Code */
-.prose :where(code):not(:where([class~="not-prose"] *)):not(pre code) {
+.prose :where(code):not(:where([class~='not-prose'] *)):not(pre code) {
   color: oklch(var(--brand-400));
   background-color: oklch(var(--color-surface));
   padding: 0.125rem 0.25rem;
@@ -55,10 +55,29 @@
 }
 
 /* Code blocks */
-.prose :where(pre):not(:where([class~="not-prose"] *)) {
-  background-color: oklch(var(--color-surface));
-  border: 1px solid oklch(var(--color-border));
+.prose :where(pre):not(:where([class~='not-prose'] *)) {
+  border: none;
   overflow-x: auto;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+/* Light mode code blocks */
+.prose :where(pre):not(:where([class~='not-prose'] *)) {
+  background-color: #f6f8fa; /* GitHub light background */
+  box-shadow:
+    0 2px 4px -1px rgb(0 0 0 / 0.06),
+    0 1px 2px -1px rgb(0 0 0 / 0.06);
+}
+
+/* Dark mode code blocks */
+.dark .prose :where(pre):not(:where([class~='not-prose'] *)) {
+  background-color: #21222c; /* Darker Dracula background */
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 /* Code block scrollbars */
@@ -67,27 +86,82 @@
   height: 8px;
 }
 
+/* Light mode scrollbars */
+.prose pre::-webkit-scrollbar-track {
+  background: #e1e4e8;
+  border-radius: 4px;
+}
+
 .prose pre::-webkit-scrollbar-thumb {
-  border: 2px solid oklch(var(--color-background));
+  background: #959da5;
+  border-radius: 4px;
+}
+
+.prose pre::-webkit-scrollbar-thumb:hover {
+  background: #6a737d;
+}
+
+/* Dark mode scrollbars */
+.dark .prose pre::-webkit-scrollbar-track {
+  background: #191a21; /* Even darker for better contrast */
+  border-radius: 4px;
+}
+
+.dark .prose pre::-webkit-scrollbar-thumb {
+  background: #44475a; /* Dracula selection color */
+  border-radius: 4px;
+}
+
+.dark .prose pre::-webkit-scrollbar-thumb:hover {
+  background: #6272a4; /* Dracula comment color on hover */
+}
+
+/* Shiki highlighted lines */
+.prose .shiki .highlight {
+  position: relative;
+  display: block;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem;
+}
+
+/* Light mode highlighted lines */
+.prose .shiki .highlight {
+  background-color: rgba(250, 251, 252, 0.8); /* GitHub highlight */
+}
+
+/* Dark mode highlighted lines */
+.dark .prose .shiki .highlight {
+  background-color: rgba(98, 114, 164, 0.15); /* Dracula comment color with opacity */
+}
+
+/* Highlighted line accent border */
+.prose .shiki .highlight::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: oklch(var(--brand-500));
 }
 
 /* Blockquotes */
-.prose :where(blockquote):not(:where([class~="not-prose"] *)) {
+.prose :where(blockquote):not(:where([class~='not-prose'] *)) {
   border-left-color: oklch(var(--brand-500));
   color: oklch(var(--color-muted));
 }
 
 /* Lists */
-.prose :where(ul, ol):not(:where([class~="not-prose"] *)) {
+.prose :where(ul, ol):not(:where([class~='not-prose'] *)) {
   color: oklch(var(--color-text));
 }
 
-.prose :where(li):not(:where([class~="not-prose"] *)) {
+.prose :where(li):not(:where([class~='not-prose'] *)) {
   color: oklch(var(--color-text));
 }
 
 /* List markers */
-.prose :where(li)::marker:not(:where([class~="not-prose"] *)) {
+.prose :where(li)::marker:not(:where([class~='not-prose'] *)) {
   color: oklch(var(--brand-500));
 }
 
