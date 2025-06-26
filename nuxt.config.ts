@@ -12,10 +12,7 @@ export default defineNuxtConfig({
       routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
     },
   },
-  css: [
-    '~/assets/css/theme.css',
-    '~/assets/css/prose.css',
-  ],
+  css: [],
   app: {
     head: {
       htmlAttrs: {

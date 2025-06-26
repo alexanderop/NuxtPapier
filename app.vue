@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Initialize dark mode with dark as default
-const isDark = useDark({
+useDark({
   initialValue: 'dark', // Set dark mode as default
 })
 
