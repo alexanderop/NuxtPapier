@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   },
   css: [
     '~/assets/css/theme.css',
+    '~/assets/css/prose.css',
   ],
   app: {
     head: {
@@ -49,6 +50,20 @@ export default defineNuxtConfig({
           href: '/atom.xml',
         },
       ],
+      script: [
+        // Prevent flash of light mode on page load
+        {
+          innerHTML: `
+            (function() {
+              const savedMode = localStorage.getItem('vueuse-color-scheme');
+              if (!savedMode || savedMode === 'dark') {
+                document.documentElement.classList.add('dark');
+              }
+            })();
+          `,
+          type: 'text/javascript',
+        },
+      ],
     },
   },
   modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt'],
@@ -69,6 +84,13 @@ export default defineNuxtConfig({
       ],
       host: siteConfig.url,
       sitemap: `${siteConfig.url}/sitemap.xml`,
+    },
+  },
+  ogImage: {
+    defaults: {
+      renderer: 'chromium',
+      width: 1200,
+      height: 630,
     },
   },
   content: {

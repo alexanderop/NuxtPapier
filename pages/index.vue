@@ -18,14 +18,8 @@ useSeoMeta({
   ogDescription: siteConfig.description,
 })
 
-// OG Image for homepage
-defineOgImage({
-  component: 'Default',
-  props: {
-    title: siteConfig.title,
-    description: siteConfig.description,
-  },
-})
+// OG Image for homepage - using screenshot
+defineOgImageScreenshot()
 </script>
 
 <template>

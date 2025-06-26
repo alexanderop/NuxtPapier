@@ -24,16 +24,8 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-// OG Image generation
-defineOgImage({
-  component: 'BlogPost',
-  props: {
-    title: page.value.title,
-    description: page.value.description,
-    date: page.value.date,
-    readingTime: page.value.readingTime,
-  },
-})
+// OG Image generation - using screenshot
+defineOgImageScreenshot()
 
 // Structured data for SEO
 defineArticle({
@@ -50,36 +42,39 @@ defineArticle({
 </script>
 
 <template>
-  <div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <article v-if="page">
       <!-- Article Header -->
-      <header class="mb-8">
-        <h1 class="text-3xl text-heading font-bold mb-4">
+      <header class="text-center mb-16">
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl text-text font-bold mb-6 leading-tight">
           {{ page?.title }}
         </h1>
-        <div class="text-muted flex items-center">
-          <time class="text-sm">
+        <div class="text-muted flex items-center justify-center gap-2 text-lg">
+          <time>
             {{ page?.formattedDate }}
           </time>
-          <span v-if="page?.readingTime" class="text-sm">
-            • {{ page?.readingTime }} min read
+          <span v-if="page?.readingTime">
+            | {{ page?.readingTime }} min read
           </span>
         </div>
       </header>
 
+      <!-- Separator Line -->
+      <hr class="border-t border-border mb-16">
+
       <!-- Article Content -->
-      <div class="max-w-none prose">
+      <div class="prose">
         <ContentRenderer v-if="page" :value="page" />
       </div>
     </article>
 
     <!-- Navigation -->
-    <nav class="mt-16 pt-8">
+    <nav class="mt-24 pt-8">
       <NuxtLink
         to="/blog"
-        class="text-sm text-muted inline-flex transition-colors items-center hover:text-brand-500"
+        class="text-muted inline-flex transition-colors items-center hover:text-brand-500 text-lg"
       >
-        <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Back to all posts

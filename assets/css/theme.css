@@ -230,15 +230,13 @@ html {
 
 /* Narrower scrollbars for specific containers */
 .search-results::-webkit-scrollbar,
-.code-block::-webkit-scrollbar,
-.prose pre::-webkit-scrollbar {
+.code-block::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 .search-results::-webkit-scrollbar-thumb,
-.code-block::-webkit-scrollbar-thumb,
-.prose pre::-webkit-scrollbar-thumb {
+.code-block::-webkit-scrollbar-thumb {
   border: 2px solid oklch(var(--color-background));
 }
 
@@ -257,69 +255,4 @@ samp {
   font-family:
     'IBM Plex Mono', ui-monospace, SFMono-Regular, 'Menlo', 'Monaco', 'Cascadia Code', 'Segoe UI Mono', 'Roboto Mono',
     'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-}
-
-/* ==========================================================================
-   HEADING ANCHOR LINKS
-   ========================================================================== */
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5,
-.prose h6 {
-  position: relative;
-  scroll-margin-top: 100px; /* Account for fixed header */
-}
-
-/* Nuxt Content adds anchor links as <a> elements inside headings */
-.prose h2 a.anchor,
-.prose h3 a.anchor,
-.prose h4 a.anchor,
-.prose h5 a.anchor,
-.prose h6 a.anchor {
-  position: absolute;
-  left: -1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-  padding: 0.25rem;
-  color: oklch(var(--color-muted));
-}
-
-.prose h2:hover a.anchor,
-.prose h3:hover a.anchor,
-.prose h4:hover a.anchor,
-.prose h5:hover a.anchor,
-.prose h6:hover a.anchor,
-.prose a.anchor:hover {
-  opacity: 1;
-  color: oklch(var(--brand-500));
-}
-
-.prose h2 a.anchor::before,
-.prose h3 a.anchor::before,
-.prose h4 a.anchor::before,
-.prose h5 a.anchor::before,
-.prose h6 a.anchor::before {
-  content: '#';
-  font-size: 0.875em;
-  font-weight: 400;
-}
-
-/* Responsive: Show anchor links inline on small screens */
-@media (max-width: 768px) {
-  .prose h2 a.anchor,
-  .prose h3 a.anchor,
-  .prose h4 a.anchor,
-  .prose h5 a.anchor,
-  .prose h6 a.anchor {
-    position: static;
-    display: inline-block;
-    left: auto;
-    margin-left: 0.5rem;
-    transform: none;
-    opacity: 0.5;
-  }
 }

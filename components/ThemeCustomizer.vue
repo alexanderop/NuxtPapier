@@ -2,7 +2,9 @@
 import { useDark, useToggle } from '@vueuse/core'
 
 const { brandHue, chromaMultiplier, resetTheme } = useTheme()
-const isDark = useDark()
+const isDark = useDark({
+  initialValue: 'dark', // Set dark mode as default
+})
 const toggleDark = useToggle(isDark)
 
 const huePresets = [

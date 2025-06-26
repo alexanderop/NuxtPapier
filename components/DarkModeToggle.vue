@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
 
-const isDark = useDark()
+// Configure dark mode with dark as default
+const isDark = useDark({
+  initialValue: 'dark', // Set dark mode as default
+})
 const toggleDark = useToggle(isDark)
 </script>
 
