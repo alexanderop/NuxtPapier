@@ -20,7 +20,7 @@ useSeoMeta({
 
 // OG Image for homepage
 defineOgImage({
-  component: 'og/Default',
+  component: 'Default',
   props: {
     title: siteConfig.title,
     description: siteConfig.description,

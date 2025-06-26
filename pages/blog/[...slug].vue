@@ -26,7 +26,7 @@ useSeoMeta({
 
 // OG Image generation
 defineOgImage({
-  component: 'og/BlogPost',
+  component: 'BlogPost',
   props: {
     title: page.value.title,
     description: page.value.description,

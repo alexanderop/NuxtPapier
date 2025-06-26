@@ -24,9 +24,9 @@ function toggleThemeCustomizer() {
       <!-- Header -->
       <header class="py-8">
         <div class="mb-6 flex items-center justify-between">
-          <h1 class="text-4xl text-heading font-bold">
+          <div class="text-4xl text-heading font-bold">
             {{ siteConfig.name }}
-          </h1>
+          </div>
           <div class="flex gap-2 items-center">
             <BaseButton
               title="Search (Press /)"
