@@ -75,3 +75,27 @@ bun run preview
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
 # NuxtPapier
+
+High Priority (Core MVP):
+
+- [x] Homepage with blog post listing
+- [X ] Individual blog post pages
+- [ ] Site header with navigation
+- [ ] SEO meta tags & Open Graph
+- [ ] Syntax highlighting for code blocks
+- [ ] Responsive design
+
+Medium Priority (Enhanced UX):
+
+- [ ] Dark mode toggle
+- [ ] RSS/Atom feed
+- [ ] Pagination for posts
+- [ ] Footer with site info
+- [ ] About page
+
+Low Priority (Nice to have):
+
+- [ ] Search functionality
+- [ ] Tags/categories system
+- [ ] Custom 404 page
+- [ ] Loading states/transitions

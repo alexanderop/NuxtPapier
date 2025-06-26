@@ -51,7 +51,26 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt'],
+  modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt'],
+  seo: {
+    siteUrl: siteConfig.url,
+    siteName: siteConfig.name,
+    trailingSlash: true,
+    indexable: true, // Will be controlled by robots.txt rules
+    sitemap: {
+      autoLastmod: true,
+      xsl: false, // Pretty human-readable sitemap
+      strictNuxtContentPaths: true, // Auto-include Nuxt Content pages
+    },
+    robots: {
+      rules: [
+        { userAgent: '*', allow: '/' },
+        { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
+      ],
+      host: siteConfig.url,
+      sitemap: `${siteConfig.url}/sitemap.xml`,
+    },
+  },
   content: {
     build: {
       markdown: {

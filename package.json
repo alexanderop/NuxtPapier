@@ -28,6 +28,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^4.15.0",
     "@nuxt/eslint-config": "^1.4.1",
+    "@nuxtjs/seo": "^3.0.3",
     "@unocss/eslint-plugin": "^66.2.3",
     "@unocss/nuxt": "^66.2.3",
     "@unocss/preset-wind3": "^66.2.3",

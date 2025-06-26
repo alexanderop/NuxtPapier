@@ -8,21 +8,44 @@ if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found' })
 }
 
-// SEO meta tags
-const pageTitle = `${page.value.title} | ${siteConfig.name}`
-const pageUrl = `${siteConfig.url}${route.path}`
-
+// SEO meta tags with modern Nuxt SEO patterns
 useSeoMeta({
-  title: pageTitle,
+  title: page.value.title,
   description: page.value.description,
   ogTitle: page.value.title,
   ogDescription: page.value.description,
-  ogUrl: pageUrl,
   ogType: 'article',
   articlePublishedTime: page.value.date || undefined,
+  articleModifiedTime: page.value.date || undefined,
   articleAuthor: [siteConfig.author.name],
+  articleSection: 'Blog',
   twitterTitle: page.value.title,
   twitterDescription: page.value.description,
+  twitterCard: 'summary_large_image',
+})
+
+// OG Image generation
+defineOgImage({
+  component: 'og/BlogPost',
+  props: {
+    title: page.value.title,
+    description: page.value.description,
+    date: page.value.date,
+    readingTime: page.value.readingTime,
+  },
+})
+
+// Structured data for SEO
+defineArticle({
+  headline: page.value.title,
+  description: page.value.description,
+  datePublished: page.value.date || new Date().toISOString(),
+  dateModified: page.value.date || new Date().toISOString(),
+  image: `${siteConfig.url}/og-image.png`,
+  author: {
+    name: siteConfig.author.name,
+    url: siteConfig.author.url,
+  },
 })
 </script>
 

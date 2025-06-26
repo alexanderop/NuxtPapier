@@ -9,6 +9,23 @@ const { data: recentPosts } = await useAsyncData('recent-posts', () =>
     )
     .limit(3)
     .all())
+
+// SEO configuration for homepage
+useSeoMeta({
+  title: siteConfig.title,
+  description: siteConfig.description,
+  ogTitle: siteConfig.title,
+  ogDescription: siteConfig.description,
+})
+
+// OG Image for homepage
+defineOgImage({
+  component: 'og/Default',
+  props: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+})
 </script>
 
 <template>
