@@ -66,7 +66,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt'],
+  modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/image'],
   seo: {
     siteUrl: siteConfig.url,
     siteName: siteConfig.name,
@@ -155,6 +155,60 @@ export default defineNuxtConfig({
 
         const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
         content.readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute))
+
+        // Enhanced metadata processing
+        // Generate excerpt if not provided
+        if (!content.excerpt && text) {
+          content.excerpt = `${text.slice(0, 200).trim()}...`
+        }
+
+        // Process tags to ensure they're arrays
+        if (content.tags && typeof content.tags === 'string') {
+          content.tags = content.tags.split(',').map((tag: string) => tag.trim())
+        }
+
+        // Add slug from filename if not provided
+        if (!content.slug) {
+          const pathParts = file.id.split('/')
+          const filename = pathParts[pathParts.length - 1]
+          if (filename) {
+            content.slug = filename.replace('.md', '')
+          }
+        }
+
+        // Add author defaults from site config if not provided
+        if (!content.author) {
+          content.author = {
+            name: siteConfig.author,
+            url: siteConfig.url,
+          }
+        }
+
+        // Process featured image
+        if (content.image && typeof content.image === 'string') {
+          content.image = {
+            src: content.image,
+            alt: content.title || 'Featured image',
+          }
+        }
+
+        // Add timestamps
+        if (!content.createdAt && content.date) {
+          content.createdAt = new Date(content.date as string).toISOString()
+        }
+        if (!content.updatedAt) {
+          content.updatedAt = content.createdAt || new Date().toISOString()
+        }
+
+        // Add status with default
+        if (!content.status) {
+          content.status = 'published'
+        }
+
+        // Process category
+        if (content.category && typeof content.category === 'string') {
+          content.categorySlug = content.category.toLowerCase().replace(/\s+/g, '-')
+        }
       }
     },
   },
