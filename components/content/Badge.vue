@@ -10,6 +10,8 @@ const {
   size = 'md',
   icon,
 } = defineProps<Props>()
+
+const slots = useSlots()
 </script>
 
 <template>
@@ -57,9 +59,9 @@ const {
 
 /* Color variants */
 .badge-default {
-  background: oklch(var(--surface-secondary));
-  color: oklch(var(--text));
-  border: 1px solid oklch(var(--border));
+  background: oklch(var(--color-surface));
+  color: oklch(var(--color-text));
+  border: 1px solid oklch(var(--color-border));
 }
 
 .badge-primary {
