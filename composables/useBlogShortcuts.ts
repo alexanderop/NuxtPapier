@@ -1,5 +1,4 @@
 import type { ShortcutsConfig } from './defineShortcuts'
-import { defineShortcuts } from './defineShortcuts'
 
 interface BlogPost {
   path: string
@@ -11,9 +10,8 @@ interface BlogPost {
 export function useBlogShortcuts(posts: Ref<BlogPost[] | null>) {
   const router = useRouter()
   const route = useRoute()
+  const shortcutManager = useShortcutManager()
 
-  // State for keyboard navigation
-  const highlightedIndex = ref(-1)
   const flatPosts = computed(() => {
     if (!posts.value)
       return []
@@ -29,41 +27,6 @@ export function useBlogShortcuts(posts: Ref<BlogPost[] | null>) {
     }
   }
 
-  // Highlight navigation
-  function highlightNext() {
-    if (flatPosts.value.length === 0)
-      return
-    highlightedIndex.value = Math.min(highlightedIndex.value + 1, flatPosts.value.length - 1)
-    scrollToHighlighted()
-  }
-
-  function highlightPrevious() {
-    if (flatPosts.value.length === 0)
-      return
-    highlightedIndex.value = Math.max(highlightedIndex.value - 1, 0)
-    scrollToHighlighted()
-  }
-
-  function navigateToHighlighted() {
-    if (highlightedIndex.value >= 0 && highlightedIndex.value < flatPosts.value.length) {
-      navigateToPost(highlightedIndex.value)
-    }
-  }
-
-  function scrollToHighlighted() {
-    nextTick(() => {
-      const element = document.querySelector(`[data-post-index="${highlightedIndex.value}"]`)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      }
-    })
-  }
-
-  // Reset highlight when posts change
-  watch(posts, () => {
-    highlightedIndex.value = -1
-  })
-
   // Shortcuts configuration for blog index
   const blogIndexShortcuts = computed<ShortcutsConfig>(() => {
     const shortcuts: ShortcutsConfig = {}
@@ -75,14 +38,20 @@ export function useBlogShortcuts(posts: Ref<BlogPost[] | null>) {
       }
     }
 
-
     return shortcuts
   })
 
-  // Initialize shortcuts only on blog index page
-  if (route.path === '/blog') {
-    defineShortcuts(blogIndexShortcuts)
-  }
+  // Register/unregister shortcuts based on route
+  watchEffect(() => {
+    if (route.path === '/blog') {
+      shortcutManager.registerShortcuts('blog-index', blogIndexShortcuts.value)
+    }
+  })
+
+  // Cleanup on unmount
+  onBeforeUnmount(() => {
+    shortcutManager.unregisterShortcuts('blog-index')
+  })
 
   return {
     navigateToPost,
@@ -92,6 +61,8 @@ export function useBlogShortcuts(posts: Ref<BlogPost[] | null>) {
 // For individual blog post pages
 export function useBlogPostNavigation(currentPost: Ref<any>) {
   const router = useRouter()
+  const route = useRoute()
+  const shortcutManager = useShortcutManager()
 
   // Fetch all posts to determine next/prev
   const { data: allPosts } = useAsyncData('all-blog-posts', () => {
@@ -152,11 +123,17 @@ export function useBlogPostNavigation(currentPost: Ref<any>) {
     b: navigateToBlogIndex,
   }))
 
-  // Initialize shortcuts only on blog post pages
-  const route = useRoute()
-  if (route.path.startsWith('/blog/')) {
-    defineShortcuts(blogPostShortcuts)
-  }
+  // Register/unregister shortcuts based on route
+  watchEffect(() => {
+    if (route.path.startsWith('/blog/')) {
+      shortcutManager.registerShortcuts('blog-post', blogPostShortcuts.value)
+    }
+  })
+
+  // Cleanup on unmount
+  onBeforeUnmount(() => {
+    shortcutManager.unregisterShortcuts('blog-post')
+  })
 
   return {
     nextPost: computed(() => navigationData.value.next),

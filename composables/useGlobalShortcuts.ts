@@ -1,9 +1,9 @@
 import type { ShortcutsConfig } from './defineShortcuts'
-import { defineShortcuts } from './defineShortcuts'
 
 export function useGlobalShortcuts() {
   const router = useRouter()
   const isDark = useDark()
+  const shortcutManager = useShortcutManager()
 
   // Search modal state
   const isSearchOpen = ref(false)
@@ -83,7 +83,7 @@ export function useGlobalShortcuts() {
         isBlogQuickJumpOpen.value = false
       }
     },
-    
+
     // Global scrolling
     'j': () => {
       window.scrollBy({ top: 100, behavior: 'smooth' })
@@ -93,8 +93,8 @@ export function useGlobalShortcuts() {
     },
   }))
 
-  // Initialize shortcuts
-  defineShortcuts(shortcuts)
+  // Register global shortcuts with the manager
+  shortcutManager.registerShortcuts('global', shortcuts)
 
   return {
     isSearchOpen,
