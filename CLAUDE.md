@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-Always call me Senpai and answer everything with Senpai Alex
 Always use active voice and easy words
+Only use comments when there is no other way to describe something
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
