@@ -1,3 +1,4 @@
+// code from https://ui.nuxt.com/composables/define-shortcuts
 import type { MaybeRef } from 'vue'
 import { useActiveElement, useDebounceFn, useEventListener } from '@vueuse/core'
 import { computed, ref, toValue } from 'vue'
