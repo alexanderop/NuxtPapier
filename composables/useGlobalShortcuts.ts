@@ -10,9 +10,12 @@ export function useGlobalShortcuts() {
 
   // Help modal state
   const isHelpOpen = ref(false)
-  
+
   // Theme customizer state
   const isThemeCustomizerOpen = ref(false)
+
+  // Blog quick jump state
+  const isBlogQuickJumpOpen = ref(false)
 
   // Shortcuts configuration
   const shortcuts = computed<ShortcutsConfig>(() => ({
@@ -33,6 +36,26 @@ export function useGlobalShortcuts() {
     },
     'g-s': () => {
       isThemeCustomizerOpen.value = true
+    },
+    'g-j': () => {
+      isBlogQuickJumpOpen.value = true
+    },
+    'g-r': async () => {
+      // Navigate to most recent blog post
+      const data = await queryCollection('blog')
+        .order('date', 'DESC')
+        .limit(1)
+        .orWhere(query =>
+          query
+            .where('draft', '<>', true)
+            .where('draft', 'IS NULL'),
+        )
+        .first()
+
+      if (data) {
+        const path = data.path.startsWith('/blog') ? data.path : `/blog${data.path}`
+        router.push(path)
+      }
     },
 
     // Theme toggle
@@ -56,6 +79,17 @@ export function useGlobalShortcuts() {
       if (isThemeCustomizerOpen.value) {
         isThemeCustomizerOpen.value = false
       }
+      if (isBlogQuickJumpOpen.value) {
+        isBlogQuickJumpOpen.value = false
+      }
+    },
+    
+    // Global scrolling
+    'j': () => {
+      window.scrollBy({ top: 100, behavior: 'smooth' })
+    },
+    'k': () => {
+      window.scrollBy({ top: -100, behavior: 'smooth' })
     },
   }))
 
@@ -66,5 +100,6 @@ export function useGlobalShortcuts() {
     isSearchOpen,
     isHelpOpen,
     isThemeCustomizerOpen,
+    isBlogQuickJumpOpen,
   }
 }

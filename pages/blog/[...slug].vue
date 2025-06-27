@@ -8,6 +8,9 @@ if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found' })
 }
 
+// Initialize blog post navigation
+const { nextPost, prevPost } = useBlogPostNavigation(page)
+
 // SEO meta tags with modern Nuxt SEO patterns
 useSeoMeta({
   title: page.value.title,
@@ -69,16 +72,61 @@ defineArticle({
     </article>
 
     <!-- Navigation -->
-    <nav class="mt-24 pt-8">
-      <NuxtLink
-        to="/blog"
-        class="text-lg text-muted inline-flex transition-colors items-center hover:text-brand-500"
-      >
-        <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back to all posts
-      </NuxtLink>
+    <nav class="mt-24 pt-8 border-t border-border">
+      <div class="gap-6 grid grid-cols-1 sm:grid-cols-3">
+        <!-- Previous Post -->
+        <div class="text-left">
+          <NuxtLink
+            v-if="prevPost"
+            :to="prevPost.path.startsWith('/blog') ? prevPost.path : `/blog${prevPost.path}`"
+            class="group inline-flex flex-col gap-1"
+          >
+            <span class="text-sm text-muted flex gap-2 items-center">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Previous
+              <BaseKbd keys="h" class="opacity-50" />
+            </span>
+            <span class="text-body transition-colors group-hover:text-brand-500">
+              {{ prevPost.title }}
+            </span>
+          </NuxtLink>
+        </div>
+
+        <!-- Back to Blog -->
+        <div class="text-center">
+          <NuxtLink
+            to="/blog"
+            class="group inline-flex flex-col gap-1"
+          >
+            <span class="text-sm text-muted flex gap-2 items-center justify-center">
+              All posts
+              <BaseKbd keys="b" class="opacity-50" />
+            </span>
+          </NuxtLink>
+        </div>
+
+        <!-- Next Post -->
+        <div class="text-right">
+          <NuxtLink
+            v-if="nextPost"
+            :to="nextPost.path.startsWith('/blog') ? nextPost.path : `/blog${nextPost.path}`"
+            class="group text-right inline-flex flex-col gap-1"
+          >
+            <span class="text-sm text-muted flex gap-2 items-center justify-end">
+              Next
+              <BaseKbd keys="l" class="opacity-50" />
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+            <span class="text-body transition-colors group-hover:text-brand-500">
+              {{ nextPost.title }}
+            </span>
+          </NuxtLink>
+        </div>
+      </div>
     </nav>
   </div>
 </template>

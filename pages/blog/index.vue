@@ -35,20 +35,33 @@ const postsByYear = computed(() => {
     .map(([year, posts]) => ({ year: Number.parseInt(year), posts }))
     .sort((a, b) => b.year - a.year)
 })
+
+// Initialize blog shortcuts
+useBlogShortcuts(blogPosts as Ref<any[] | null>)
+
+// Get flat index for a post
+function getPostIndex(yearIndex: number, postIndex: number): number {
+  let index = 0
+  for (let i = 0; i < yearIndex; i++) {
+    index += postsByYear.value[i]?.posts.length || 0
+  }
+  return index + postIndex
+}
 </script>
 
 <template>
   <div>
     <div v-if="postsByYear.length > 0" class="space-y-8">
-      <div v-for="yearGroup in postsByYear" :key="yearGroup.year">
+      <div v-for="(yearGroup, yearIndex) in postsByYear" :key="yearGroup.year">
         <h2 class="text-lg text-heading font-semibold mb-2">
           {{ yearGroup.year }}
         </h2>
         <div class="space-y-1">
           <article
-            v-for="article in yearGroup.posts"
+            v-for="(article, postIndex) in yearGroup.posts"
             :key="article.path"
-            class="flex gap-4"
+            :data-post-index="getPostIndex(yearIndex, postIndex)"
+            class="px-2 py-1 rounded flex gap-4 transition-colors -mx-2 hover:bg-brand-50 dark:hover:bg-brand-950"
           >
             <time class="text-sm text-muted">
               {{ formatDate(article.date) }}
@@ -59,6 +72,12 @@ const postsByYear = computed(() => {
             >
               {{ article.title }}
             </NuxtLink>
+            <span
+              v-if="getPostIndex(yearIndex, postIndex) < 9"
+              class="text-xs text-muted ml-auto opacity-50"
+            >
+              <BaseKbd :keys="[(getPostIndex(yearIndex, postIndex) + 1).toString()]" />
+            </span>
           </article>
         </div>
       </div>

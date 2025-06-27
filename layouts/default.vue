@@ -3,7 +3,7 @@
 useTheme()
 
 // Initialize global shortcuts
-const { isSearchOpen, isHelpOpen, isThemeCustomizerOpen } = useGlobalShortcuts()
+const { isSearchOpen, isHelpOpen, isThemeCustomizerOpen, isBlogQuickJumpOpen } = useGlobalShortcuts()
 
 const currentYear = new Date().getFullYear()
 
@@ -92,6 +92,12 @@ function toggleThemeCustomizer() {
     <KeyboardShortcutsHelp
       :is-open="isHelpOpen"
       @update:is-open="isHelpOpen = $event"
+    />
+
+    <!-- Blog Quick Jump Modal -->
+    <BlogQuickJump
+      :is-open="isBlogQuickJumpOpen"
+      @update:is-open="isBlogQuickJumpOpen = $event"
     />
 
     <!-- Theme Customizer Panel -->

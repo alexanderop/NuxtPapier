@@ -31,6 +31,24 @@ const shortcuts = [
       { keys: ['g', 'h'], description: 'Go to home' },
       { keys: ['g', 'b'], description: 'Go to blog' },
       { keys: ['g', 's'], description: 'Open theme settings' },
+      { keys: ['g', 'j'], description: 'Quick jump to recent posts' },
+      { keys: ['g', 'r'], description: 'Go to most recent post' },
+    ],
+  },
+  {
+    category: 'Blog Navigation',
+    items: [
+      { keys: ['1-9'], description: 'Jump to nth post (on blog index)' },
+      { keys: ['h'], description: 'Previous post (on post page)' },
+      { keys: ['l'], description: 'Next post (on post page)' },
+      { keys: ['b'], description: 'Back to blog index (on post page)' },
+    ],
+  },
+  {
+    category: 'Scrolling',
+    items: [
+      { keys: ['j'], description: 'Scroll down' },
+      { keys: ['k'], description: 'Scroll up' },
     ],
   },
   {
