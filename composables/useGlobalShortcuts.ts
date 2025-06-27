@@ -1,41 +1,70 @@
+import type { ShortcutsConfig } from './defineShortcuts'
+import { defineShortcuts } from './defineShortcuts'
+
 export function useGlobalShortcuts() {
-  const activeElement = useActiveElement()
-
-  // Check if the active element is an input or textarea
-  const isInputActive = computed(() => {
-    const tagName = activeElement.value?.tagName
-    return tagName === 'INPUT' || tagName === 'TEXTAREA'
-  })
-
-  const keys = useMagicKeys({
-    passive: false,
-    onEventFired: (e) => {
-      // Prevent default behavior for our shortcuts
-      if (keys.slash?.value && !isInputActive.value) {
-        e.preventDefault()
-      }
-    },
-  })
+  const router = useRouter()
+  const isDark = useDark()
 
   // Search modal state
   const isSearchOpen = ref(false)
 
-  // Open search with '/' key when not in input
-  whenever(
-    computed(() => keys.slash?.value && !isInputActive.value),
-    () => {
+  // Help modal state
+  const isHelpOpen = ref(false)
+  
+  // Theme customizer state
+  const isThemeCustomizerOpen = ref(false)
+
+  // Shortcuts configuration
+  const shortcuts = computed<ShortcutsConfig>(() => ({
+    // Search shortcuts
+    'slash': () => {
       isSearchOpen.value = true
     },
-  )
+    'meta_k': () => {
+      isSearchOpen.value = true
+    },
 
-  // Close search with 'Escape' key
-  whenever(computed(() => keys.escape?.value || false), () => {
-    if (isSearchOpen.value) {
-      isSearchOpen.value = false
-    }
-  })
+    // Navigation shortcuts
+    'g-h': () => {
+      router.push('/')
+    },
+    'g-b': () => {
+      router.push('/blog')
+    },
+    'g-s': () => {
+      isThemeCustomizerOpen.value = true
+    },
+
+    // Theme toggle
+    'meta_d': () => {
+      isDark.value = !isDark.value
+    },
+
+    // Help
+    'shift_slash': () => {
+      isHelpOpen.value = true
+    },
+
+    // Close modals
+    'escape': () => {
+      if (isSearchOpen.value) {
+        isSearchOpen.value = false
+      }
+      if (isHelpOpen.value) {
+        isHelpOpen.value = false
+      }
+      if (isThemeCustomizerOpen.value) {
+        isThemeCustomizerOpen.value = false
+      }
+    },
+  }))
+
+  // Initialize shortcuts
+  defineShortcuts(shortcuts)
 
   return {
     isSearchOpen,
+    isHelpOpen,
+    isThemeCustomizerOpen,
   }
 }

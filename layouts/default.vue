@@ -3,13 +3,12 @@
 useTheme()
 
 // Initialize global shortcuts
-const { isSearchOpen } = useGlobalShortcuts()
+const { isSearchOpen, isHelpOpen, isThemeCustomizerOpen } = useGlobalShortcuts()
 
 const currentYear = new Date().getFullYear()
-const showThemeCustomizer = ref(false)
 
 function toggleThemeCustomizer() {
-  showThemeCustomizer.value = !showThemeCustomizer.value
+  isThemeCustomizerOpen.value = !isThemeCustomizerOpen.value
 }
 </script>
 
@@ -36,9 +35,15 @@ function toggleThemeCustomizer() {
               <BaseKbd keys="/" />
             </BaseButton>
             <BaseButton
+              icon="ph:keyboard"
+              icon-only
+              title="Keyboard shortcuts (Press ?)"
+              @click="isHelpOpen = true"
+            />
+            <BaseButton
               icon="ph:palette"
               icon-only
-              title="Customize theme"
+              title="Customize theme (Press g s)"
               @click="toggleThemeCustomizer"
             />
           </div>
@@ -83,13 +88,19 @@ function toggleThemeCustomizer() {
     <!-- Search Modal -->
     <BlogSearch v-model="isSearchOpen" />
 
+    <!-- Keyboard Shortcuts Help Modal -->
+    <KeyboardShortcutsHelp
+      :is-open="isHelpOpen"
+      @update:is-open="isHelpOpen = $event"
+    />
+
     <!-- Theme Customizer Panel -->
     <Teleport to="body">
       <Transition name="theme-panel">
         <div
-          v-if="showThemeCustomizer"
+          v-if="isThemeCustomizerOpen"
           class="theme-panel-overlay"
-          @click="showThemeCustomizer = false"
+          @click="isThemeCustomizerOpen = false"
         >
           <div
             class="theme-panel"
@@ -99,7 +110,7 @@ function toggleThemeCustomizer() {
             <button
               class="theme-panel-close"
               title="Close theme customizer"
-              @click="showThemeCustomizer = false"
+              @click="isThemeCustomizerOpen = false"
             >
               <BaseIcon name="ph:x" size="sm" />
             </button>
