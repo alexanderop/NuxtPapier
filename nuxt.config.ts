@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 import { siteConfig } from './utils/site.config'
 
@@ -8,42 +7,9 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
-  ssr: true,
   nitro: {
-    preset: 'github_pages',
     prerender: {
-      routes: ['/'],
-      crawlLinks: false, // Disable crawling to reduce memory usage
-      failOnError: false,
-      concurrency: 1,
-      interval: 100, // Add delay between renders to reduce memory spikes
-    },
-    routeRules: {
-      '/blog/**': { prerender: true },
-    },
-    // Optimize build for memory efficiency
-    compressPublicAssets: false,
-    minify: false,
-    // Additional memory optimizations
-    experimental: {
-      wasm: false, // Disable WASM to reduce memory
-    },
-    rollupConfig: {
-      output: {
-        generatedCode: {
-          constBindings: true,
-        },
-      },
-    },
-    hooks: {
-      // Skip prerendering certain routes to reduce memory usage
-      'prerender:generate': function (route: any) {
-        // Skip routes that might cause memory issues
-        const problematicRoutes = ['/NuxtPapier/blog/enhanced-content-example', '/__nuxt_content/blog/sql_dump.txt']
-        if (problematicRoutes.some(r => route.route?.includes(r))) {
-          route.skip = true
-        }
-      },
+      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
     },
   },
   css: [
@@ -51,7 +17,6 @@ export default defineNuxtConfig({
     '~/assets/css/prose.css',
   ],
   app: {
-    baseURL: process.env.NODE_ENV === 'production' ? '/NuxtPapier/' : '/',
     head: {
       htmlAttrs: {
         lang: siteConfig.language,
@@ -86,6 +51,7 @@ export default defineNuxtConfig({
         },
       ],
       script: [
+        // Prevent flash of light mode on page load
         {
           innerHTML: `
             (function() {
@@ -99,46 +65,32 @@ export default defineNuxtConfig({
       ],
     },
   },
-  // Reorder modules to prevent initialization issues
-  modules: [
-    '@unocss/nuxt',
-    '@vueuse/nuxt',
-    '@nuxt/content',
-    '@nuxt/icon',
-    '@nuxt/image',
-    // '@nuxtjs/seo', // Temporarily disabled due to build hanging issues
-  ],
-  site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
+  modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/image'],
+  seo: {
+    siteUrl: siteConfig.url,
+    siteName: siteConfig.name,
+    trailingSlash: true,
+    indexable: true, // Will be controlled by robots.txt rules
+    sitemap: {
+      autoLastmod: true,
+      xsl: false, // Pretty human-readable sitemap
+      strictNuxtContentPaths: true, // Auto-include Nuxt Content pages
+    },
+    robots: {
+      rules: [
+        { userAgent: '*', allow: '/' },
+        { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
+      ],
+      host: siteConfig.url,
+      sitemap: `${siteConfig.url}/sitemap.xml`,
+    },
   },
-  // SEO module disabled temporarily due to build hanging issues
-  // seo: {
-  //   siteName: siteConfig.name,
-  //   siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
-  //   trailingSlash: true,
-  //   indexable: true,
-  //   redirectToCanonicalSiteUrl: false,
-  //   sitemap: {
-  //     enabled: false,
-  //   },
-  //   robots: {
-  //     enabled: false,
-  //   },
-  //   ogImage: {
-  //     enabled: false,
-  //   },
-  //   linkChecker: {
-  //     enabled: false,
-  //   },
-  // },
-  experimental: {
-    payloadExtraction: false,
-    componentIslands: false,
-    viewTransition: false,
-    // Enable async context to prevent "Nuxt instance is unavailable" errors
-    asyncContext: true,
-    // Disable shared prerender data to reduce memory usage
-    sharedPrerenderData: false,
+  ogImage: {
+    defaults: {
+      renderer: 'chromium',
+      width: 1200,
+      height: 630,
+    },
   },
   content: {
     build: {
@@ -147,8 +99,12 @@ export default defineNuxtConfig({
           depth: 3,
           searchDepth: 3,
         },
-        // Disable syntax highlighting to reduce memory usage
-        highlight: false,
+        highlight: {
+          theme: {
+            default: 'github-light',
+            dark: 'dracula',
+          },
+        },
       },
     },
     renderer: {
@@ -161,60 +117,12 @@ export default defineNuxtConfig({
       },
     },
   },
-  // Build optimizations
-  build: {
-    transpile: process.env.NODE_ENV === 'production' ? [] : undefined,
-    // Reduce memory usage during build
-    analyze: false,
-  },
-  // Disable source maps in production
-  sourcemap: {
-    server: false,
-    client: false,
-  },
-  // Optimize Vue
-  vue: {
-    propsDestructure: true,
-    compilerOptions: {
-      comments: process.env.NODE_ENV !== 'production',
-    },
-  },
-  // Optimize Vite build
-  vite: {
-    build: {
-      chunkSizeWarningLimit: 1000,
-      // Reduce memory usage during build
-      sourcemap: false,
-      minify: 'esbuild', // Use esbuild instead of terser for lower memory usage
-      rollupOptions: {
-        output: {
-          manualChunks: undefined, // Let Vite handle chunking
-        },
-      },
-    },
-    // Reduce memory during dev/build
-    server: {
-      fs: {
-        strict: false,
-      },
-    },
-    // Additional memory optimizations
-    optimizeDeps: {
-      force: true, // Force optimization to reduce memory spikes
-    },
-  },
   hooks: {
-    // Skip link inspection phase that might be hanging
-    'nitro:build:public-assets': function (nitro: any) {
-      // Disable any link inspection features
-      if (nitro.options.prerender) {
-        nitro.options.prerender.crawlLinks = false
-      }
-    },
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx
 
       if (file.id.endsWith('.md')) {
+        // Add formatted date from frontmatter
         if (content.date) {
           content.formattedDate = new Date(content.date as string).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -223,30 +131,51 @@ export default defineNuxtConfig({
           })
         }
 
+        // Add reading time calculation
         const wordsPerMinute = 180
+        // Get text content from the body property
         let text = ''
-        if (content.body && content._raw && typeof content._raw === 'string') {
-          text = content._raw.slice(0, 5000)
+        if (typeof content.body === 'string') {
+          text = content.body
+        }
+        else if (content.body && typeof (content.body as any).children === 'object') {
+          // Extract text from AST nodes
+          const extractText = (nodes: any[]): string => {
+            return nodes.map((node) => {
+              if (node.type === 'text')
+                return node.value || ''
+              if (node.children)
+                return extractText(node.children)
+              return ''
+            }).join(' ')
+          }
+          text = extractText((content.body as any).children || [])
         }
 
         const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
         content.readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute))
 
-        if (!content.excerpt) {
-          content.excerpt = content.description || 'No description available.'
+        // Enhanced metadata processing
+        // Generate excerpt if not provided
+        if (!content.excerpt && text) {
+          content.excerpt = `${text.slice(0, 200).trim()}...`
         }
 
+        // Process tags to ensure they're arrays
         if (content.tags && typeof content.tags === 'string') {
           content.tags = content.tags.split(',').map((tag: string) => tag.trim())
         }
 
+        // Add slug from filename if not provided
         if (!content.slug) {
-          const filename = file.id.split('/').pop()
+          const pathParts = file.id.split('/')
+          const filename = pathParts[pathParts.length - 1]
           if (filename) {
             content.slug = filename.replace('.md', '')
           }
         }
 
+        // Add author defaults from site config if not provided
         if (!content.author) {
           content.author = {
             name: siteConfig.author,
@@ -254,6 +183,7 @@ export default defineNuxtConfig({
           }
         }
 
+        // Process featured image
         if (content.image && typeof content.image === 'string') {
           content.image = {
             src: content.image,
@@ -261,6 +191,7 @@ export default defineNuxtConfig({
           }
         }
 
+        // Add timestamps
         if (!content.createdAt && content.date) {
           content.createdAt = new Date(content.date as string).toISOString()
         }
@@ -268,8 +199,12 @@ export default defineNuxtConfig({
           content.updatedAt = content.createdAt || new Date().toISOString()
         }
 
-        content.status = content.status || 'published'
+        // Add status with default
+        if (!content.status) {
+          content.status = 'published'
+        }
 
+        // Process category
         if (content.category && typeof content.category === 'string') {
           content.categorySlug = content.category.toLowerCase().replace(/\s+/g, '-')
         }
