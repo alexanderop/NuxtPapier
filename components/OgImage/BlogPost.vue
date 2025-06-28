@@ -101,16 +101,16 @@ const {
           </span>
         </div>
 
-                 <!-- Right side: Site name -->
-         <div
-           style="
+        <!-- Right side: Site name -->
+        <div
+          style="
              font-size: 28px;
              color: #a0aec0;
              font-weight: 500;
            "
-         >
-           {{ siteConfig.name }}
-         </div>
+        >
+          {{ siteConfig.name }}
+        </div>
       </div>
     </div>
   </div>
