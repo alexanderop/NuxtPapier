@@ -19,17 +19,20 @@ watch(activeTab, () => {
 const tabsRef = ref<HTMLElement>()
 
 function updateVisibleTab() {
-  if (!tabsRef.value) return
-  
+  if (!tabsRef.value)
+    return
+
   const panels = tabsRef.value.querySelector('.tabs-panels')
-  if (!panels) return
-  
+  if (!panels)
+    return
+
   const children = panels.children
   for (let i = 0; i < children.length; i++) {
     const child = children[i] as HTMLElement
     if (i === activeTab.value) {
       child.style.display = 'block'
-    } else {
+    }
+    else {
       child.style.display = 'none'
     }
   }

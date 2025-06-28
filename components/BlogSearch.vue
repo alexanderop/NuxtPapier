@@ -3,13 +3,36 @@ import Fuse from 'fuse.js'
 
 const isOpen = defineModel<boolean>({ required: true })
 const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
-const searchResults = useTemplateRef<HTMLDivElement>('searchResults')
+const modalContainer = useTemplateRef<HTMLDivElement>('modalContainer')
 
-const { query, selectedIndex, results, navigateToResult, highlightText } = useSearch()
+// Lock body scroll when modal is open (client-side only)
+onMounted(() => {
+  const scrollLock = useScrollLock(document.body)
+  watch(isOpen, (value) => {
+    scrollLock.value = value
+  })
+})
 
-function useSearch() {
+// Click outside to close
+onClickOutside(modalContainer, () => {
+  if (isOpen.value) {
+    isOpen.value = false
+  }
+})
+
+// Auto-focus management
+watch(isOpen, (value) => {
+  if (value) {
+    nextTick(() => {
+      searchInput.value?.focus()
+    })
+  }
+})
+
+// Composable for pure search logic with Fuse.js
+function useSearchResults() {
   const query = ref('')
-  const selectedIndex = ref(0)
+  const isSearching = ref(false)
 
   // Fetch search data
   const { data: searchData } = useAsyncData('search-data', () =>
@@ -32,184 +55,22 @@ function useSearch() {
     })
   })
 
-  // Compute search results
-  const results = computed(() => {
-    if (!query.value || !fuse.value)
-      return []
-    return fuse.value.search(query.value).slice(0, 8)
-  })
-
-  // Navigate to result
-  async function navigateToResult(path: string) {
-    isOpen.value = false
-    const route = useRoute()
-
-    // Check if path contains a hash (section anchor)
-    if (path.includes('#')) {
-      const hashIndex = path.lastIndexOf('#')
-      const pagePath = path.substring(0, hashIndex)
-      const hash = path.substring(hashIndex + 1)
-
-      // Extract just the path portion (remove /blog prefix if present)
-      const cleanPath = pagePath.replace(/^\/blog/, '')
-      const fullPath = `/blog${cleanPath}`
-
-      // Check if we're already on the same page
-      if (route.path === fullPath) {
-        // Just scroll to the section
-        await nextTick()
-        await scrollToElement(hash)
-      }
-      else {
-        // Navigate to the page with hash in URL
-        await navigateTo(`${fullPath}#${hash}`)
-
-        // Wait for route change and content to load
-        await nextTick()
-
-        // Wait for navigation to complete and content to render
-        await new Promise(resolve => setTimeout(resolve, 300))
-
-        // Try to scroll to the element
-        const element = document.getElementById(hash)
-        if (element) {
-          await scrollToElement(hash)
-        }
-        else {
-          // If element not found immediately, wait for dynamic content
-          const observer = new MutationObserver((mutations, obs) => {
-            const targetElement = document.getElementById(hash)
-            if (targetElement) {
-              obs.disconnect()
-              scrollToElement(hash)
-            }
-          })
-
-          // Observe the entire document for changes
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          })
-
-          // Disconnect observer after timeout
-          setTimeout(() => {
-            observer.disconnect()
-            console.warn(`Element with ID "${hash}" not found`)
-          }, 2000)
-        }
-      }
-    }
-    else {
-      // No hash, just navigate to the page
-      const fullPath = path.startsWith('/blog') ? path : `/blog${path}`
-      await navigateTo(fullPath)
-    }
-  }
-
-  // Helper function for smooth scrolling
-  async function scrollToElement(elementId: string) {
-    // Small delay to ensure layout is complete
-    await nextTick()
-
-    const element = document.getElementById(elementId)
-    if (!element) {
-      console.warn(`Element with ID "${elementId}" not found`)
+  // Debounced search results computation
+  const results = ref<any[]>([])
+  const debouncedSearch = useDebounceFn(() => {
+    if (!query.value || !fuse.value) {
+      results.value = []
+      isSearching.value = false
       return
     }
+    results.value = fuse.value.search(query.value).slice(0, 8)
+    isSearching.value = false
+  }, 300)
 
-    // Calculate the target position with offset for header
-    const rect = element.getBoundingClientRect()
-    const absoluteTop = rect.top + window.pageYOffset
-    const targetY = Math.max(0, absoluteTop - 120) // 120px offset for header with min 0
-
-    // Use native smooth scrolling
-    window.scrollTo({
-      top: targetY,
-      behavior: 'smooth',
-    })
-
-    // Add visual feedback by briefly highlighting the element
-    element.classList.add('highlight-target')
-    setTimeout(() => {
-      element.classList.remove('highlight-target')
-    }, 2000)
-    element.classList.add('search-highlight')
-    setTimeout(() => {
-      element.classList.remove('search-highlight')
-    }, 2000)
-  }
-
-  // Scroll selected item into view
-  function scrollToSelected() {
-    nextTick(() => {
-      const items = searchResults.value?.querySelectorAll('[data-search-item]')
-      if (items && items[selectedIndex.value]) {
-        const selectedItem = items[selectedIndex.value] as HTMLElement
-        if (selectedItem && searchResults.value) {
-          // Calculate relative position within the container
-          const itemTop = selectedItem.offsetTop - searchResults.value.offsetTop
-          const itemBottom = itemTop + selectedItem.offsetHeight
-          const containerHeight = searchResults.value.offsetHeight
-          const scrollTop = searchResults.value.scrollTop
-
-          // Only scroll if item is outside visible area
-          if (itemTop < scrollTop) {
-            searchResults.value.scrollTo({
-              top: itemTop,
-              behavior: 'smooth',
-            })
-          }
-          else if (itemBottom > scrollTop + containerHeight) {
-            searchResults.value.scrollTo({
-              top: itemBottom - containerHeight,
-              behavior: 'smooth',
-            })
-          }
-        }
-      }
-    })
-  }
-
-  // Reset when modal opens/closes
-  watch(isOpen, (newValue) => {
-    if (newValue) {
-      query.value = ''
-      selectedIndex.value = 0
-      nextTick(() => {
-        searchInput.value?.focus()
-      })
-    }
-  })
-
-  // Keyboard navigation
-  onKeyStroke('ArrowDown', (e) => {
-    if (!isOpen.value || !results.value.length)
-      return
-    e.preventDefault()
-    selectedIndex.value = Math.min(selectedIndex.value + 1, results.value.length - 1)
-    scrollToSelected()
-  })
-
-  onKeyStroke('ArrowUp', (e) => {
-    if (!isOpen.value || !results.value.length)
-      return
-    e.preventDefault()
-    selectedIndex.value = Math.max(selectedIndex.value - 1, 0)
-    scrollToSelected()
-  })
-
-  onKeyStroke('Enter', () => {
-    if (!isOpen.value || !results.value.length)
-      return
-    const selected = results.value[selectedIndex.value]
-    if (selected) {
-      navigateToResult(selected.item.id)
-    }
-  })
-
-  // Reset selected index when results change
-  watch(results, () => {
-    selectedIndex.value = 0
+  // Watch query changes with debouncing
+  watch(query, () => {
+    isSearching.value = true
+    debouncedSearch()
   })
 
   // Highlight matching text
@@ -226,17 +87,206 @@ function useSearch() {
 
   return {
     query,
-    selectedIndex,
     results,
-    navigateToResult,
+    isSearching,
     highlightText,
   }
 }
+
+// Composable for keyboard navigation and selection
+function useSearchNavigation(results: Ref<any[]>, onSelect: (path: string) => void) {
+  const selectedIndex = ref(0)
+
+  // Reset selected index when results change
+  watch(results, () => {
+    selectedIndex.value = 0
+  })
+
+  function navigateUp() {
+    selectedIndex.value = Math.max(selectedIndex.value - 1, 0)
+  }
+
+  function navigateDown() {
+    selectedIndex.value = Math.min(selectedIndex.value + 1, results.value.length - 1)
+  }
+
+  function selectCurrent() {
+    const selected = results.value[selectedIndex.value]
+    if (selected) {
+      onSelect(selected.item.id)
+    }
+  }
+
+  return {
+    selectedIndex,
+    navigateUp,
+    navigateDown,
+    selectCurrent,
+  }
+}
+
+// Composable for section scrolling with element detection
+function useScrollToSection() {
+  async function scrollToSection(elementId: string) {
+    // Small delay to ensure layout is complete
+    await nextTick()
+
+    const element = document.getElementById(elementId)
+    if (!element) {
+      console.warn(`Element with ID "${elementId}" not found`)
+      return
+    }
+
+    // Use VueUse's scrollIntoView for smooth scrolling
+    const { y } = useWindowScroll()
+    const rect = element.getBoundingClientRect()
+    const absoluteTop = rect.top + y.value
+    const targetY = Math.max(0, absoluteTop - 120) // 120px offset for header
+
+    // Smooth scroll to target position
+    y.value = targetY
+
+    // Add visual feedback
+    element.classList.add('search-highlight')
+    setTimeout(() => {
+      element.classList.remove('search-highlight')
+    }, 2000)
+  }
+
+  // Wait for element with intersection observer
+  async function waitForElement(elementId: string, timeout = 2000): Promise<HTMLElement | null> {
+    const existingElement = document.getElementById(elementId)
+    if (existingElement)
+      return existingElement
+
+    return new Promise((resolve) => {
+      let observer: MutationObserver
+
+      const timeoutId = setTimeout(() => {
+        observer?.disconnect()
+        console.warn(`Element with ID "${elementId}" not found after ${timeout}ms`)
+        resolve(null)
+      }, timeout)
+
+      observer = new MutationObserver((_, obs) => {
+        const element = document.getElementById(elementId)
+        if (element) {
+          clearTimeout(timeoutId)
+          obs.disconnect()
+          resolve(element)
+        }
+      })
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      })
+    })
+  }
+
+  return {
+    scrollToSection,
+    waitForElement,
+  }
+}
+
+// Initialize composables
+const { query, results, highlightText } = useSearchResults()
+const { scrollToSection, waitForElement } = useScrollToSection()
+
+// Navigate to result handler
+async function navigateToResult(path: string) {
+  isOpen.value = false
+  const route = useRoute()
+
+  // Check if path contains a hash (section anchor)
+  if (path.includes('#')) {
+    const hashIndex = path.lastIndexOf('#')
+    const pagePath = path.substring(0, hashIndex)
+    const hash = path.substring(hashIndex + 1)
+
+    // Ensure the path has proper /blog prefix and remove .md extension
+    const cleanPath = pagePath.replace(/\.md$/, '')
+    const fullPath = cleanPath.startsWith('/blog') ? cleanPath : `/blog${cleanPath}`
+
+    // Check if we're already on the same page
+    if (route.path === fullPath) {
+      // Just scroll to the section
+      await scrollToSection(hash)
+    }
+    else {
+      // Navigate to the page with hash in URL
+      await navigateTo(`${fullPath}#${hash}`)
+
+      // Wait for element to appear and scroll
+      const element = await waitForElement(hash)
+      if (element) {
+        await scrollToSection(hash)
+      }
+    }
+  }
+  else {
+    // No hash, just navigate to the page
+    // Remove .md extension and ensure proper /blog prefix
+    const cleanPath = path.replace(/\.md$/, '')
+    const fullPath = cleanPath.startsWith('/blog') ? cleanPath : `/blog${cleanPath}`
+    await navigateTo(fullPath)
+  }
+}
+
+const { selectedIndex, navigateUp, navigateDown, selectCurrent } = useSearchNavigation(results, navigateToResult)
+
+// Virtual list for performance with large result sets
+const itemHeight = 80 // Approximate height of each search result item
+const { list, containerProps, wrapperProps } = useVirtualList(
+  results,
+  {
+    itemHeight,
+    overscan: 5,
+  },
+)
+
+// Scroll selected item into view (handled by virtual list)
+function scrollToSelected() {
+  // Virtual list handles scrolling automatically
+  // We can use the containerProps ref if needed for custom scrolling
+}
+
+// Watch selected index changes to scroll
+watch(selectedIndex, scrollToSelected)
+
+// Reset when modal opens/closes
+watch(isOpen, (newValue) => {
+  if (newValue) {
+    query.value = ''
+  }
+})
+
+// Keyboard navigation
+onKeyStroke('ArrowDown', (e) => {
+  if (!isOpen.value || !results.value.length)
+    return
+  e.preventDefault()
+  navigateDown()
+})
+
+onKeyStroke('ArrowUp', (e) => {
+  if (!isOpen.value || !results.value.length)
+    return
+  e.preventDefault()
+  navigateUp()
+})
+
+onKeyStroke('Enter', () => {
+  if (!isOpen.value || !results.value.length)
+    return
+  selectCurrent()
+})
 </script>
 
 <template>
   <BaseModal v-model="isOpen" position="center">
-    <div class="search-container">
+    <div ref="modalContainer" class="search-container">
       <div class="search-header">
         <BaseIcon name="ph:magnifying-glass" class="search-icon" />
         <input
@@ -252,27 +302,29 @@ function useSearch() {
 
       <div
         v-if="results.length > 0"
-        ref="searchResults"
+        v-bind="containerProps"
         class="search-results"
       >
-        <button
-          v-for="(result, index) in results"
-          :key="result.item.id"
-          :data-search-item="index"
-          class="search-result" :class="[{ 'search-result-active': index === selectedIndex }]"
-          @click="navigateToResult(result.item.id)"
-          @mouseenter="selectedIndex = index"
-        >
-          <div class="search-result-content">
-            <h3 class="search-result-title" v-html="highlightText(result.item.title, query)" />
-            <p class="search-result-text" v-html="highlightText(`${result.item.description?.slice(0, 150) || ''}...`, query)" />
-          </div>
-          <BaseIcon
-            v-if="index === selectedIndex"
-            name="ph:arrow-right"
-            class="search-result-arrow"
-          />
-        </button>
+        <div v-bind="wrapperProps">
+          <button
+            v-for="{ data: result, index } in list"
+            :key="result.item.id"
+            :data-search-item="index"
+            class="search-result" :class="[{ 'search-result-active': index === selectedIndex }]"
+            @click="navigateToResult(result.item.id)"
+            @mouseenter="selectedIndex = index"
+          >
+            <div class="search-result-content">
+              <h3 class="search-result-title" v-html="highlightText(result.item.title, query)" />
+              <p class="search-result-text" v-html="highlightText(`${result.item.description?.slice(0, 150) || ''}...`, query)" />
+            </div>
+            <BaseIcon
+              v-if="index === selectedIndex"
+              name="ph:arrow-right"
+              class="search-result-arrow"
+            />
+          </button>
+        </div>
       </div>
 
       <div v-else-if="query && results.length === 0" class="search-empty">
