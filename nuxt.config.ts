@@ -19,7 +19,8 @@ export default defineNuxtConfig({
   } : {
     nitro: {
       prerender: {
-        routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
+        routes: ['/rss.xml', '/atom.xml', '/feed.json'],
+        crawlLinks: false,
       },
     },
   }),
@@ -106,15 +107,16 @@ export default defineNuxtConfig({
       },
     },
   }),
-  ...(process.env.NUXT_APP_BASE_URL ? {} : {
-    ogImage: {
-      defaults: {
-        renderer: 'chromium',
-        width: 1200,
-        height: 630,
-      },
-    },
-  }),
+  // Temporarily disable OG image generation to avoid memory issues
+  // ...(process.env.NUXT_APP_BASE_URL ? {} : {
+  //   ogImage: {
+  //     defaults: {
+  //       renderer: 'chromium',
+  //       width: 1200,
+  //       height: 630,
+  //     },
+  //   },
+  // }),
   content: {
     build: {
       markdown: {
@@ -162,13 +164,14 @@ export default defineNuxtConfig({
           text = content.body
         }
         else if (content.body && typeof (content.body as any).children === 'object') {
-          // Extract text from AST nodes
-          const extractText = (nodes: any[]): string => {
+          // Extract text from AST nodes with depth limit to prevent memory issues
+          const extractText = (nodes: any[], depth = 0): string => {
+            if (depth > 20) return '' // Prevent infinite recursion
             return nodes.map((node) => {
               if (node.type === 'text')
                 return node.value || ''
-              if (node.children)
-                return extractText(node.children)
+              if (node.children && Array.isArray(node.children))
+                return extractText(node.children, depth + 1)
               return ''
             }).join(' ')
           }
