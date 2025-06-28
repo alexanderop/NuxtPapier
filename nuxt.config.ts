@@ -55,8 +55,7 @@ export default defineNuxtConfig({
         {
           innerHTML: `
             (function() {
-              const savedMode = localStorage.getItem('vueuse-color-scheme');
-              if (!savedMode || savedMode === 'dark') {
+              if (localStorage.getItem('vueuse-color-scheme') !== 'light') {
                 document.documentElement.classList.add('dark');
               }
             })();
