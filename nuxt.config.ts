@@ -87,8 +87,11 @@ export default defineNuxtConfig({
     '@nuxt/image',
   ],
   ...(process.env.NUXT_APP_BASE_URL ? {} : {
+    site: {
+      url: 'https://alexanderop-nuxt-papier.nuxt.space',
+    },
     seo: {
-      siteUrl: siteConfig.url,
+      siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
       siteName: siteConfig.name,
       trailingSlash: true,
       indexable: true,
@@ -102,8 +105,8 @@ export default defineNuxtConfig({
           { userAgent: '*', allow: '/' },
           { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
         ],
-        host: siteConfig.url,
-        sitemap: `${siteConfig.url}/sitemap.xml`,
+        host: 'https://alexanderop-nuxt-papier.nuxt.space',
+        sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
       },
     },
   }),
