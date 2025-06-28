@@ -2,75 +2,24 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Cache pnpm store
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate static site
-        run: |
-          # Set environment variables for GitHub Pages
-          export NUXT_APP_BASE_URL=/NuxtPapier/
-          export NUXT_PUBLIC_SITE_URL=https://alexanderop.github.io/NuxtPapier
-          export NITRO_PRESET=static
-
-          # Run the build
-          pnpm generate || true
-
-          # Ensure .nojekyll exists
-          touch .output/public/.nojekyll
-        env:
-          NODE_OPTIONS: --max-old-space-size=16384
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Build for GitHub Pages
+        run: pnpm build --preset github_pages
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -78,12 +27,13 @@ jobs:
           path: ./.output/public
 
   deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
+

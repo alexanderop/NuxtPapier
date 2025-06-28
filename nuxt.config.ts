@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true, // Explicitly enable SSR for SSG
   nitro: {
-    preset: process.env.NITRO_PRESET || 'static', // Allow override but default to static
+    preset: 'github_pages', // Use the built-in GitHub Pages preset
     prerender: {
       routes: ['/rss.xml', '/atom.xml', '/feed.json', '/', '/blog', '/feeds'],
       crawlLinks: true, // Enable crawling to discover all pages
@@ -18,7 +18,6 @@ export default defineNuxtConfig({
       concurrency: 1, // Limit concurrent prerenders
       interval: 200, // Add delay between prerenders
     },
-    static: true, // Force static mode
     routeRules: {
       '/blog/**': { prerender: true },
     },
@@ -28,7 +27,7 @@ export default defineNuxtConfig({
     '~/assets/css/prose.css',
   ],
   app: {
-    baseURL: process.env.NUXT_APP_BASE_URL || '/',
+    baseURL: process.env.NODE_ENV === 'production' ? '/NuxtPapier/' : '/',
     head: {
       htmlAttrs: {
         lang: siteConfig.language,
@@ -100,6 +99,7 @@ export default defineNuxtConfig({
       strictNuxtContentPaths: true,
     },
     robots: {
+      robotsTxt: false, // Disable robots.txt generation when using baseURL
       rules: [
         { userAgent: '*', allow: '/' },
       ],
