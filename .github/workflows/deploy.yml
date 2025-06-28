@@ -60,7 +60,6 @@ jobs:
       - name: Generate static site
         run: pnpm generate
         env:
-          NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           NODE_OPTIONS: "--max-old-space-size=8192"
 
