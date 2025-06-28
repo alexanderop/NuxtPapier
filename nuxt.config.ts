@@ -8,11 +8,15 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
-  nitro: {
-    prerender: {
-      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
+  ...(process.env.NUXT_APP_BASE_URL ? {
+    ssr: false,
+  } : {
+    nitro: {
+      prerender: {
+        routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
+      },
     },
-  },
+  }),
   css: [
     '~/assets/css/theme.css',
     '~/assets/css/prose.css',
@@ -67,27 +71,37 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/image'],
-  seo: {
-    siteUrl: siteConfig.url,
-    siteName: siteConfig.name,
-    trailingSlash: true,
-    indexable: true, // Will be controlled by robots.txt rules
-    sitemap: {
-      autoLastmod: true,
-      xsl: false, // Pretty human-readable sitemap
-      strictNuxtContentPaths: true, // Auto-include Nuxt Content pages
+  modules: [
+    ...(process.env.NUXT_APP_BASE_URL ? [] : ['@nuxtjs/seo']),
+    '@nuxt/content',
+    '@nuxt/icon',
+    '@unocss/nuxt',
+    '@vueuse/nuxt',
+    '@nuxt/image',
+  ],
+  ...(process.env.NUXT_APP_BASE_URL ? {} : {
+    seo: {
+      siteUrl: siteConfig.url,
+      siteName: siteConfig.name,
+      trailingSlash: true,
+      indexable: true,
+      sitemap: {
+        autoLastmod: true,
+        xsl: false,
+        strictNuxtContentPaths: true,
+      },
+      robots: {
+        rules: [
+          { userAgent: '*', allow: '/' },
+          { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
+        ],
+        host: siteConfig.url,
+        sitemap: `${siteConfig.url}/sitemap.xml`,
+      },
     },
-    robots: {
-      rules: [
-        { userAgent: '*', allow: '/' },
-        { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
-      ],
-      host: siteConfig.url,
-      sitemap: `${siteConfig.url}/sitemap.xml`,
-    },
-  },
+  }),
   ogImage: {
+    enabled: !process.env.NUXT_APP_BASE_URL,
     defaults: {
       renderer: 'chromium',
       width: 1200,

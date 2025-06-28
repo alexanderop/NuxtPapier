@@ -54,11 +54,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium --with-deps
+
       - name: Generate static site
         run: pnpm generate
         env:
           NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+          NODE_OPTIONS: "--max-old-space-size=4096"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
