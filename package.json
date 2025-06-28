@@ -17,6 +17,7 @@
     "@nuxt/content": "3.6.1",
     "@nuxt/icon": "1.14.0",
     "@nuxt/image": "1.10.0",
+    "@vue/repl": "^4.6.1",
     "@vueuse/core": "^13.4.0",
     "@vueuse/nuxt": "13.4.0",
     "feed": "^5.1.0",

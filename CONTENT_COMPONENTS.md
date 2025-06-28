@@ -9,6 +9,7 @@ This guide explains how to use the enhanced content components in NuxtPapier for
 - [Details/Accordion Component](#detailsaccordion-component)
 - [Badge Component](#badge-component)
 - [Video Component](#video-component)
+- [Vue Playground Component](#vue-playground-component)
 - [Table of Contents](#table-of-contents)
 - [Enhanced Prose Components](#enhanced-prose-components)
 - [Enhanced Metadata](#enhanced-metadata)
@@ -229,6 +230,104 @@ aspectRatio="16/9"
 ::
 ```
 
+## Vue Playground Component
+
+Embed interactive Vue playgrounds powered by @vue/repl (the official Vue SFC Playground).
+
+### Syntax
+
+```markdown
+## ::playground
+
+code: |
+<template>
+
+<div>{{ message }}</div>
+</template>
+
+  <script setup>
+  import { ref } from 'vue'
+  const message = ref('Hello!')
+  </script>
+
+---
+
+::
+```
+
+### Options
+
+- `editor` - Editor to use: "codemirror" (default) or "monaco"
+- `theme` - Theme: "dark" (default) or "light"
+- `layout` - Layout: "horizontal" (default) or "vertical"
+- `showPreview` - Show preview: true (default) or false
+- `showConsole` - Show console: false (default) or true
+
+### Examples
+
+**Basic playground:**
+
+```markdown
+## ::playground
+
+code: |
+<template>
+<button @click="count++">Count: {{ count }}</button>
+</template>
+
+  <script setup>
+  import { ref } from 'vue'
+  const count = ref(0)
+  </script>
+
+---
+
+::
+```
+
+**With Monaco editor (VS Code):**
+
+```markdown
+## ::playground
+
+editor: monaco
+code: |
+<template>
+
+<div>Full TypeScript support!</div>
+</template>
+
+  <script setup lang="ts">
+  const message: string = 'Hello TypeScript'
+  </script>
+
+---
+
+::
+```
+
+**Vertical layout with light theme:**
+
+```markdown
+## ::playground
+
+layout: vertical
+theme: light
+code: |
+
+## <!-- Your Vue code here -->
+
+::
+```
+
+### Features
+
+- **Official Vue Component** - Uses @vue/repl from the Vue team
+- **Live Editing** - Changes reflect instantly
+- **Full Vue 3 Support** - All Vue 3 features including `<script setup>`
+- **TypeScript Support** - With Monaco editor option
+- **Lightweight Option** - CodeMirror for faster loading
+
 ## Table of Contents
 
 The Table of Contents is automatically generated from your headings.
@@ -316,7 +415,10 @@ These fields are automatically added:
 
 ## Examples
 
-See the example post at `/content/blog/enhanced-content-example.md` for a comprehensive demonstration of all components in action.
+See the example posts for comprehensive demonstrations:
+
+- `/content/blog/enhanced-content-example.md` - All content components
+- `/content/blog/vue-playground-example.md` - Vue playground examples
 
 ```
 
