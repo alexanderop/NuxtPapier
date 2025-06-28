@@ -16,33 +16,11 @@ export default defineNuxtConfig({
       crawlLinks: true,
       failOnError: false,
       concurrency: 1,
-      interval: 300, // Increased interval to reduce memory pressure
+      interval: 0, // No delay needed
     },
     routeRules: {
       '/blog/**': { prerender: true },
     },
-    // Memory optimizations
-    rollupConfig: {
-      output: {
-        manualChunks(id) {
-          // Split vendor chunks to reduce memory usage
-          if (id.includes('node_modules')) {
-            if (id.includes('@nuxt/content')) {
-              return 'content'
-            }
-            if (id.includes('vue') || id.includes('@vue')) {
-              return 'vue'
-            }
-            if (id.includes('shiki') || id.includes('highlight')) {
-              return 'syntax'
-            }
-            return 'vendor'
-          }
-        },
-      },
-    },
-    // Reduce source map generation in production
-    sourceMap: false,
   },
   css: [
     '~/assets/css/theme.css',
@@ -97,13 +75,14 @@ export default defineNuxtConfig({
       ],
     },
   },
+  // Reorder modules to prevent initialization issues
   modules: [
-    '@nuxtjs/seo',
-    '@nuxt/content',
-    '@nuxt/icon',
     '@unocss/nuxt',
     '@vueuse/nuxt',
+    '@nuxt/content',
+    '@nuxt/icon',
     '@nuxt/image',
+    '@nuxtjs/seo',
   ],
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
@@ -118,7 +97,6 @@ export default defineNuxtConfig({
       autoLastmod: true,
       xsl: false,
       strictNuxtContentPaths: true,
-      // Exclude dynamic routes to reduce memory usage
       exclude: [
         '/api/**',
       ],
@@ -137,13 +115,12 @@ export default defineNuxtConfig({
   },
   experimental: {
     payloadExtraction: false,
-    // Reduce component islands overhead
     componentIslands: false,
-    // Disable view transitions to save memory
     viewTransition: false,
+    // Enable async context to prevent "Nuxt instance is unavailable" errors
+    asyncContext: true,
   },
   content: {
-    // Optimize content module for production
     build: {
       markdown: {
         toc: {
@@ -155,7 +132,6 @@ export default defineNuxtConfig({
             default: 'github-light',
             dark: 'dracula',
           },
-          // Preload only common languages to reduce bundle size
           preload: ['js', 'ts', 'vue', 'css', 'html', 'bash', 'json'],
         },
       },
@@ -172,7 +148,6 @@ export default defineNuxtConfig({
   },
   // Build optimizations
   build: {
-    // Reduce transpilation overhead
     transpile: process.env.NODE_ENV === 'production' ? [] : undefined,
   },
   // Disable source maps in production
@@ -184,43 +159,18 @@ export default defineNuxtConfig({
   vue: {
     propsDestructure: true,
     compilerOptions: {
-      // Remove comments in production
       comments: process.env.NODE_ENV !== 'production',
     },
   },
   // Optimize Vite build
   vite: {
     build: {
-      // Reduce chunk size warnings threshold
       chunkSizeWarningLimit: 1000,
-      // Optimize rollup
       rollupOptions: {
         output: {
-          // Use smaller chunks
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              if (id.includes('@nuxt/content')) {
-                return 'content'
-              }
-              if (id.includes('vue') || id.includes('@vue')) {
-                return 'vue'
-              }
-              if (id.includes('unocss') || id.includes('@unocss')) {
-                return 'uno'
-              }
-              if (id.includes('shiki') || id.includes('highlight')) {
-                return 'syntax'
-              }
-              return 'vendor'
-            }
-          },
+          manualChunks: undefined, // Let Vite handle chunking
         },
       },
-    },
-    // Optimize dependencies
-    optimizeDeps: {
-      include: ['vue', '@vueuse/core'],
-      exclude: ['@nuxt/content'],
     },
   },
   hooks: {
@@ -228,7 +178,6 @@ export default defineNuxtConfig({
       const { file, content } = ctx
 
       if (file.id.endsWith('.md')) {
-        // Optimized content processing
         if (content.date) {
           content.formattedDate = new Date(content.date as string).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -237,17 +186,15 @@ export default defineNuxtConfig({
           })
         }
 
-        // Simplified reading time calculation
         const wordsPerMinute = 180
         let text = ''
         if (content.body && content._raw && typeof content._raw === 'string') {
-          text = content._raw.slice(0, 5000) // Limit text processing
+          text = content._raw.slice(0, 5000)
         }
 
         const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
         content.readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute))
 
-        // Minimal metadata processing
         if (!content.excerpt) {
           content.excerpt = content.description || 'No description available.'
         }

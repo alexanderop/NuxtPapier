@@ -21,12 +21,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build for GitHub Pages
-        run: pnpm build --preset github_pages
+        run: pnpm build
         env:
-          # Increase Node.js memory limit to 3GB (safe for 4GB runners)
+          # Increase Node.js memory limit to 3GB
           NODE_OPTIONS: --max-old-space-size=3072
-          # Set production mode for optimizations
+          # Ensure production mode
           NODE_ENV: production
+          # Set the site URL for proper generation
+          NUXT_PUBLIC_SITE_URL: https://alexanderop.github.io
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
