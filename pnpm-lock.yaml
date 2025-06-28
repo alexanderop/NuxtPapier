@@ -69,9 +69,6 @@ importers:
       eslint-plugin-format:
         specifier: ^1.0.1
         version: 1.0.1(eslint@9.29.0(jiti@2.4.2))
-      playwright-chromium:
-        specifier: ^1.53.1
-        version: 1.53.1
       unocss:
         specifier: ^66.2.3
         version: 66.2.3(@unocss/webpack@66.2.3(webpack@5.99.9))(postcss@8.5.6)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(terser@5.43.1)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
@@ -4420,11 +4417,6 @@ packages:
 
   pkg-types@2.1.0:
     resolution: {integrity: sha512-wmJwA+8ihJixSoHKxZJRBQG1oY8Yr9pGLzRmSsNms0iNWyHHAlZCa7mmKiFR10YPZuz/2k169JiS/inOjBCZ2A==}
-
-  playwright-chromium@1.53.1:
-    resolution: {integrity: sha512-V+S/r4UkmVoF+ARC4YDnJF6fIsdIGMgyJ6daBdrODryU5qqWrM1M+5PP/jRX6u1yfwPfSNRwlYsat49duKsyMQ==}
-    engines: {node: '>=18'}
-    hasBin: true
 
   playwright-core@1.53.1:
     resolution: {integrity: sha512-Z46Oq7tLAyT0lGoFx4DOuB1IA9D1TPj0QkYxpPVUnGDqHHvDpCftu1J2hM2PiWsNMoZh8+LQaarAWcDfPBc6zg==}
@@ -11423,10 +11415,6 @@ snapshots:
       confbox: 0.2.2
       exsolve: 1.0.7
       pathe: 2.0.3
-
-  playwright-chromium@1.53.1:
-    dependencies:
-      playwright-core: 1.53.1
 
   playwright-core@1.53.1: {}
 

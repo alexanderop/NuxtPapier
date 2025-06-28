@@ -12,11 +12,11 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'github_pages',
     prerender: {
-      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/', '/blog', '/feeds'],
-      crawlLinks: true,
+      routes: ['/'],
+      crawlLinks: false, // Disable crawling to reduce memory usage
       failOnError: false,
       concurrency: 1,
-      interval: 0, // No delay needed
+      interval: 100, // Add delay between renders to reduce memory spikes
     },
     routeRules: {
       '/blog/**': { prerender: true },
@@ -24,6 +24,27 @@ export default defineNuxtConfig({
     // Optimize build for memory efficiency
     compressPublicAssets: false,
     minify: false,
+    // Additional memory optimizations
+    experimental: {
+      wasm: false, // Disable WASM to reduce memory
+    },
+    rollupConfig: {
+      output: {
+        generatedCode: {
+          constBindings: true,
+        },
+      },
+    },
+    hooks: {
+      // Skip prerendering certain routes to reduce memory usage
+      'prerender:generate': function (route: any) {
+        // Skip routes that might cause memory issues
+        const problematicRoutes = ['/NuxtPapier/blog/enhanced-content-example', '/__nuxt_content/blog/sql_dump.txt']
+        if (problematicRoutes.some(r => route.route?.includes(r))) {
+          route.skip = true
+        }
+      },
+    },
   },
   css: [
     '~/assets/css/theme.css',
@@ -85,43 +106,39 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/icon',
     '@nuxt/image',
-    '@nuxtjs/seo',
+    // '@nuxtjs/seo', // Temporarily disabled due to build hanging issues
   ],
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
   },
-  seo: {
-    siteName: siteConfig.name,
-    siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
-    trailingSlash: true,
-    indexable: true,
-    redirectToCanonicalSiteUrl: false,
-    sitemap: {
-      autoLastmod: true,
-      xsl: false,
-      strictNuxtContentPaths: true,
-      exclude: [
-        '/api/**',
-      ],
-    },
-    robots: {
-      robotsTxt: false,
-      rules: [
-        { userAgent: '*', allow: '/' },
-      ],
-      host: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
-      sitemap: `${process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io'}/NuxtPapier/sitemap.xml`,
-    },
-    ogImage: {
-      enabled: false,
-    },
-  },
+  // SEO module disabled temporarily due to build hanging issues
+  // seo: {
+  //   siteName: siteConfig.name,
+  //   siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
+  //   trailingSlash: true,
+  //   indexable: true,
+  //   redirectToCanonicalSiteUrl: false,
+  //   sitemap: {
+  //     enabled: false,
+  //   },
+  //   robots: {
+  //     enabled: false,
+  //   },
+  //   ogImage: {
+  //     enabled: false,
+  //   },
+  //   linkChecker: {
+  //     enabled: false,
+  //   },
+  // },
   experimental: {
     payloadExtraction: false,
     componentIslands: false,
     viewTransition: false,
     // Enable async context to prevent "Nuxt instance is unavailable" errors
     asyncContext: true,
+    // Disable shared prerender data to reduce memory usage
+    sharedPrerenderData: false,
   },
   content: {
     build: {
@@ -130,13 +147,8 @@ export default defineNuxtConfig({
           depth: 3,
           searchDepth: 3,
         },
-        highlight: {
-          theme: {
-            default: 'github-light',
-            dark: 'dracula',
-          },
-          preload: ['js', 'ts', 'vue', 'css', 'html', 'bash', 'json'],
-        },
+        // Disable syntax highlighting to reduce memory usage
+        highlight: false,
       },
     },
     renderer: {
@@ -173,13 +185,7 @@ export default defineNuxtConfig({
       chunkSizeWarningLimit: 1000,
       // Reduce memory usage during build
       sourcemap: false,
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true,
-        },
-      },
+      minify: 'esbuild', // Use esbuild instead of terser for lower memory usage
       rollupOptions: {
         output: {
           manualChunks: undefined, // Let Vite handle chunking
@@ -192,8 +198,19 @@ export default defineNuxtConfig({
         strict: false,
       },
     },
+    // Additional memory optimizations
+    optimizeDeps: {
+      force: true, // Force optimization to reduce memory spikes
+    },
   },
   hooks: {
+    // Skip link inspection phase that might be hanging
+    'nitro:build:public-assets': function (nitro: any) {
+      // Disable any link inspection features
+      if (nitro.options.prerender) {
+        nitro.options.prerender.crawlLinks = false
+      }
+    },
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx
 

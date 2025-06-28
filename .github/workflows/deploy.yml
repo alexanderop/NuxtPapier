@@ -23,8 +23,8 @@ jobs:
       - name: Build for GitHub Pages
         run: pnpm build
         env:
-          # Increase Node.js memory limit to 8GB
-          NODE_OPTIONS: --max-old-space-size=8192
+          # Reduce Node.js memory limit to 2GB after optimizations
+          NODE_OPTIONS: --max-old-space-size=2048
           # Ensure production mode
           NODE_ENV: production
           # Set the site URL for proper generation
