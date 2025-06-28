@@ -1,7 +1,6 @@
 <script setup lang="ts">
-// Initialize dark mode with dark as default
 useDark({
-  initialValue: 'dark', // Set dark mode as default
+  initialValue: 'dark',
 })
 
 // Global SEO configuration
@@ -9,7 +8,7 @@ useHead({
   htmlAttrs: { lang: siteConfig.language },
   titleTemplate: title => title ? `${title} – ${siteConfig.name}` : siteConfig.title,
   meta: [
-    { name: 'theme-color', content: '#0a0a0a' }, // Dark theme color
+    { name: 'theme-color', content: '#0a0a0a' },
   ],
 })
 

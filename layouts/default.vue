@@ -7,9 +7,44 @@ const { isSearchOpen, isHelpOpen, isThemeCustomizerOpen, isBlogQuickJumpOpen } =
 
 const currentYear = new Date().getFullYear()
 
+// Mobile menu state
+const isMobileMenuOpen = ref(false)
+
 function toggleThemeCustomizer() {
   isThemeCustomizerOpen.value = !isThemeCustomizerOpen.value
 }
+
+function toggleMobileMenu() {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+function closeMobileMenu() {
+  isMobileMenuOpen.value = false
+}
+
+// Close mobile menu when clicking on navigation links
+function handleNavClick() {
+  closeMobileMenu()
+}
+
+// Computed property for burger menu icon
+const mobileMenuIcon = computed(() => {
+  return isMobileMenuOpen.value ? 'ph:x' : 'ph:list'
+})
+
+// Close mobile menu on escape key
+onMounted(() => {
+  const handleEscape = (e) => {
+    if (e.key === 'Escape' && isMobileMenuOpen.value) {
+      closeMobileMenu()
+    }
+  }
+  document.addEventListener('keydown', handleEscape)
+
+  onUnmounted(() => {
+    document.removeEventListener('keydown', handleEscape)
+  })
+})
 </script>
 
 <template>
@@ -21,12 +56,14 @@ function toggleThemeCustomizer() {
     </a>
     <div class="container-main">
       <!-- Header -->
-      <header class="py-8">
-        <div class="mb-6 flex items-center justify-between">
-          <div class="text-4xl text-heading font-bold">
+      <header class="py-4 sm:py-8">
+        <div class="mb-4 flex items-center justify-between sm:mb-6">
+          <div class="text-2xl text-heading font-bold sm:text-4xl">
             {{ siteConfig.name }}
           </div>
-          <div class="flex gap-2 items-center">
+
+          <!-- Desktop Actions -->
+          <div class="gap-2 hidden items-center md:flex">
             <BaseButton
               title="Search (Press /)"
               @click="isSearchOpen = true"
@@ -47,8 +84,19 @@ function toggleThemeCustomizer() {
               @click="toggleThemeCustomizer"
             />
           </div>
+
+          <!-- Mobile Burger Menu Button -->
+          <BaseButton
+            :icon="mobileMenuIcon"
+            icon-only
+            :title="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
+            class="md:hidden"
+            @click="toggleMobileMenu"
+          />
         </div>
-        <nav class="flex gap-6" aria-label="Main navigation">
+
+        <!-- Desktop Navigation -->
+        <nav class="gap-6 hidden md:flex" aria-label="Main navigation">
           <NuxtLink
             to="/"
             class="text-body transition-colors hover:text-brand-500"
@@ -62,6 +110,95 @@ function toggleThemeCustomizer() {
             Blog
           </NuxtLink>
         </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <Transition name="mobile-menu-overlay">
+          <div
+            v-if="isMobileMenuOpen"
+            class="bg-black bg-opacity-50 inset-0 fixed z-40 md:hidden"
+            @click="closeMobileMenu"
+          />
+        </Transition>
+
+        <!-- Mobile Menu -->
+        <Transition name="mobile-menu">
+          <div
+            v-if="isMobileMenuOpen"
+            class="border-l border-border bg-surface h-full max-w-[90vw] w-80 right-0 top-0 fixed z-50 md:hidden"
+          >
+            <div class="p-6">
+              <!-- Mobile Menu Header -->
+              <div class="mb-8 flex items-center justify-between">
+                <div class="text-xl text-heading font-bold">
+                  Menu
+                </div>
+                <BaseButton
+                  icon="ph:x"
+                  icon-only
+                  title="Close menu"
+                  @click="closeMobileMenu"
+                />
+              </div>
+
+              <!-- Mobile Navigation Links -->
+              <nav class="mb-8" aria-label="Mobile navigation">
+                <ul class="space-y-4">
+                  <li>
+                    <NuxtLink
+                      to="/"
+                      class="text-lg text-body px-4 py-3 rounded-lg block transition-colors hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900"
+                      @click="handleNavClick"
+                    >
+                      Home
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink
+                      to="/blog"
+                      class="text-lg text-body px-4 py-3 rounded-lg block transition-colors hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900"
+                      @click="handleNavClick"
+                    >
+                      Blog
+                    </NuxtLink>
+                  </li>
+                </ul>
+              </nav>
+
+              <!-- Mobile Actions -->
+              <div class="pt-6 border-t border-border space-y-3">
+                <BaseButton
+                  class="w-full"
+                  justify="start"
+                  @click="isSearchOpen = true; closeMobileMenu()"
+                >
+                  <BaseIcon name="ph:magnifying-glass" size="sm" />
+                  <span>Search</span>
+                  <BaseKbd keys="/" class="ml-auto" />
+                </BaseButton>
+
+                <BaseButton
+                  class="w-full"
+                  justify="start"
+                  @click="isHelpOpen = true; closeMobileMenu()"
+                >
+                  <BaseIcon name="ph:keyboard" size="sm" />
+                  <span>Keyboard Shortcuts</span>
+                  <BaseKbd keys="?" class="ml-auto" />
+                </BaseButton>
+
+                <BaseButton
+                  class="w-full"
+                  justify="start"
+                  @click="toggleThemeCustomizer(); closeMobileMenu()"
+                >
+                  <BaseIcon name="ph:palette" size="sm" />
+                  <span>Customize Theme</span>
+                  <BaseKbd keys="g s" class="ml-auto" />
+                </BaseButton>
+              </div>
+            </div>
+          </div>
+        </Transition>
       </header>
 
       <!-- Main Content -->
@@ -157,6 +294,27 @@ function toggleThemeCustomizer() {
 
 .theme-panel-enter-from .theme-panel,
 .theme-panel-leave-to .theme-panel {
+  transform: translateX(100%);
+}
+
+/* Mobile Menu Transitions */
+.mobile-menu-overlay-enter-active,
+.mobile-menu-overlay-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay-enter-from,
+.mobile-menu-overlay-leave-to {
+  opacity: 0;
+}
+
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
   transform: translateX(100%);
 }
 </style>

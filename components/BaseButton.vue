@@ -5,6 +5,7 @@ interface Props {
   icon?: string
   iconOnly?: boolean
   title?: string
+  justify?: 'start' | 'center' | 'end'
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   icon,
   iconOnly = false,
   title,
+  justify = 'center',
 } = defineProps<Props>()
 
 const variantClasses = {
@@ -31,10 +33,17 @@ const iconSizeClasses = {
   md: 'px-2 py-2',
 }
 
+const justifyClasses = {
+  start: 'justify-start',
+  center: 'justify-center',
+  end: 'justify-end',
+}
+
 const buttonClass = computed(() => {
   const variantClass = variantClasses[variant]
   const sizeClass = iconOnly ? iconSizeClasses[size] : sizeClasses[size]
-  return `${variantClass} ${sizeClass} rounded-lg font-medium transition-colors inline-flex items-center justify-center gap-2`
+  const justifyClass = justifyClasses[justify]
+  return `${variantClass} ${sizeClass} ${justifyClass} rounded-lg font-medium transition-colors inline-flex items-center gap-2`
 })
 </script>
 
