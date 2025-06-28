@@ -36,8 +36,10 @@ const postsByYear = computed(() => {
     .sort((a, b) => b.year - a.year)
 })
 
-// Initialize blog shortcuts
-useBlogShortcuts(blogPosts as Ref<any[] | null>)
+// Initialize blog shortcuts only on client side
+if (import.meta.client) {
+  useBlogShortcuts(blogPosts as Ref<any[] | null>)
+}
 
 // Get flat index for a post
 function getPostIndex(yearIndex: number, postIndex: number): number {

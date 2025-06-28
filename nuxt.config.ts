@@ -15,8 +15,13 @@ export default defineNuxtConfig({
       routes: ['/rss.xml', '/atom.xml', '/feed.json', '/', '/blog', '/feeds'],
       crawlLinks: true, // Enable crawling to discover all pages
       failOnError: false, // Don't fail build on prerender errors
+      concurrency: 1, // Limit concurrent prerenders
+      interval: 200, // Add delay between prerenders
     },
     static: true, // Force static mode
+    routeRules: {
+      '/blog/**': { prerender: true },
+    },
   },
   css: [
     '~/assets/css/theme.css',
@@ -148,27 +153,22 @@ export default defineNuxtConfig({
           })
         }
 
-        // Add reading time calculation
+        // Add reading time calculation - simplified version
         const wordsPerMinute = 180
-        // Get text content from the body property
+        // Simple text extraction without deep recursion
         let text = ''
-        if (typeof content.body === 'string') {
-          text = content.body
-        }
-        else if (content.body && typeof (content.body as any).children === 'object') {
-          // Extract text from AST nodes with depth limit to prevent memory issues
-          const extractText = (nodes: any[], depth = 0): string => {
-            if (depth > 20)
-              return '' // Prevent infinite recursion
-            return nodes.map((node) => {
-              if (node.type === 'text')
-                return node.value || ''
-              if (node.children && Array.isArray(node.children))
-                return extractText(node.children, depth + 1)
-              return ''
-            }).join(' ')
+        if (content.body) {
+          // Use the markdown source if available
+          if (content._raw && typeof content._raw === 'string') {
+            text = content._raw
           }
-          text = extractText((content.body as any).children || [])
+          else if (typeof content.body === 'string') {
+            text = content.body
+          }
+          else {
+            // Fallback to a simple estimate based on content length
+            text = JSON.stringify(content).slice(0, 5000) // Limit to prevent memory issues
+          }
         }
 
         const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
@@ -176,8 +176,11 @@ export default defineNuxtConfig({
 
         // Enhanced metadata processing
         // Generate excerpt if not provided
-        if (!content.excerpt && text) {
-          content.excerpt = `${text.slice(0, 200).trim()}...`
+        if (!content.excerpt && content.description) {
+          content.excerpt = content.description
+        }
+        else if (!content.excerpt) {
+          content.excerpt = 'No description available.'
         }
 
         // Process tags to ensure they're arrays
