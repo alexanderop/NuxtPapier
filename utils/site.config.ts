@@ -1,5 +1,3 @@
-import process from 'node:process'
-
 export interface SiteConfig {
   name: string
   title: string
@@ -22,14 +20,14 @@ export interface SiteConfig {
   copyright?: string
 }
 
-// Get the base URL from environment variables for GitHub Pages support
+// Get the base URL - using a simple check that works in both server and client
 function getBaseUrl() {
-  // For production deployment
-  if (process.env.NODE_ENV === 'production') {
-    return 'https://alexanderop-nuxt-papier.nuxt.space'
+  // Check if we're in development
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    return 'http://localhost:3000'
   }
-  // For local development
-  return 'http://localhost:3000'
+  // Default to production URL
+  return 'https://alexanderop-nuxt-papier.nuxt.space'
 }
 
 export const siteConfig: SiteConfig = {

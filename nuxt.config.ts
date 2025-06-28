@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: process.env.NITRO_PRESET || 'static', // Allow override but default to static
     prerender: {
-      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/'],
+      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/', '/blog', '/feeds'],
       crawlLinks: true, // Enable crawling to discover all pages
       failOnError: false, // Don't fail build on prerender errors
     },
@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     '~/assets/css/prose.css',
   ],
   app: {
-    baseURL: '/',
+    baseURL: process.env.NUXT_APP_BASE_URL || '/',
     head: {
       htmlAttrs: {
         lang: siteConfig.language,
@@ -81,11 +81,11 @@ export default defineNuxtConfig({
     '@nuxt/image', // Re-enable image module
   ],
   site: {
-    url: 'https://alexanderop-nuxt-papier.nuxt.space',
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space',
   },
   seo: {
     siteName: siteConfig.name,
-    siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
+    siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space',
     trailingSlash: true,
     indexable: true,
     redirectToCanonicalSiteUrl: false, // Important for custom domains
@@ -98,8 +98,8 @@ export default defineNuxtConfig({
       rules: [
         { userAgent: '*', allow: '/' },
       ],
-      host: 'https://alexanderop-nuxt-papier.nuxt.space',
-      sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
+      host: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space',
+      sitemap: `${process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space'}/sitemap.xml`,
     },
     ogImage: {
       enabled: false, // Disable to prevent memory issues

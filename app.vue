@@ -12,22 +12,32 @@ useHead({
   ],
 })
 
-// Only define SEO schemas if the functions are available
-if (typeof defineWebSite !== 'undefined') {
-  defineWebSite({
-    name: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url,
-  })
+// Only define SEO schemas if the functions are available (SEO module loaded)
+try {
+  if (typeof defineWebSite === 'function') {
+    defineWebSite({
+      name: siteConfig.name,
+      description: siteConfig.description,
+      url: siteConfig.url,
+    })
+  }
+}
+catch {
+  // SEO module not loaded, ignore
 }
 
-if (typeof defineOrganization !== 'undefined') {
-  defineOrganization({
-    name: siteConfig.name,
-    url: siteConfig.url,
-    logo: `${siteConfig.url}${siteConfig.logo}`,
-    sameAs: Object.values(siteConfig.social || {}).filter(Boolean),
-  })
+try {
+  if (typeof defineOrganization === 'function') {
+    defineOrganization({
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: `${siteConfig.url}${siteConfig.logo}`,
+      sameAs: Object.values(siteConfig.social || {}).filter(Boolean),
+    })
+  }
+}
+catch {
+  // SEO module not loaded, ignore
 }
 </script>
 
