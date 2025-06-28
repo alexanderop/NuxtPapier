@@ -1,7 +1,7 @@
 <template>
   <div class="container-main">
     <h1>Testing Tabs Component</h1>
-    
+
     <h2>Direct Component Test</h2>
     <Tabs :labels="['npm', 'yarn', 'pnpm']">
       <pre><code>npm install package</code></pre>

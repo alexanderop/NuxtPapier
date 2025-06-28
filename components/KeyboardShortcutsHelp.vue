@@ -60,7 +60,7 @@ const shortcuts = [
   {
     category: 'General',
     items: [
-      { keys: ['shift', 'slash'], description: 'Show keyboard shortcuts' },
+      { keys: ['?'], description: 'Show keyboard shortcuts' },
       { keys: ['escape'], description: 'Close modal' },
     ],
   },

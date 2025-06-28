@@ -20,7 +20,7 @@ export function useGlobalShortcuts() {
   // Shortcuts configuration
   const shortcuts = computed<ShortcutsConfig>(() => ({
     // Search shortcuts
-    'slash': () => {
+    '/': () => {
       isSearchOpen.value = true
     },
     'meta_k': () => {
@@ -63,8 +63,8 @@ export function useGlobalShortcuts() {
       isDark.value = !isDark.value
     },
 
-    // Help
-    'shift_slash': () => {
+    // Help - using ? directly is more reliable than shift_slash
+    '?': () => {
       isHelpOpen.value = true
     },
 
