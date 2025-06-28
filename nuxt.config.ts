@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 import { siteConfig } from './utils/site.config'
 
@@ -17,6 +18,7 @@ export default defineNuxtConfig({
     '~/assets/css/prose.css',
   ],
   app: {
+    baseURL: process.env.NUXT_APP_BASE_URL || '/',
     head: {
       htmlAttrs: {
         lang: siteConfig.language,

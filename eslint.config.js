@@ -7,6 +7,10 @@ export default antfu({
   typescript: true,
   markdown: true,
 }, {
+  ignores: [
+    '.claude/**/*',
+  ],
+}, {
   rules: {
     'no-undef': 'off', // Nuxt auto-imports cause this to trigger
   },

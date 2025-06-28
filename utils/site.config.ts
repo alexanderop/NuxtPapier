@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 export interface SiteConfig {
   name: string
   title: string
@@ -20,15 +22,25 @@ export interface SiteConfig {
   copyright?: string
 }
 
+// Get the base URL from environment variables for GitHub Pages support
+function getBaseUrl() {
+  if (process.env.NUXT_APP_BASE_URL && process.env.NUXT_APP_BASE_URL !== '/') {
+    // Remove trailing slash if present
+    const baseUrl = process.env.NUXT_APP_BASE_URL.replace(/\/$/, '')
+    return `https://${process.env.GITHUB_REPOSITORY_OWNER || 'your-username'}.github.io${baseUrl}`
+  }
+  return 'https://example.com' // Fallback for local development
+}
+
 export const siteConfig: SiteConfig = {
   name: 'NuxtPapier',
   title: 'NuxtPapier Blog',
   description: 'A minimal blog inspired by Bear Blog, built with Nuxt 3 and focused on content over noise.',
-  url: 'https://example.com',
+  url: getBaseUrl(),
   author: {
     name: 'NuxtPapier',
     email: 'hello@example.com',
-    url: 'https://example.com',
+    url: getBaseUrl(),
   },
   social: {
     twitter: '@nuxtpapier',
