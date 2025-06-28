@@ -18,8 +18,8 @@ useSeoMeta({
   ogDescription: siteConfig.description,
 })
 
-// OG Image for homepage - using screenshot
-defineOgImageScreenshot()
+// OG Image temporarily disabled to avoid memory issues
+// defineOgImageScreenshot()
 </script>
 
 <template>

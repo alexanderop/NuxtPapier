@@ -41,7 +41,7 @@ useSeoMeta({
 })
 
 // OG Image generation - using screenshot
-defineOgImageScreenshot()
+// defineOgImageScreenshot() // Temporarily disabled to avoid memory issues
 
 // Structured data for SEO
 defineArticle({
