@@ -113,7 +113,11 @@ function useSearchNavigation(results: Ref<any[]>, onSelect: (path: string) => vo
   function selectCurrent() {
     const selected = results.value[selectedIndex.value]
     if (selected) {
-      onSelect(selected.item.id)
+      // Nuxt Content v3 uses 'path' property
+      const path = selected.item.path
+      if (path) {
+        onSelect(path)
+      }
     }
   }
 
@@ -308,10 +312,10 @@ onKeyStroke('Enter', () => {
         <div v-bind="wrapperProps">
           <button
             v-for="{ data: result, index } in list"
-            :key="result.item.id"
+            :key="result.item.path"
             :data-search-item="index"
             class="search-result" :class="[{ 'search-result-active': index === selectedIndex }]"
-            @click="navigateToResult(result.item.id)"
+            @click="navigateToResult(result.item.path)"
             @mouseenter="selectedIndex = index"
           >
             <div class="search-result-content">

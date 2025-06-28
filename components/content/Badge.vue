@@ -10,8 +10,6 @@ const {
   size = 'md',
   icon,
 } = defineProps<Props>()
-
-const slots = useSlots()
 </script>
 
 <template>
