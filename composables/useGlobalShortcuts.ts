@@ -53,8 +53,7 @@ export function useGlobalShortcuts() {
         .first()
 
       if (data) {
-        const path = data.path.startsWith('/blog') ? data.path : `/blog${data.path}`
-        router.push(path)
+        router.push(data.path)
       }
     },
 

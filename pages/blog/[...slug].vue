@@ -142,7 +142,7 @@ defineArticle({
         <div class="text-left">
           <NuxtLink
             v-if="prevPost"
-            :to="prevPost.path.startsWith('/blog') ? prevPost.path : `/blog${prevPost.path}`"
+            :to="prevPost.path"
             class="group inline-flex flex-col gap-1"
           >
             <span class="text-sm text-muted flex gap-2 items-center">
@@ -175,7 +175,7 @@ defineArticle({
         <div class="text-right">
           <NuxtLink
             v-if="nextPost"
-            :to="nextPost.path.startsWith('/blog') ? nextPost.path : `/blog${nextPost.path}`"
+            :to="nextPost.path"
             class="group text-right inline-flex flex-col gap-1"
           >
             <span class="text-sm text-muted flex gap-2 items-center justify-end">

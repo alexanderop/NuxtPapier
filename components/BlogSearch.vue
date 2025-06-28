@@ -209,18 +209,17 @@ async function navigateToResult(path: string) {
     const pagePath = path.substring(0, hashIndex)
     const hash = path.substring(hashIndex + 1)
 
-    // Ensure the path has proper /blog prefix and remove .md extension
+    // Remove .md extension - path should already be properly formatted
     const cleanPath = pagePath.replace(/\.md$/, '')
-    const fullPath = cleanPath.startsWith('/blog') ? cleanPath : `/blog${cleanPath}`
 
     // Check if we're already on the same page
-    if (route.path === fullPath) {
+    if (route.path === cleanPath) {
       // Just scroll to the section
       await scrollToSection(hash)
     }
     else {
       // Navigate to the page with hash in URL
-      await navigateTo(`${fullPath}#${hash}`)
+      await navigateTo(`${cleanPath}#${hash}`)
 
       // Wait for element to appear and scroll
       const element = await waitForElement(hash)
@@ -231,10 +230,9 @@ async function navigateToResult(path: string) {
   }
   else {
     // No hash, just navigate to the page
-    // Remove .md extension and ensure proper /blog prefix
+    // Remove .md extension - path should already be properly formatted
     const cleanPath = path.replace(/\.md$/, '')
-    const fullPath = cleanPath.startsWith('/blog') ? cleanPath : `/blog${cleanPath}`
-    await navigateTo(fullPath)
+    await navigateTo(cleanPath)
   }
 }
 

@@ -77,7 +77,7 @@ useSeoMeta({
               {{ formatDate(article.date) }}
             </time>
             <NuxtLink
-              :to="article.path.startsWith('/blog') ? article.path : `/blog${article.path}`"
+              :to="article.path"
               class="text-body transition-colors hover:text-brand-500"
             >
               {{ article.title }}

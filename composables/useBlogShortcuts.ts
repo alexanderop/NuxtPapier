@@ -22,8 +22,7 @@ export function useBlogShortcuts(posts: Ref<BlogPost[] | null>) {
   function navigateToPost(index: number) {
     const post = flatPosts.value[index]
     if (post) {
-      const path = post.path.startsWith('/blog') ? post.path : `/blog${post.path}`
-      router.push(path)
+      router.push(post.path)
     }
   }
 
@@ -96,19 +95,13 @@ export function useBlogPostNavigation(currentPost: Ref<any>) {
   // Navigation functions
   function navigateToNext() {
     if (navigationData.value.next) {
-      const path = navigationData.value.next.path.startsWith('/blog')
-        ? navigationData.value.next.path
-        : `/blog${navigationData.value.next.path}`
-      router.push(path)
+      router.push(navigationData.value.next.path)
     }
   }
 
   function navigateToPrev() {
     if (navigationData.value.prev) {
-      const path = navigationData.value.prev.path.startsWith('/blog')
-        ? navigationData.value.prev.path
-        : `/blog${navigationData.value.prev.path}`
-      router.push(path)
+      router.push(navigationData.value.prev.path)
     }
   }
 

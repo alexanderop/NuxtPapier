@@ -39,8 +39,7 @@ const router = useRouter()
 function navigateToPost(index: number) {
   if (recentPosts.value && recentPosts.value[index]) {
     const post = recentPosts.value[index]
-    const path = post.path.startsWith('/blog') ? post.path : `/blog${post.path}`
-    router.push(path)
+    router.push(post.path)
     closeModal()
   }
 }
