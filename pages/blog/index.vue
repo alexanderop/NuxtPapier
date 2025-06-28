@@ -47,6 +47,17 @@ function getPostIndex(yearIndex: number, postIndex: number): number {
   }
   return index + postIndex
 }
+
+// SEO meta for blog index
+useSeoMeta({
+  title: 'Blog',
+  description: 'All blog posts and articles',
+  ogTitle: 'Blog',
+  ogDescription: 'All blog posts and articles',
+})
+
+// OG Image for blog index
+defineOgImageScreenshot()
 </script>
 
 <template>
