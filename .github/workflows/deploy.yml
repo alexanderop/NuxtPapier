@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -20,6 +22,11 @@ jobs:
 
       - name: Build for GitHub Pages
         run: pnpm build --preset github_pages
+        env:
+          # Increase Node.js memory limit to 3GB (safe for 4GB runners)
+          NODE_OPTIONS: --max-old-space-size=3072
+          # Set production mode for optimizations
+          NODE_ENV: production
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

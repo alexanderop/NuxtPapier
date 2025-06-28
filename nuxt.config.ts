@@ -8,19 +8,41 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
-  ssr: true, // Explicitly enable SSR for SSG
+  ssr: true,
   nitro: {
-    preset: 'github_pages', // Use the built-in GitHub Pages preset
+    preset: 'github_pages',
     prerender: {
       routes: ['/rss.xml', '/atom.xml', '/feed.json', '/', '/blog', '/feeds'],
-      crawlLinks: true, // Enable crawling to discover all pages
-      failOnError: false, // Don't fail build on prerender errors
-      concurrency: 1, // Limit concurrent prerenders
-      interval: 200, // Add delay between prerenders
+      crawlLinks: true,
+      failOnError: false,
+      concurrency: 1,
+      interval: 300, // Increased interval to reduce memory pressure
     },
     routeRules: {
       '/blog/**': { prerender: true },
     },
+    // Memory optimizations
+    rollupConfig: {
+      output: {
+        manualChunks(id) {
+          // Split vendor chunks to reduce memory usage
+          if (id.includes('node_modules')) {
+            if (id.includes('@nuxt/content')) {
+              return 'content'
+            }
+            if (id.includes('vue') || id.includes('@vue')) {
+              return 'vue'
+            }
+            if (id.includes('shiki') || id.includes('highlight')) {
+              return 'syntax'
+            }
+            return 'vendor'
+          }
+        },
+      },
+    },
+    // Reduce source map generation in production
+    sourceMap: false,
   },
   css: [
     '~/assets/css/theme.css',
@@ -62,7 +84,6 @@ export default defineNuxtConfig({
         },
       ],
       script: [
-        // Prevent flash of light mode on page load
         {
           innerHTML: `
             (function() {
@@ -77,44 +98,52 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    '@nuxtjs/seo', // Re-enable SEO for proper sitemap generation
+    '@nuxtjs/seo',
     '@nuxt/content',
     '@nuxt/icon',
     '@unocss/nuxt',
     '@vueuse/nuxt',
-    '@nuxt/image', // Re-enable image module
+    '@nuxt/image',
   ],
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space',
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
   },
   seo: {
     siteName: siteConfig.name,
-    siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space',
+    siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
     trailingSlash: true,
     indexable: true,
-    redirectToCanonicalSiteUrl: false, // Important for custom domains
+    redirectToCanonicalSiteUrl: false,
     sitemap: {
       autoLastmod: true,
       xsl: false,
       strictNuxtContentPaths: true,
+      // Exclude dynamic routes to reduce memory usage
+      exclude: [
+        '/api/**',
+      ],
     },
     robots: {
-      robotsTxt: false, // Disable robots.txt generation when using baseURL
+      robotsTxt: false,
       rules: [
         { userAgent: '*', allow: '/' },
       ],
-      host: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space',
-      sitemap: `${process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop-nuxt-papier.nuxt.space'}/sitemap.xml`,
+      host: process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io',
+      sitemap: `${process.env.NUXT_PUBLIC_SITE_URL || 'https://alexanderop.github.io'}/NuxtPapier/sitemap.xml`,
     },
     ogImage: {
-      enabled: false, // Disable to prevent memory issues
+      enabled: false,
     },
   },
-  // Explicitly set experimental options for better SSG
   experimental: {
-    payloadExtraction: false, // Disable payload extraction to ensure full SSG
+    payloadExtraction: false,
+    // Reduce component islands overhead
+    componentIslands: false,
+    // Disable view transitions to save memory
+    viewTransition: false,
   },
   content: {
+    // Optimize content module for production
     build: {
       markdown: {
         toc: {
@@ -126,6 +155,8 @@ export default defineNuxtConfig({
             default: 'github-light',
             dark: 'dracula',
           },
+          // Preload only common languages to reduce bundle size
+          preload: ['js', 'ts', 'vue', 'css', 'html', 'bash', 'json'],
         },
       },
     },
@@ -139,12 +170,65 @@ export default defineNuxtConfig({
       },
     },
   },
+  // Build optimizations
+  build: {
+    // Reduce transpilation overhead
+    transpile: process.env.NODE_ENV === 'production' ? [] : undefined,
+  },
+  // Disable source maps in production
+  sourcemap: {
+    server: false,
+    client: false,
+  },
+  // Optimize Vue
+  vue: {
+    propsDestructure: true,
+    compilerOptions: {
+      // Remove comments in production
+      comments: process.env.NODE_ENV !== 'production',
+    },
+  },
+  // Optimize Vite build
+  vite: {
+    build: {
+      // Reduce chunk size warnings threshold
+      chunkSizeWarningLimit: 1000,
+      // Optimize rollup
+      rollupOptions: {
+        output: {
+          // Use smaller chunks
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('@nuxt/content')) {
+                return 'content'
+              }
+              if (id.includes('vue') || id.includes('@vue')) {
+                return 'vue'
+              }
+              if (id.includes('unocss') || id.includes('@unocss')) {
+                return 'uno'
+              }
+              if (id.includes('shiki') || id.includes('highlight')) {
+                return 'syntax'
+              }
+              return 'vendor'
+            }
+          },
+        },
+      },
+    },
+    // Optimize dependencies
+    optimizeDeps: {
+      include: ['vue', '@vueuse/core'],
+      exclude: ['@nuxt/content'],
+    },
+  },
   hooks: {
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx
 
       if (file.id.endsWith('.md')) {
-        // Add formatted date from frontmatter
+        // Optimized content processing
         if (content.date) {
           content.formattedDate = new Date(content.date as string).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -153,51 +237,32 @@ export default defineNuxtConfig({
           })
         }
 
-        // Add reading time calculation - simplified version
+        // Simplified reading time calculation
         const wordsPerMinute = 180
-        // Simple text extraction without deep recursion
         let text = ''
-        if (content.body) {
-          // Use the markdown source if available
-          if (content._raw && typeof content._raw === 'string') {
-            text = content._raw
-          }
-          else if (typeof content.body === 'string') {
-            text = content.body
-          }
-          else {
-            // Fallback to a simple estimate based on content length
-            text = JSON.stringify(content).slice(0, 5000) // Limit to prevent memory issues
-          }
+        if (content.body && content._raw && typeof content._raw === 'string') {
+          text = content._raw.slice(0, 5000) // Limit text processing
         }
 
         const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
         content.readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute))
 
-        // Enhanced metadata processing
-        // Generate excerpt if not provided
-        if (!content.excerpt && content.description) {
-          content.excerpt = content.description
-        }
-        else if (!content.excerpt) {
-          content.excerpt = 'No description available.'
+        // Minimal metadata processing
+        if (!content.excerpt) {
+          content.excerpt = content.description || 'No description available.'
         }
 
-        // Process tags to ensure they're arrays
         if (content.tags && typeof content.tags === 'string') {
           content.tags = content.tags.split(',').map((tag: string) => tag.trim())
         }
 
-        // Add slug from filename if not provided
         if (!content.slug) {
-          const pathParts = file.id.split('/')
-          const filename = pathParts[pathParts.length - 1]
+          const filename = file.id.split('/').pop()
           if (filename) {
             content.slug = filename.replace('.md', '')
           }
         }
 
-        // Add author defaults from site config if not provided
         if (!content.author) {
           content.author = {
             name: siteConfig.author,
@@ -205,7 +270,6 @@ export default defineNuxtConfig({
           }
         }
 
-        // Process featured image
         if (content.image && typeof content.image === 'string') {
           content.image = {
             src: content.image,
@@ -213,7 +277,6 @@ export default defineNuxtConfig({
           }
         }
 
-        // Add timestamps
         if (!content.createdAt && content.date) {
           content.createdAt = new Date(content.date as string).toISOString()
         }
@@ -221,12 +284,8 @@ export default defineNuxtConfig({
           content.updatedAt = content.createdAt || new Date().toISOString()
         }
 
-        // Add status with default
-        if (!content.status) {
-          content.status = 'published'
-        }
+        content.status = content.status || 'published'
 
-        // Process category
         if (content.category && typeof content.category === 'string') {
           content.categorySlug = content.category.toLowerCase().replace(/\s+/g, '-')
         }
@@ -234,3 +293,4 @@ export default defineNuxtConfig({
     },
   },
 })
+
