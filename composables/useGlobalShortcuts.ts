@@ -91,6 +91,12 @@ export function useGlobalShortcuts() {
     'k': () => {
       window.scrollBy({ top: -100, behavior: 'smooth' })
     },
+    'g-g': () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    'shift_g': () => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+    },
   }))
 
   // Register global shortcuts with the manager

@@ -49,6 +49,8 @@ const shortcuts = [
     items: [
       { keys: ['j'], description: 'Scroll down' },
       { keys: ['k'], description: 'Scroll up' },
+      { keys: ['g', 'g'], description: 'Scroll to top' },
+      { keys: ['shift', 'g'], description: 'Scroll to bottom' },
     ],
   },
   {
