@@ -15,102 +15,125 @@ const {
 <template>
   <div
     style="
+      position: relative;
       height: 100%;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #2d3748;
-      font-family: 'IBM Plex Sans', sans-serif;
-      position: relative;
+      background-color: #121212;
+      color: #e066ff;
+      font-family: 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      overflow: hidden;
       padding: 40px;
     "
   >
-    <!-- Rounded border frame -->
+    <!-- Abstract wave background -->
     <div
       style="
-        width: 100%;
-        height: 100%;
-        border: 6px solid #ed64a6;
-        border-radius: 24px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 60px;
-        position: relative;
+        position: absolute;
+        top: -30%;
+        left: -10%;
+        width: 120%;
+        height: 120%;
+        transform: rotate(-8deg);
+        opacity: 0.3;
       "
     >
-      <!-- Title section -->
+      <svg
+        viewBox="0 0 800 600"
+        fill="none"
+        style="width: 100%; height: 100%;"
+      >
+        <path
+          d="M0 350C150 250 350 450 500 350S650 250 800 350"
+          stroke="#6b30ff"
+          stroke-width="160"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+
+    <!-- Content container -->
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        max-width: 100%;
+      "
+    >
+      <!-- Blog icon -->
       <div
         style="
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          flex: 1;
-          text-align: center;
+          margin-bottom: 48px;
+          filter: drop-shadow(0 0 24px #e066ff80);
         "
       >
-        <h1
-          style="
-            font-size: 80px;
-            font-weight: 800;
-            color: #ed64a6;
-            line-height: 1.1;
-            margin: 0;
-            text-align: center;
-            max-width: 100%;
-            font-family: 'IBM Plex Sans', sans-serif;
-          "
+        <svg
+          width="120"
+          height="80"
+          viewBox="0 0 120 80"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         >
-          {{ title || 'Untitled Post' }}
-        </h1>
+          <rect x="4" y="4" width="112" height="72" rx="8" />
+          <line x1="16" y1="32" x2="104" y2="32" />
+          <line x1="16" y1="48" x2="104" y2="48" />
+          <line x1="48" y1="64" x2="72" y2="64" />
+        </svg>
       </div>
 
-      <!-- Bottom section with author and website -->
+      <!-- Title -->
       <div
         style="
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-top: 40px;
+          font-size: 56px;
+          font-weight: 800;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          text-align: center;
+          max-width: 90%;
+          margin-bottom: 24px;
+          word-break: break-word;
         "
       >
-        <!-- Left side: Author -->
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 24px;
-            color: #a0aec0;
-          "
-        >
-          <span style="color: #a0aec0;">by</span>
-          <span
-            style="
-              background: #ed64a6;
-              color: #2d3748;
-              padding: 8px 16px;
-              border-radius: 6px;
-              font-weight: 600;
-            "
-          >
-            {{ author || 'Anonymous' }}
-          </span>
-        </div>
+        {{ title || 'Untitled Post' }}
+      </div>
 
-        <!-- Right side: Site name -->
-        <div
-          style="
-             font-size: 28px;
-             color: #a0aec0;
-             font-weight: 500;
-           "
-        >
-          {{ siteConfig.name }}
-        </div>
+      <!-- Author -->
+      <div
+        style="
+          font-size: 28px;
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 12px;
+          text-transform: none;
+        "
+      >
+        by {{ author || 'Anonymous' }}
+      </div>
+
+      <!-- Website -->
+      <div
+        style="
+          font-size: 24px;
+          font-weight: 500;
+          color: #a0a0a0;
+          text-transform: none;
+        "
+      >
+        {{ siteConfig.url?.replace(/^https?:\/\//, '') || 'example.com' }}
       </div>
     </div>
   </div>
