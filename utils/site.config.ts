@@ -24,12 +24,12 @@ export interface SiteConfig {
 
 // Get the base URL from environment variables for GitHub Pages support
 function getBaseUrl() {
-  if (process.env.NUXT_APP_BASE_URL && process.env.NUXT_APP_BASE_URL !== '/') {
-    // Remove trailing slash if present
-    const baseUrl = process.env.NUXT_APP_BASE_URL.replace(/\/$/, '')
-    return `https://${process.env.GITHUB_REPOSITORY_OWNER || 'your-username'}.github.io${baseUrl}`
+  // For production deployment
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://alexanderop-nuxt-papier.nuxt.space'
   }
-  return 'https://example.com' // Fallback for local development
+  // For local development
+  return 'http://localhost:3000'
 }
 
 export const siteConfig: SiteConfig = {
