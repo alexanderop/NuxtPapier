@@ -55,9 +55,6 @@ useSeoMeta({
   ogTitle: 'Blog',
   ogDescription: 'All blog posts and articles',
 })
-
-// OG Image for blog index
-defineOgImageScreenshot()
 </script>
 
 <template>

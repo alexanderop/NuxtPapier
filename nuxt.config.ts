@@ -9,15 +9,12 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   ...(process.env.NUXT_APP_BASE_URL ? {
+    ssr: false,
     nitro: {
       prerender: {
         routes: [],
-        crawlLinks: true,
+        crawlLinks: false,
       },
-    },
-    routeRules: {
-      // Prerender all pages for static hosting
-      '/**': { prerender: true },
     },
   } : {
     nitro: {
@@ -81,41 +78,43 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    '@nuxtjs/seo',
+    ...(process.env.NUXT_APP_BASE_URL ? [] : ['@nuxtjs/seo']),
     '@nuxt/content',
     '@nuxt/icon',
     '@unocss/nuxt',
     '@vueuse/nuxt',
     '@nuxt/image',
   ],
-  seo: {
-    siteUrl: siteConfig.url,
-    siteName: siteConfig.name,
-    trailingSlash: true,
-    indexable: true,
-    sitemap: {
-      autoLastmod: true,
-      xsl: false,
-      strictNuxtContentPaths: true,
-      enabled: !process.env.NUXT_APP_BASE_URL,
+  ...(process.env.NUXT_APP_BASE_URL ? {} : {
+    seo: {
+      siteUrl: siteConfig.url,
+      siteName: siteConfig.name,
+      trailingSlash: true,
+      indexable: true,
+      sitemap: {
+        autoLastmod: true,
+        xsl: false,
+        strictNuxtContentPaths: true,
+      },
+      robots: {
+        rules: [
+          { userAgent: '*', allow: '/' },
+          { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
+        ],
+        host: siteConfig.url,
+        sitemap: `${siteConfig.url}/sitemap.xml`,
+      },
     },
-    robots: {
-      enabled: !process.env.NUXT_APP_BASE_URL,
-      rules: [
-        { userAgent: '*', allow: '/' },
-        { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
-      ],
-      host: siteConfig.url,
-      sitemap: `${siteConfig.url}/sitemap.xml`,
+  }),
+  ...(process.env.NUXT_APP_BASE_URL ? {} : {
+    ogImage: {
+      defaults: {
+        renderer: 'chromium',
+        width: 1200,
+        height: 630,
+      },
     },
-  },
-  ogImage: {
-    defaults: {
-      renderer: 'chromium',
-      width: 1200,
-      height: 630,
-    },
-  },
+  }),
   content: {
     build: {
       markdown: {
@@ -232,40 +231,6 @@ export default defineNuxtConfig({
         if (content.category && typeof content.category === 'string') {
           content.categorySlug = content.category.toLowerCase().replace(/\s+/g, '-')
         }
-      }
-    },
-    
-    // Pre-render OG images for static hosting
-    async 'prerender:routes'(ctx) {
-      if (!process.env.NUXT_APP_BASE_URL) return // Only for static hosting
-      
-      // Import filesystem modules
-      const { resolve } = await import('path')
-      const { readdir } = await import('fs/promises')
-      
-      try {
-        // Get all blog post files
-        const contentDir = resolve(process.cwd(), 'content/blog')
-        const files = await readdir(contentDir)
-        const blogPosts = files.filter(file => file.endsWith('.md'))
-        
-        // Add OG image routes for each blog post
-        for (const file of blogPosts) {
-          const slug = file.replace('.md', '')
-          const blogRoute = `/blog/${slug}`
-          
-          // Add the OG image route for this blog post
-          ctx.routes.add(`/__og-image__/image${blogRoute}/og.png`)
-        }
-        
-        // Add main page OG image routes
-        ctx.routes.add('/__og-image__/image/og.png') // Home page
-        ctx.routes.add('/__og-image__/image/blog/og.png') // Blog index
-        
-        console.log('🎨 Pre-rendering OG images for static hosting...')
-        
-      } catch (error) {
-        console.warn('Could not prerender OG image routes:', error.message)
       }
     },
   },

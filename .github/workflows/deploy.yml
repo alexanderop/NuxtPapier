@@ -62,7 +62,7 @@ jobs:
         env:
           NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
-          NODE_OPTIONS: "--max-old-space-size=4096"
+          NODE_OPTIONS: "--max-old-space-size=8192"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
