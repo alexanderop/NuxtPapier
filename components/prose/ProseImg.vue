@@ -33,7 +33,7 @@ onUnmounted(() => {
 <template>
   <figure class="prose-img-figure">
     <div class="prose-img-wrapper" @click="toggleZoom">
-      <NuxtImg
+      <img
         v-bind="$attrs"
         :src="src"
         :alt="alt"
@@ -57,7 +57,7 @@ onUnmounted(() => {
         class="prose-img-overlay"
         @click="toggleZoom"
       >
-        <NuxtImg
+        <img
           :src="src"
           :alt="alt"
           class="prose-img-zoomed-image"

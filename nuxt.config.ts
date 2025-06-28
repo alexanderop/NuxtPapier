@@ -9,10 +9,9 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   nitro: {
-    preset: 'static',
     prerender: {
       routes: ['/rss.xml', '/atom.xml', '/feed.json'],
-      crawlLinks: true,
+      crawlLinks: false,
     },
   },
   css: [
@@ -70,35 +69,36 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    '@nuxtjs/seo',
+    // '@nuxtjs/seo', // Temporarily disabled to reduce memory usage
     '@nuxt/content',
     '@nuxt/icon',
     '@unocss/nuxt',
     '@vueuse/nuxt',
-    '@nuxt/image',
+    // '@nuxt/image', // Temporarily disabled to reduce memory usage
   ],
-  site: {
-    url: 'https://alexanderop-nuxt-papier.nuxt.space',
-  },
-  seo: {
-    siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
-    siteName: siteConfig.name,
-    trailingSlash: true,
-    indexable: true,
-    sitemap: {
-      autoLastmod: true,
-      xsl: false,
-      strictNuxtContentPaths: true,
-    },
-    robots: {
-      rules: [
-        { userAgent: '*', allow: '/' },
-        { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
-      ],
-      host: 'https://alexanderop-nuxt-papier.nuxt.space',
-      sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
-    },
-  },
+  // Temporarily disable SEO config to reduce memory usage
+  // site: {
+  //   url: 'https://alexanderop-nuxt-papier.nuxt.space',
+  // },
+  // seo: {
+  //   siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
+  //   siteName: siteConfig.name,
+  //   trailingSlash: true,
+  //   indexable: true,
+  //   sitemap: {
+  //     autoLastmod: true,
+  //     xsl: false,
+  //     strictNuxtContentPaths: true,
+  //   },
+  //   robots: {
+  //     rules: [
+  //       { userAgent: '*', allow: '/' },
+  //       { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
+  //     ],
+  //     host: 'https://alexanderop-nuxt-papier.nuxt.space',
+  //     sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
+  //   },
+  // },
   // Temporarily disable OG image generation to avoid memory issues
   // ...(process.env.NUXT_APP_BASE_URL ? {} : {
   //   ogImage: {
