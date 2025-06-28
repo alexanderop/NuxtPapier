@@ -23,8 +23,8 @@ jobs:
       - name: Build for GitHub Pages
         run: pnpm build
         env:
-          # Increase Node.js memory limit to 3GB
-          NODE_OPTIONS: --max-old-space-size=3072
+          # Increase Node.js memory limit to 4GB
+          NODE_OPTIONS: --max-old-space-size=4096
           # Ensure production mode
           NODE_ENV: production
           # Set the site URL for proper generation
@@ -45,4 +45,3 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/deploy-pages@v4
-

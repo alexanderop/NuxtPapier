@@ -21,6 +21,9 @@ export default defineNuxtConfig({
     routeRules: {
       '/blog/**': { prerender: true },
     },
+    // Optimize build for memory efficiency
+    compressPublicAssets: false,
+    minify: false,
   },
   css: [
     '~/assets/css/theme.css',
@@ -149,6 +152,8 @@ export default defineNuxtConfig({
   // Build optimizations
   build: {
     transpile: process.env.NODE_ENV === 'production' ? [] : undefined,
+    // Reduce memory usage during build
+    analyze: false,
   },
   // Disable source maps in production
   sourcemap: {
@@ -166,10 +171,25 @@ export default defineNuxtConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 1000,
+      // Reduce memory usage during build
+      sourcemap: false,
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
       rollupOptions: {
         output: {
           manualChunks: undefined, // Let Vite handle chunking
         },
+      },
+    },
+    // Reduce memory during dev/build
+    server: {
+      fs: {
+        strict: false,
       },
     },
   },
@@ -240,4 +260,3 @@ export default defineNuxtConfig({
     },
   },
 })
-
