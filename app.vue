@@ -12,20 +12,23 @@ useHead({
   ],
 })
 
-// Define the website schema for structured data
-defineWebSite({
-  name: siteConfig.name,
-  description: siteConfig.description,
-  url: siteConfig.url,
-})
+// Only define SEO schemas if the functions are available
+if (typeof defineWebSite !== 'undefined') {
+  defineWebSite({
+    name: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+  })
+}
 
-// Define organization for rich snippets
-defineOrganization({
-  name: siteConfig.name,
-  url: siteConfig.url,
-  logo: `${siteConfig.url}${siteConfig.logo}`,
-  sameAs: Object.values(siteConfig.social || {}).filter(Boolean),
-})
+if (typeof defineOrganization !== 'undefined') {
+  defineOrganization({
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: `${siteConfig.url}${siteConfig.logo}`,
+    sameAs: Object.values(siteConfig.social || {}).filter(Boolean),
+  })
+}
 </script>
 
 <template>

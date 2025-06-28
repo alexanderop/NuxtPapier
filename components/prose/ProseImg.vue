@@ -40,7 +40,7 @@ onUnmounted(() => {
         :loading="loading"
         class="prose-img"
         :class="{ 'prose-img-zoomed': isZoomed }"
-      />
+      >
       <div v-if="!isZoomed" class="prose-img-zoom-hint">
         <Icon name="i-ph-magnifying-glass-plus" />
       </div>
@@ -61,7 +61,7 @@ onUnmounted(() => {
           :src="src"
           :alt="alt"
           class="prose-img-zoomed-image"
-        />
+        >
         <button class="prose-img-close" @click.stop="toggleZoom">
           <Icon name="i-ph-x" />
         </button>

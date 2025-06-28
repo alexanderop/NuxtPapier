@@ -61,7 +61,7 @@ jobs:
         run: pnpm generate
         env:
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
-          NODE_OPTIONS: "--max-old-space-size=16384"
+          NODE_OPTIONS: --max-old-space-size=16384
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

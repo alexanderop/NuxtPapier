@@ -8,11 +8,15 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
+  ssr: true, // Explicitly enable SSR for SSG
   nitro: {
+    preset: process.env.NITRO_PRESET || 'static', // Allow override but default to static
     prerender: {
-      routes: ['/rss.xml', '/atom.xml', '/feed.json'],
-      crawlLinks: false,
+      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/'],
+      crawlLinks: true, // Enable crawling to discover all pages
+      failOnError: false, // Don't fail build on prerender errors
     },
+    static: true, // Force static mode
   },
   css: [
     '~/assets/css/theme.css',
@@ -69,46 +73,42 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    // '@nuxtjs/seo', // Temporarily disabled to reduce memory usage
+    '@nuxtjs/seo', // Re-enable SEO for proper sitemap generation
     '@nuxt/content',
     '@nuxt/icon',
     '@unocss/nuxt',
     '@vueuse/nuxt',
-    // '@nuxt/image', // Temporarily disabled to reduce memory usage
+    '@nuxt/image', // Re-enable image module
   ],
-  // Temporarily disable SEO config to reduce memory usage
-  // site: {
-  //   url: 'https://alexanderop-nuxt-papier.nuxt.space',
-  // },
-  // seo: {
-  //   siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
-  //   siteName: siteConfig.name,
-  //   trailingSlash: true,
-  //   indexable: true,
-  //   sitemap: {
-  //     autoLastmod: true,
-  //     xsl: false,
-  //     strictNuxtContentPaths: true,
-  //   },
-  //   robots: {
-  //     rules: [
-  //       { userAgent: '*', allow: '/' },
-  //       { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
-  //     ],
-  //     host: 'https://alexanderop-nuxt-papier.nuxt.space',
-  //     sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
-  //   },
-  // },
-  // Temporarily disable OG image generation to avoid memory issues
-  // ...(process.env.NUXT_APP_BASE_URL ? {} : {
-  //   ogImage: {
-  //     defaults: {
-  //       renderer: 'chromium',
-  //       width: 1200,
-  //       height: 630,
-  //     },
-  //   },
-  // }),
+  site: {
+    url: 'https://alexanderop-nuxt-papier.nuxt.space',
+  },
+  seo: {
+    siteName: siteConfig.name,
+    siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
+    trailingSlash: true,
+    indexable: true,
+    redirectToCanonicalSiteUrl: false, // Important for custom domains
+    sitemap: {
+      autoLastmod: true,
+      xsl: false,
+      strictNuxtContentPaths: true,
+    },
+    robots: {
+      rules: [
+        { userAgent: '*', allow: '/' },
+      ],
+      host: 'https://alexanderop-nuxt-papier.nuxt.space',
+      sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
+    },
+    ogImage: {
+      enabled: false, // Disable to prevent memory issues
+    },
+  },
+  // Explicitly set experimental options for better SSG
+  experimental: {
+    payloadExtraction: false, // Disable payload extraction to ensure full SSG
+  },
   content: {
     build: {
       markdown: {
@@ -158,7 +158,8 @@ export default defineNuxtConfig({
         else if (content.body && typeof (content.body as any).children === 'object') {
           // Extract text from AST nodes with depth limit to prevent memory issues
           const extractText = (nodes: any[], depth = 0): string => {
-            if (depth > 20) return '' // Prevent infinite recursion
+            if (depth > 20)
+              return '' // Prevent infinite recursion
             return nodes.map((node) => {
               if (node.type === 'text')
                 return node.value || ''
