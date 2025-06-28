@@ -40,8 +40,11 @@ useSeoMeta({
   twitterImage: seoImage,
 })
 
-// OG Image generation - using screenshot
-// defineOgImageScreenshot() // Temporarily disabled to avoid memory issues
+// OG Image generation - using custom template
+defineOgImageComponent('BlogPost', {
+  title: page.value.title,
+  author: page.value.author?.name || siteConfig.author.name,
+})
 
 // Structured data for SEO
 defineArticle({
