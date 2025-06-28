@@ -9,9 +9,10 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   nitro: {
+    preset: 'static',
     prerender: {
       routes: ['/rss.xml', '/atom.xml', '/feed.json'],
-      crawlLinks: false,
+      crawlLinks: true,
     },
   },
   css: [
