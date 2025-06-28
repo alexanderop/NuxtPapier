@@ -8,28 +8,18 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
-  ...(process.env.NUXT_APP_BASE_URL ? {
-    ssr: false,
-    nitro: {
-      prerender: {
-        routes: [],
-        crawlLinks: false,
-      },
+  nitro: {
+    prerender: {
+      routes: ['/rss.xml', '/atom.xml', '/feed.json'],
+      crawlLinks: false,
     },
-  } : {
-    nitro: {
-      prerender: {
-        routes: ['/rss.xml', '/atom.xml', '/feed.json'],
-        crawlLinks: false,
-      },
-    },
-  }),
+  },
   css: [
     '~/assets/css/theme.css',
     '~/assets/css/prose.css',
   ],
   app: {
-    baseURL: process.env.NUXT_APP_BASE_URL || '/',
+    baseURL: '/',
     head: {
       htmlAttrs: {
         lang: siteConfig.language,
@@ -79,37 +69,35 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    ...(process.env.NUXT_APP_BASE_URL ? [] : ['@nuxtjs/seo']),
+    '@nuxtjs/seo',
     '@nuxt/content',
     '@nuxt/icon',
     '@unocss/nuxt',
     '@vueuse/nuxt',
     '@nuxt/image',
   ],
-  ...(process.env.NUXT_APP_BASE_URL ? {} : {
-    site: {
-      url: 'https://alexanderop-nuxt-papier.nuxt.space',
+  site: {
+    url: 'https://alexanderop-nuxt-papier.nuxt.space',
+  },
+  seo: {
+    siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
+    siteName: siteConfig.name,
+    trailingSlash: true,
+    indexable: true,
+    sitemap: {
+      autoLastmod: true,
+      xsl: false,
+      strictNuxtContentPaths: true,
     },
-    seo: {
-      siteUrl: 'https://alexanderop-nuxt-papier.nuxt.space',
-      siteName: siteConfig.name,
-      trailingSlash: true,
-      indexable: true,
-      sitemap: {
-        autoLastmod: true,
-        xsl: false,
-        strictNuxtContentPaths: true,
-      },
-      robots: {
-        rules: [
-          { userAgent: '*', allow: '/' },
-          { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
-        ],
-        host: 'https://alexanderop-nuxt-papier.nuxt.space',
-        sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
-      },
+    robots: {
+      rules: [
+        { userAgent: '*', allow: '/' },
+        { userAgent: 'AhrefsBot', disallow: ['/preview/'] },
+      ],
+      host: 'https://alexanderop-nuxt-papier.nuxt.space',
+      sitemap: 'https://alexanderop-nuxt-papier.nuxt.space/sitemap.xml',
     },
-  }),
+  },
   // Temporarily disable OG image generation to avoid memory issues
   // ...(process.env.NUXT_APP_BASE_URL ? {} : {
   //   ogImage: {
