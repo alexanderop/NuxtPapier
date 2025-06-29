@@ -6,6 +6,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const result = await tryCatch(generateFeed(event))
 
   if (result.error) {
+    console.error('RSS Feed Generation Error:', result.error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to generate RSS feed',
