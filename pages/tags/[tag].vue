@@ -53,14 +53,8 @@ useSeoMeta({
         No posts found for this tag.
       </div>
 
-      <div v-else class="space-y-8">
-        <article
-          v-for="post in posts"
-          :key="post.path"
-          class="pb-8 border-b border-border last:border-b-0"
-        >
-          <BlogPostCard :post="post" />
-        </article>
+      <div v-else>
+        <BlogPostList :posts="posts" />
       </div>
     </div>
   </div>
