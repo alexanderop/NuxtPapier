@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, shallowRef } from 'vue'
+import { tryCatch } from '~/utils/tryCatch'
 
 interface Props {
   code?: string
@@ -79,8 +80,8 @@ button:hover {
 </style>`
 
 onMounted(async () => {
-  try {
-    // Dynamic imports to prevent SSR issues
+  // Dynamic imports to prevent SSR issues
+  const loadModules = async () => {
     const replModule = await import('@vue/repl')
     const editorModule = props.editor === 'monaco'
       ? await import('@vue/repl/monaco-editor')
@@ -119,13 +120,15 @@ onMounted(async () => {
       store.value.options.showCompileOutput = props.showCompileOutput
       store.value.options.showImportMap = props.showImportMap
     }
+  }
 
-    isLoading.value = false
+  const result = await tryCatch(loadModules())
+
+  if (result.error) {
+    console.error('Failed to load Vue REPL:', result.error)
   }
-  catch (error) {
-    console.error('Failed to load Vue REPL:', error)
-    isLoading.value = false
-  }
+
+  isLoading.value = false
 })
 </script>
 

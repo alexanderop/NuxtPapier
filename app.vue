@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { tryCatch } from '~/utils/tryCatch'
+
 useDark({
   initialValue: 'dark',
 })
@@ -13,31 +15,27 @@ useHead({
 })
 
 // Only define SEO schemas if the functions are available (SEO module loaded)
-try {
-  if (typeof defineWebSite === 'function') {
+if (typeof defineWebSite === 'function') {
+  tryCatch(Promise.resolve(
     defineWebSite({
       name: siteConfig.name,
       description: siteConfig.description,
       url: siteConfig.url,
-    })
-  }
-}
-catch {
-  // SEO module not loaded, ignore
+    }),
+  ))
+  // Errors are intentionally ignored - SEO module may not be loaded
 }
 
-try {
-  if (typeof defineOrganization === 'function') {
+if (typeof defineOrganization === 'function') {
+  tryCatch(Promise.resolve(
     defineOrganization({
       name: siteConfig.name,
       url: siteConfig.url,
       logo: `${siteConfig.url}${siteConfig.logo}`,
       sameAs: Object.values(siteConfig.social || {}).filter(Boolean),
-    })
-  }
-}
-catch {
-  // SEO module not loaded, ignore
+    }),
+  ))
+  // Errors are intentionally ignored - SEO module may not be loaded
 }
 </script>
 

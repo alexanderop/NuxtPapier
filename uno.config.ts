@@ -14,24 +14,24 @@ export default defineConfig({
     colors: {
       // Brand colors using OKLCH with CSS variables
       brand: {
-        50: 'oklch(var(--brand-50) / <alpha-value>)',
-        100: 'oklch(var(--brand-100) / <alpha-value>)',
-        200: 'oklch(var(--brand-200) / <alpha-value>)',
-        300: 'oklch(var(--brand-300) / <alpha-value>)',
-        400: 'oklch(var(--brand-400) / <alpha-value>)',
-        500: 'oklch(var(--brand-500) / <alpha-value>)', // Primary
-        600: 'oklch(var(--brand-600) / <alpha-value>)',
-        700: 'oklch(var(--brand-700) / <alpha-value>)',
-        800: 'oklch(var(--brand-800) / <alpha-value>)',
-        900: 'oklch(var(--brand-900) / <alpha-value>)',
-        950: 'oklch(var(--brand-950) / <alpha-value>)',
+        50: 'oklch(var(--brand-50))',
+        100: 'oklch(var(--brand-100))',
+        200: 'oklch(var(--brand-200))',
+        300: 'oklch(var(--brand-300))',
+        400: 'oklch(var(--brand-400))',
+        500: 'oklch(var(--brand-500))', // Primary
+        600: 'oklch(var(--brand-600))',
+        700: 'oklch(var(--brand-700))',
+        800: 'oklch(var(--brand-800))',
+        900: 'oklch(var(--brand-900))',
+        950: 'oklch(var(--brand-950))',
       },
       // Semantic colors
-      background: 'oklch(var(--color-background) / <alpha-value>)',
-      surface: 'oklch(var(--color-surface) / <alpha-value>)',
-      text: 'oklch(var(--color-text) / <alpha-value>)',
-      muted: 'oklch(var(--color-muted) / <alpha-value>)',
-      border: 'oklch(var(--color-border) / <alpha-value>)',
+      background: 'oklch(var(--color-background))',
+      surface: 'oklch(var(--color-surface))',
+      text: 'oklch(var(--color-text))',
+      muted: 'oklch(var(--color-muted))',
+      border: 'oklch(var(--color-border))',
     },
   },
   shortcuts: {
