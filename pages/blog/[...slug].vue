@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { getPostByPath } from '~/utils/content-queries'
+
 const route = useRoute()
 const { data: page } = await useAsyncData(route.path, () => {
-  return queryCollection('blog').path(route.path).first()
+  return getPostByPath(route.path)
 })
 
 if (!page.value) {

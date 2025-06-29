@@ -1,14 +1,8 @@
 <script setup lang="ts">
+import { getRecentPosts } from '~/utils/content-queries'
+
 const { data: recentPosts } = await useAsyncData('recent-posts', () =>
-  queryCollection('blog')
-    .order('date', 'DESC')
-    .orWhere(query =>
-      query
-        .where('draft', '<>', true)
-        .where('draft', 'IS NULL'),
-    )
-    .limit(3)
-    .all())
+  getRecentPosts(3))
 
 // SEO configuration for homepage
 useSeoMeta({

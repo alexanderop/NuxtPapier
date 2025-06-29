@@ -1,32 +1,18 @@
 <script setup lang="ts">
-const { pending, data: posts } = await useAsyncData('tags-posts', () =>
-  queryCollection('blog')
-    .where('status', '=', 'published')
-    .where('draft', '<>', true)
-    .all())
+import { getAllTags } from '~/utils/content-queries'
+
+const { pending, data: tagsData } = await useAsyncData('tags-list', () =>
+  getAllTags())
 
 const tags = computed(() => {
-  if (!posts.value)
+  if (!tagsData.value)
     return []
 
-  const tagMap = new Map<string, number>()
-
-  posts.value.forEach((post) => {
-    if (post.tags && Array.isArray(post.tags)) {
-      post.tags.forEach((tag) => {
-        const normalizedTag = tag.toLowerCase().trim()
-        tagMap.set(normalizedTag, (tagMap.get(normalizedTag) || 0) + 1)
-      })
-    }
-  })
-
-  return Array.from(tagMap.entries())
-    .map(([name, count]) => ({
-      name,
-      slug: name.replace(/\s+/g, '-'),
-      count,
-    }))
-    .sort((a, b) => b.count - a.count)
+  return tagsData.value.map(({ tag, count }) => ({
+    name: tag,
+    slug: tag.replace(/\s+/g, '-'),
+    count,
+  }))
 })
 
 useSeoMeta({

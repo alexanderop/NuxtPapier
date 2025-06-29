@@ -1,13 +1,8 @@
 <script setup lang="ts">
+import { getAllPublishedPosts } from '~/utils/content-queries'
+
 const { data: blogPosts } = await useAsyncData('blog-posts', () => {
-  return queryCollection('blog')
-    .order('date', 'DESC')
-    .orWhere(query =>
-      query
-        .where('draft', '<>', true)
-        .where('draft', 'IS NULL'),
-    )
-    .all()
+  return getAllPublishedPosts()
 })
 
 // SEO meta for blog index

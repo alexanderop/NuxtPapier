@@ -1,22 +1,12 @@
 <script setup lang="ts">
+import { getPostsByTag } from '~/utils/content-queries'
+
 const route = useRoute()
 const tag = computed(() => route.params.tag as string)
 
 const { pending, data: posts } = await useAsyncData(
   `tag-posts-${tag.value}`,
-  async () => {
-    // Since tags is an array, we need to filter client-side
-    // Nuxt Content doesn't have a built-in array contains operator
-    const allPosts = await queryCollection('blog')
-      .where('status', '=', 'published')
-      .where('draft', '<>', true)
-      .order('date', 'DESC')
-      .all()
-
-    return allPosts.filter(post =>
-      post.tags && Array.isArray(post.tags) && post.tags.includes(tag.value),
-    )
-  },
+  () => getPostsByTag(tag.value),
 )
 
 useSeoMeta({

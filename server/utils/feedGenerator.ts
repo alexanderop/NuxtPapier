@@ -1,6 +1,7 @@
 import type { BlogCollectionItem } from '@nuxt/content'
 import type { H3Event } from 'h3'
 import { Feed } from 'feed'
+import { queryPublishedPosts } from '~/utils/content-queries'
 import { siteConfig } from '~/utils/site.config'
 import { tryCatch } from '~/utils/tryCatch'
 
@@ -32,14 +33,9 @@ export async function generateFeed(event: H3Event) {
   let posts: BlogCollectionItem[] = []
 
   const result = await tryCatch<BlogCollectionItem[]>(
-    // @ts-expect-error - queryCollection works with event in server contextg
-    queryCollection(event, 'blog')
-      .orWhere(query =>
-        query
-          .where('draft', '<>', true)
-          .where('draft', 'IS NULL'),
-      )
-      .order('date', 'DESC')
+    // @ts-expect-error - queryCollection works with event in server context
+    queryPublishedPosts(queryCollection(event, 'blog'))
+      .only(['title', 'description', 'excerpt', 'date', 'tags', 'author', 'path', 'slug', 'image'])
       .all(),
   )
 

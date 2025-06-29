@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Fuse from 'fuse.js'
+import { getAllPublishedPosts } from '~/utils/content-queries'
 
 const isOpen = defineModel<boolean>({ required: true })
 const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
@@ -36,13 +37,7 @@ function useSearchResults() {
 
   // Fetch search data
   const { data: searchData } = useAsyncData('search-data', () =>
-    queryCollection('blog')
-      .orWhere(query =>
-        query
-          .where('draft', '<>', true)
-          .where('draft', 'IS NULL'),
-      )
-      .all())
+    getAllPublishedPosts())
 
   // Initialize Fuse.js
   const fuse = computed(() => {
