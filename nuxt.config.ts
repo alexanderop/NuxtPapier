@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 import { siteConfig } from './utils/site.config'
 
@@ -23,14 +24,24 @@ export default defineNuxtConfig({
         // Blog routes will be added dynamically via the nitro:config hook
       ],
       // Reduce concurrent page generation to minimize memory usage
-      concurrency: 2,
+      concurrency: 1,
       // Disable crawling to prevent memory exhaustion
       crawlLinks: false,
       // Continue build even if some pages fail
       failOnError: false,
-      // Disable inline styles to reduce memory usage
-      inlineDynamicImports: false,
     },
+    // Add filesystem storage to reduce memory usage
+    storage: {
+      db: {
+        driver: 'fs',
+        base: './.nuxt/db',
+      },
+    },
+  },
+  // Disable source maps for production to reduce memory usage
+  sourcemap: {
+    server: false,
+    client: false,
   },
   css: [
     '~/assets/css/theme.css',
@@ -107,7 +118,8 @@ export default defineNuxtConfig({
   },
   ogImage: {
     defaults: {
-      renderer: 'chromium',
+      // Use satori renderer on Netlify to reduce memory usage
+      renderer: process.env.NETLIFY ? 'satori' : 'chromium',
       width: 1200,
       height: 630,
     },
@@ -144,22 +156,24 @@ export default defineNuxtConfig({
     },
   },
   hooks: {
-    'nitro:config': function (nitroConfig) {
+    'nitro:config': async function (nitroConfig) {
       // Dynamically add routes for all blog posts
-      const { readdirSync } = require('fs')
-      const { join } = require('path')
-      
+      const fs = await import('node:fs')
+      const path = await import('node:path')
+      const process = await import('node:process')
+
       try {
-        const blogDir = join(process.cwd(), 'content/blog')
-        const blogFiles = readdirSync(blogDir)
+        const blogDir = path.join(process.cwd(), 'content/blog')
+        const blogFiles = fs.readdirSync(blogDir)
           .filter(file => file.endsWith('.md'))
           .map(file => `/blog/${file.replace('.md', '')}`)
-        
+
         // Add blog routes to prerender
         if (nitroConfig.prerender && nitroConfig.prerender.routes) {
           nitroConfig.prerender.routes.push(...blogFiles)
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.warn('Could not read blog directory:', error)
       }
     },

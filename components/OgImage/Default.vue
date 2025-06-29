@@ -11,7 +11,7 @@ const { title, description } = defineProps<Props>()
 
 <template>
   <div
-    class="flex flex-col h-full w-full relative overflow-hidden"
+    class="og-image-container flex flex-col h-full w-full relative overflow-hidden"
     style="background: #0a0a0a"
   >
     <!-- Animated gradient overlay -->
@@ -53,7 +53,7 @@ const { title, description } = defineProps<Props>()
       <!-- Main title -->
       <h1
         class="text-8xl leading-tight font-bold mb-8 text-center max-w-5xl"
-        style="color: oklch(var(--brand-900))"
+        style="color: oklch(var(--og-brand-900))"
       >
         {{ title || siteConfig.title }}
       </h1>
@@ -102,7 +102,7 @@ const { title, description } = defineProps<Props>()
 }
 
 /* Define OKLCH colors as CSS variables for this component */
-:host {
+.og-image-container {
   --og-brand-50: oklch(98% 0.025 275);
   --og-brand-100: oklch(95% 0.041 275);
   --og-brand-200: oklch(89% 0.074 275);
