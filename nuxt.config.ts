@@ -2,14 +2,6 @@ import process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 import { siteConfig } from './utils/site.config'
 
-/**
- * Nuxt configuration tuned to avoid build-time memory spikes.
- * - Disables DevTools in production (known leak)
- * - Keeps experimental flags minimal
- * - Lowers Nitro prerender concurrency & flushes routes
- * - Removes heavy optional modules (e.g. @nuxt/icon)
- */
-
 const isProd = process.env.NODE_ENV === 'production'
 
 export default defineNuxtConfig({
@@ -17,19 +9,7 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
-
-  // 👉 DevTools off in production to prevent leak
   devtools: { enabled: !isProd },
-
-  experimental: {
-    // Keep payloads inside the bundle (less I/O / RAM at build time)
-    payloadExtraction: false,
-    // Disable component islands unless you are actively using them
-    componentIslands: false,
-    // Tree-shake client-only components
-    treeshakeClientOnly: true,
-  },
-
   nitro: {
     prerender: {
       routes: [
@@ -44,15 +24,7 @@ export default defineNuxtConfig({
       ignore: ['/__nuxt_content'],
       // 🔻 Constrain memory during prerender
       concurrency: 4,
-      flushRoutes: true,
       crawlLinks: false,
-    },
-    // Persisted fs storage to avoid in-memory cache explosion
-    storage: {
-      db: {
-        driver: 'fs',
-        base: './.nuxt/db',
-      },
     },
   },
 
@@ -120,7 +92,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/seo',
     '@nuxt/content',
-    // '@nuxt/icon', // ➡️ Optional: re-enable only after leak is resolved
+    '@nuxt/icon', // ➡️ Optional: re-enable only after leak is resolved
     '@unocss/nuxt',
     '@vueuse/nuxt',
     '@nuxt/image',
