@@ -14,10 +14,8 @@ Testing if MDC components work at all.
 This is an info alert to test MDC functionality.
 ::
 
-## Custom Component Test
+## Badge Test
 
-::playground
-This is content inside the playground component.
-::
+::badge{variant="primary"}New Feature::
 
 Regular text after components.

@@ -101,32 +101,6 @@ export default defineNuxtConfig({
     },
   },
   modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/image'],
-  vite: {
-    build: {
-      // Split chunks to avoid large files
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            // Force VuePlayground and its dependencies into separate chunks
-            if (id.includes('VuePlayground.vue')) {
-              return 'vue-playground-component'
-            }
-            if (id.includes('@vue/repl')) {
-              return 'vue-repl'
-            }
-            if (id.includes('monaco-editor') || id.includes('@vue/repl/monaco-editor')) {
-              return 'monaco-editor'
-            }
-            if (id.includes('codemirror') || id.includes('@vue/repl/codemirror-editor')) {
-              return 'codemirror-editor'
-            }
-          },
-        },
-      },
-      // Increase chunk size warning limit
-      chunkSizeWarningLimit: 1000,
-    },
-  },
   seo: {
     siteUrl: siteConfig.url,
     siteName: siteConfig.name,
