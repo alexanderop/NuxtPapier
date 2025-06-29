@@ -7,15 +7,29 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
+  experimental: {
+    // Reduce memory usage during build
+    payloadExtraction: false,
+  },
   nitro: {
     prerender: {
-      routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
-      // Limit concurrent page generation to reduce memory usage
-      concurrency: 10,
-      // Enable crawling links to discover all pages for static generation
-      crawlLinks: true,
-      // Continue build even if some pages fail (for debugging)
+      routes: [
+        '/',
+        '/feeds',
+        '/tags',
+        '/rss.xml',
+        '/atom.xml',
+        '/feed.json',
+        // Blog routes will be added dynamically via the nitro:config hook
+      ],
+      // Reduce concurrent page generation to minimize memory usage
+      concurrency: 2,
+      // Disable crawling to prevent memory exhaustion
+      crawlLinks: false,
+      // Continue build even if some pages fail
       failOnError: false,
+      // Disable inline styles to reduce memory usage
+      inlineDynamicImports: false,
     },
   },
   css: [
@@ -130,6 +144,25 @@ export default defineNuxtConfig({
     },
   },
   hooks: {
+    'nitro:config': function (nitroConfig) {
+      // Dynamically add routes for all blog posts
+      const { readdirSync } = require('fs')
+      const { join } = require('path')
+      
+      try {
+        const blogDir = join(process.cwd(), 'content/blog')
+        const blogFiles = readdirSync(blogDir)
+          .filter(file => file.endsWith('.md'))
+          .map(file => `/blog/${file.replace('.md', '')}`)
+        
+        // Add blog routes to prerender
+        if (nitroConfig.prerender && nitroConfig.prerender.routes) {
+          nitroConfig.prerender.routes.push(...blogFiles)
+        }
+      } catch (error) {
+        console.warn('Could not read blog directory:', error)
+      }
+    },
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx
 
