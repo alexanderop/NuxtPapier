@@ -1,24 +1,7 @@
-# Netlify configuration for a Nuxt 3 static site
-
-[build]
-# Standard build command without Chromium installation
-command = "pnpm generate"
-# This is the directory that Nuxt generates the static site into.
-# The default is .output/public, which is correct for Nuxt 3.
-publish = ".output/public"
-
-[build.environment]
-# Set Node.js memory limit to 4GB (compatible with standard Netlify plans)
-NODE_OPTIONS = "--max-old-space-size=4096"
-# Skip Playwright browser downloads during regular npm install
-PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
-# Specify pnpm version
-PNPM_VERSION = "9.9.0"
+# for cms
 
 [[redirects]]
-# This rule tells Netlify to serve the index.html file for any
-# request that doesn't match a pre-rendered file. This allows
-# Vue Router to take over and handle the routing on the client-side.
 from = "/*"
 to = "/index.html"
 status = 200
+force = false

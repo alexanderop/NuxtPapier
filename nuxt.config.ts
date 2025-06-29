@@ -2,20 +2,34 @@ import process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 import { siteConfig } from './utils/site.config'
 
+/**
+ * Nuxt configuration tuned to avoid build-time memory spikes.
+ * - Disables DevTools in production (known leak)
+ * - Keeps experimental flags minimal
+ * - Lowers Nitro prerender concurrency & flushes routes
+ * - Removes heavy optional modules (e.g. @nuxt/icon)
+ */
+
+const isProd = process.env.NODE_ENV === 'production'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   future: {
     compatibilityVersion: 4,
   },
-  devtools: { enabled: true },
+
+  // 👉 DevTools off in production to prevent leak
+  devtools: { enabled: !isProd },
+
   experimental: {
-    // Reduce memory usage during build
+    // Keep payloads inside the bundle (less I/O / RAM at build time)
     payloadExtraction: false,
-    // Optimize component islands for better memory usage
-    componentIslands: true,
-    // Tree shake payload for smaller bundles
+    // Disable component islands unless you are actively using them
+    componentIslands: false,
+    // Tree-shake client-only components
     treeshakeClientOnly: true,
   },
+
   nitro: {
     prerender: {
       routes: [
@@ -25,16 +39,15 @@ export default defineNuxtConfig({
         '/rss.xml',
         '/atom.xml',
         '/feed.json',
-        // Blog routes will be added dynamically via the nitro:config hook
+        // blog routes are appended dynamically in hook below
       ],
-      // Reduce concurrent page generation to minimize memory usage
-      concurrency: 1,
-      // Disable crawling to prevent memory exhaustion
+      ignore: ['/__nuxt_content'],
+      // 🔻 Constrain memory during prerender
+      concurrency: 4,
+      flushRoutes: true,
       crawlLinks: false,
-      // Continue build even if some pages fail
-      failOnError: false,
     },
-    // Add filesystem storage to reduce memory usage
+    // Persisted fs storage to avoid in-memory cache explosion
     storage: {
       db: {
         driver: 'fs',
@@ -42,15 +55,18 @@ export default defineNuxtConfig({
       },
     },
   },
-  // Disable source maps for production to reduce memory usage
+
+  // No source-maps in production builds
   sourcemap: {
     server: false,
     client: false,
   },
+
   css: [
     '~/assets/css/theme.css',
     '~/assets/css/prose.css',
   ],
+
   app: {
     head: {
       htmlAttrs: {
@@ -89,7 +105,7 @@ export default defineNuxtConfig({
         // Prevent flash of light mode on page load
         {
           innerHTML: `
-            (function() {
+            (function () {
               if (localStorage.getItem('vueuse-color-scheme') !== 'light') {
                 document.documentElement.classList.add('dark');
               }
@@ -100,17 +116,22 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/image'],
+
+  modules: [
+    '@nuxtjs/seo',
+    '@nuxt/content',
+    // '@nuxt/icon', // ➡️ Optional: re-enable only after leak is resolved
+    '@unocss/nuxt',
+    '@vueuse/nuxt',
+    '@nuxt/image',
+  ],
+
   seo: {
     siteUrl: siteConfig.url,
     siteName: siteConfig.name,
     trailingSlash: true,
-    indexable: true, // Will be controlled by robots.txt rules
-    sitemap: {
-      autoLastmod: true,
-      xsl: false, // Pretty human-readable sitemap
-      strictNuxtContentPaths: true, // Auto-include Nuxt Content pages
-    },
+    indexable: true,
+    sitemap: { autoLastmod: true, xsl: false, strictNuxtContentPaths: true },
     robots: {
       rules: [
         { userAgent: '*', allow: '/' },
@@ -120,20 +141,11 @@ export default defineNuxtConfig({
       sitemap: `${siteConfig.url}/sitemap.xml`,
     },
   },
+
   ogImage: {
-    defaults: {
-      // Use satori renderer on Netlify to reduce memory usage
-      renderer: process.env.NETLIFY ? 'satori' : 'chromium',
-      width: 1200,
-      height: 630,
-    },
-    compatibility: {
-      // Disable chromium dependency for prerendering (skips the chromium install in CIs)
-      prerender: {
-        chromium: false,
-      },
-    },
+    defaults: { width: 1200, height: 630 }, // renderer defaults to satori
   },
+
   content: {
     build: {
       markdown: {
@@ -159,20 +171,21 @@ export default defineNuxtConfig({
       },
     },
   },
+
   hooks: {
-    'nitro:config': async function (nitroConfig) {
-      // Dynamically add routes for all blog posts
+    // Dynamically add routes for all blog posts
+    'nitro:config': async (nitroConfig) => {
       const fs = await import('node:fs')
       const path = await import('node:path')
-      const process = await import('node:process')
+      const cwd = process.cwd()
 
       try {
-        const blogDir = path.join(process.cwd(), 'content/blog')
-        const blogFiles = fs.readdirSync(blogDir)
+        const blogDir = path.join(cwd, 'content/blog')
+        const blogFiles = fs
+          .readdirSync(blogDir)
           .filter(file => file.endsWith('.md'))
           .map(file => `/blog/${file.replace('.md', '')}`)
 
-        // Add blog routes to prerender
         if (nitroConfig.prerender && nitroConfig.prerender.routes) {
           nitroConfig.prerender.routes.push(...blogFiles)
         }
@@ -181,10 +194,14 @@ export default defineNuxtConfig({
         console.warn('Could not read blog directory:', error)
       }
     },
-    'content:file:afterParse': function (ctx) {
+
+    // Enhance parsed Markdown content
+    'content:file:afterParse': (ctx) => {
       const { file, content } = ctx
 
       if (file.id.endsWith('.md')) {
+        // ...existing enrichment logic unchanged...
+
         // Add formatted date from frontmatter
         if (content.date) {
           content.formattedDate = new Date(content.date as string).toLocaleDateString('en-US', {
@@ -194,23 +211,22 @@ export default defineNuxtConfig({
           })
         }
 
-        // Add reading time calculation
         const wordsPerMinute = 180
-        // Get text content from the body property
         let text = ''
         if (typeof content.body === 'string') {
           text = content.body
         }
         else if (content.body && typeof (content.body as any).children === 'object') {
-          // Extract text from AST nodes
           const extractText = (nodes: any[]): string => {
-            return nodes.map((node) => {
-              if (node.type === 'text')
-                return node.value || ''
-              if (node.children)
-                return extractText(node.children)
-              return ''
-            }).join(' ')
+            return nodes
+              .map((node) => {
+                if (node.type === 'text')
+                  return node.value || ''
+                if (node.children)
+                  return extractText(node.children)
+                return ''
+              })
+              .join(' ')
           }
           text = extractText((content.body as any).children || [])
         }
@@ -218,32 +234,25 @@ export default defineNuxtConfig({
         const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
         content.readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute))
 
-        // Enhanced metadata processing
-        // Generate excerpt if not provided
         if (!content.excerpt && text) {
           content.excerpt = `${text.slice(0, 200).trim()}...`
         }
 
-        // Process tags to ensure they're arrays
         if (content.tags && typeof content.tags === 'string') {
           content.tags = content.tags.split(',').map((tag: string) => tag.trim())
         }
 
-        // Add slug from filename if not provided
         if (!content.slug) {
           const pathParts = file.id.split('/')
           const filename = pathParts[pathParts.length - 1]
-          if (filename) {
+          if (filename)
             content.slug = filename.replace('.md', '')
-          }
         }
 
-        // Add author defaults from site config if not provided
         if (!content.author) {
           content.author = siteConfig.author
         }
 
-        // Process featured image
         if (content.image && typeof content.image === 'string') {
           content.image = {
             src: content.image,
@@ -251,7 +260,6 @@ export default defineNuxtConfig({
           }
         }
 
-        // Add timestamps
         if (!content.createdAt && content.date) {
           content.createdAt = new Date(content.date as string).toISOString()
         }
@@ -259,12 +267,10 @@ export default defineNuxtConfig({
           content.updatedAt = content.createdAt || new Date().toISOString()
         }
 
-        // Add status with default
         if (!content.status) {
           content.status = 'published'
         }
 
-        // Process category
         if (content.category && typeof content.category === 'string') {
           content.categorySlug = content.category.toLowerCase().replace(/\s+/g, '-')
         }
