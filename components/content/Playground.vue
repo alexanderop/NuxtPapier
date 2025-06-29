@@ -1,5 +1,20 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+
+const props = withDefaults(defineProps<Props>(), {
+  template: 'vue',
+  editor: 'codemirror',
+  theme: 'dark',
+  layout: 'horizontal',
+  showConsole: false,
+  showEditor: true,
+  showPreview: true,
+})
+
+// Lazy load the VuePlayground component to prevent bundling heavy dependencies
+const AsyncVuePlayground = defineAsyncComponent(() =>
+  import('~/components/content/VuePlayground.vue'),
+)
 
 interface Props {
   code?: string
@@ -11,16 +26,6 @@ interface Props {
   showEditor?: boolean
   showPreview?: boolean
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  template: 'vue',
-  editor: 'codemirror',
-  theme: 'dark',
-  layout: 'horizontal',
-  showConsole: false,
-  showEditor: true,
-  showPreview: true,
-})
 
 const isClient = ref(false)
 const showPlayground = ref(false)
@@ -91,7 +96,7 @@ onMounted(() => {
 
     <ClientOnly>
       <div v-if="showPlayground && isClient" class="playground-wrapper">
-        <VuePlayground
+        <AsyncVuePlayground
           :code="playgroundCode"
           :editor="editor"
           :theme="theme"

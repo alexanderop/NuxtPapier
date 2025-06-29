@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+
+const props = withDefaults(defineProps<Props>(), {
+  code: '',
+  language: '',
+  meta: '',
+})
+
+// Lazy load the VuePlayground component to prevent bundling heavy dependencies
+const AsyncVuePlayground = defineAsyncComponent(() =>
+  import('~/components/content/VuePlayground.vue'),
+)
 
 interface Props {
   code?: string
@@ -9,12 +20,6 @@ interface Props {
   meta?: string
   class?: string
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  code: '',
-  language: '',
-  meta: '',
-})
 
 const showPlayground = ref(false)
 
@@ -105,7 +110,7 @@ onMounted(() => {
 
     <!-- Show playground when toggled -->
     <ClientOnly>
-      <VuePlayground
+      <AsyncVuePlayground
         v-if="showPlayground && (codeContent || code)"
         :code="codeContent || code"
         :editor="playgroundOptions.editor"
@@ -115,6 +120,11 @@ onMounted(() => {
         :show-compile-output="playgroundOptions.showCompileOutput === 'true'"
         :show-import-map="playgroundOptions.showImportMap === 'true'"
       />
+      <template #fallback>
+        <div class="text-muted p-8 text-center">
+          Loading Interactive Playground...
+        </div>
+      </template>
     </ClientOnly>
   </div>
 

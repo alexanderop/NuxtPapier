@@ -106,10 +106,20 @@ export default defineNuxtConfig({
       // Split chunks to avoid large files
       rollupOptions: {
         output: {
-          manualChunks: {
-            'vue-repl': ['@vue/repl'],
-            'monaco': ['@vue/repl/monaco-editor'],
-            'codemirror': ['@vue/repl/codemirror-editor'],
+          manualChunks: (id) => {
+            // Force VuePlayground and its dependencies into separate chunks
+            if (id.includes('VuePlayground.vue')) {
+              return 'vue-playground-component'
+            }
+            if (id.includes('@vue/repl')) {
+              return 'vue-repl'
+            }
+            if (id.includes('monaco-editor') || id.includes('@vue/repl/monaco-editor')) {
+              return 'monaco-editor'
+            }
+            if (id.includes('codemirror') || id.includes('@vue/repl/codemirror-editor')) {
+              return 'codemirror-editor'
+            }
           },
         },
       },
