@@ -151,6 +151,13 @@ onMounted(async () => {
         <div class="spinner" />
         <p>Loading Vue Playground...</p>
       </div>
+
+      <template #fallback>
+        <div class="loading">
+          <div class="spinner" />
+          <p>Loading Interactive Playground...</p>
+        </div>
+      </template>
     </ClientOnly>
   </div>
 </template>

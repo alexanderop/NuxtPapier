@@ -11,6 +11,10 @@ export default defineNuxtConfig({
   experimental: {
     // Reduce memory usage during build
     payloadExtraction: false,
+    // Optimize component islands for better memory usage
+    componentIslands: true,
+    // Tree shake payload for smaller bundles
+    treeshakeClientOnly: true,
   },
   nitro: {
     prerender: {
@@ -97,6 +101,22 @@ export default defineNuxtConfig({
     },
   },
   modules: ['@nuxtjs/seo', '@nuxt/content', '@nuxt/icon', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/image'],
+  vite: {
+    build: {
+      // Split chunks to avoid large files
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vue-repl': ['@vue/repl'],
+            'monaco': ['@vue/repl/monaco-editor'],
+            'codemirror': ['@vue/repl/codemirror-editor'],
+          },
+        },
+      },
+      // Increase chunk size warning limit
+      chunkSizeWarningLimit: 1000,
+    },
+  },
   seo: {
     siteUrl: siteConfig.url,
     siteName: siteConfig.name,
