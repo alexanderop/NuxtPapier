@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Fuse from 'fuse.js'
+import { err, ok, okAsync, Result, ResultAsync } from 'neverthrow'
 
 const isOpen = defineModel<boolean>({ required: true })
 const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
@@ -34,36 +35,81 @@ function useSearchResults() {
   const query = ref('')
   const isSearching = ref(false)
 
-  // Fetch search data
-  const { data: searchData } = useAsyncData('search-data', () =>
-    queryCollection('blog')
-      .orWhere(query =>
-        query
-          .where('draft', '<>', true)
-          .where('draft', 'IS NULL'),
-      )
-      .all())
+  // Fetch search data with error handling
+  const { data: searchData } = useAsyncData('search-data', async () => {
+    const result = await ResultAsync.fromPromise(
+      queryCollection('blog')
+        .orWhere(query =>
+          query
+            .where('draft', '<>', true)
+            .where('draft', 'IS NULL'),
+        )
+        .all(),
+      error => new Error(`Failed to fetch search data: ${error}`),
+    )
 
-  // Initialize Fuse.js
-  const fuse = computed(() => {
-    if (!searchData.value)
-      return null
-    return new Fuse(searchData.value, {
-      keys: ['title', 'description'],
-      threshold: 0.3,
-      includeScore: true,
-    })
+    return result.match(
+      data => data,
+      (error) => {
+        console.error('Search data fetch error:', error)
+        return []
+      },
+    )
   })
 
-  // Debounced search results computation
+  // Initialize Fuse.js with error handling
+  const fuse = computed(() => {
+    if (!searchData.value || searchData.value.length === 0)
+      return null
+
+    const fuseResult = Result.fromThrowable(
+      () => new Fuse(searchData.value!, {
+        keys: ['title', 'description'],
+        threshold: 0.3,
+        includeScore: true,
+      }),
+      error => new Error(`Failed to initialize Fuse.js: ${error}`),
+    )()
+
+    return fuseResult.match(
+      fuseInstance => fuseInstance,
+      (error) => {
+        console.error(error.message)
+        return null
+      },
+    )
+  })
+
+  // Debounced search results computation with error handling
   const results = ref<any[]>([])
-  const debouncedSearch = useDebounceFn(() => {
-    if (!query.value || !fuse.value) {
-      results.value = []
-      isSearching.value = false
-      return
+  const searchError = ref<string | null>(null)
+
+  const performSearch = (searchQuery: string): Result<any[], string> => {
+    if (!searchQuery || !fuse.value) {
+      return ok([])
     }
-    results.value = fuse.value.search(query.value).slice(0, 8)
+
+    return Result.fromThrowable(
+      () => fuse.value!.search(searchQuery).slice(0, 8),
+      error => `Search failed: ${error}`,
+    )()
+  }
+
+  const debouncedSearch = useDebounceFn(() => {
+    const searchResult = performSearch(query.value)
+
+    searchResult.match(
+      (searchResults) => {
+        results.value = searchResults
+        searchError.value = null
+      },
+      (error) => {
+        results.value = []
+        searchError.value = error
+        console.error('Search error:', error)
+      },
+    )
+
     isSearching.value = false
   }, 300)
 
@@ -73,22 +119,29 @@ function useSearchResults() {
     debouncedSearch()
   })
 
-  // Highlight matching text
+  // Highlight matching text with error handling
   function highlightText(text: string, searchQuery: string): string {
     if (!searchQuery || !text)
       return text
 
-    // Escape special regex characters in the search query
-    const escapedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const regex = new RegExp(`(${escapedQuery})`, 'gi')
+    const highlightResult = Result.fromThrowable(
+      () => {
+        // Escape special regex characters in the search query
+        const escapedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const regex = new RegExp(`(${escapedQuery})`, 'gi')
+        return text.replace(regex, '<mark>$1</mark>')
+      },
+      error => new Error(`Highlight failed: ${error}`),
+    )()
 
-    return text.replace(regex, '<mark>$1</mark>')
+    return highlightResult.unwrapOr(text)
   }
 
   return {
     query,
     results,
     isSearching,
+    searchError,
     highlightText,
   }
 }
@@ -131,61 +184,68 @@ function useSearchNavigation(results: Ref<any[]>, onSelect: (path: string) => vo
 
 // Composable for section scrolling with element detection
 function useScrollToSection() {
-  async function scrollToSection(elementId: string) {
+  async function scrollToSection(elementId: string): Promise<Result<void, string>> {
     // Small delay to ensure layout is complete
     await nextTick()
 
     const element = document.getElementById(elementId)
     if (!element) {
-      console.warn(`Element with ID "${elementId}" not found`)
-      return
+      return err(`Element with ID "${elementId}" not found`)
     }
 
-    // Use VueUse's scrollIntoView for smooth scrolling
-    const { y } = useWindowScroll()
-    const rect = element.getBoundingClientRect()
-    const absoluteTop = rect.top + y.value
-    const targetY = Math.max(0, absoluteTop - 120) // 120px offset for header
+    return Result.fromThrowable(
+      () => {
+        // Use VueUse's scrollIntoView for smooth scrolling
+        const { y } = useWindowScroll()
+        const rect = element.getBoundingClientRect()
+        const absoluteTop = rect.top + y.value
+        const targetY = Math.max(0, absoluteTop - 120) // 120px offset for header
 
-    // Smooth scroll to target position
-    y.value = targetY
+        // Smooth scroll to target position
+        y.value = targetY
 
-    // Add visual feedback
-    element.classList.add('search-highlight')
-    setTimeout(() => {
-      element.classList.remove('search-highlight')
-    }, 2000)
+        // Add visual feedback
+        element.classList.add('search-highlight')
+        setTimeout(() => {
+          element.classList.remove('search-highlight')
+        }, 2000)
+      },
+      error => `Failed to scroll to section: ${error}`,
+    )()
   }
 
   // Wait for element with intersection observer
-  async function waitForElement(elementId: string, timeout = 2000): Promise<HTMLElement | null> {
+  function waitForElement(elementId: string, timeout = 2000): ResultAsync<HTMLElement, string> {
     const existingElement = document.getElementById(elementId)
-    if (existingElement)
-      return existingElement
+    if (existingElement) {
+      return okAsync(existingElement)
+    }
 
-    return new Promise((resolve) => {
-      let observer: MutationObserver
+    return ResultAsync.fromPromise(
+      new Promise<HTMLElement>((resolve, reject) => {
+        let observer: MutationObserver
 
-      const timeoutId = setTimeout(() => {
-        observer?.disconnect()
-        console.warn(`Element with ID "${elementId}" not found after ${timeout}ms`)
-        resolve(null)
-      }, timeout)
+        const timeoutId = setTimeout(() => {
+          observer?.disconnect()
+          reject(new Error(`Element with ID "${elementId}" not found after ${timeout}ms`))
+        }, timeout)
 
-      observer = new MutationObserver((_, obs) => {
-        const element = document.getElementById(elementId)
-        if (element) {
-          clearTimeout(timeoutId)
-          obs.disconnect()
-          resolve(element)
-        }
-      })
+        observer = new MutationObserver((_, obs) => {
+          const element = document.getElementById(elementId)
+          if (element) {
+            clearTimeout(timeoutId)
+            obs.disconnect()
+            resolve(element)
+          }
+        })
 
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-      })
-    })
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+        })
+      }),
+      error => error instanceof Error ? error.message : String(error),
+    )
   }
 
   return {
@@ -195,48 +255,64 @@ function useScrollToSection() {
 }
 
 // Initialize composables
-const { query, results, highlightText } = useSearchResults()
+const { query, results, searchError, highlightText } = useSearchResults()
 const { scrollToSection, waitForElement } = useScrollToSection()
 
 // Navigate to result handler
-async function navigateToResult(path: string) {
+async function navigateToResult(path: string): Promise<Result<void, string>> {
   isOpen.value = false
   const route = useRoute()
 
-  // Check if path contains a hash (section anchor)
-  if (path.includes('#')) {
-    const hashIndex = path.lastIndexOf('#')
-    const pagePath = path.substring(0, hashIndex)
-    const hash = path.substring(hashIndex + 1)
+  return ResultAsync.fromThrowable(
+    async () => {
+      // Check if path contains a hash (section anchor)
+      if (path.includes('#')) {
+        const hashIndex = path.lastIndexOf('#')
+        const pagePath = path.substring(0, hashIndex)
+        const hash = path.substring(hashIndex + 1)
 
-    // Remove .md extension - path should already be properly formatted
-    const cleanPath = pagePath.replace(/\.md$/, '')
+        // Remove .md extension - path should already be properly formatted
+        const cleanPath = pagePath.replace(/\.md$/, '')
 
-    // Check if we're already on the same page
-    if (route.path === cleanPath) {
-      // Just scroll to the section
-      await scrollToSection(hash)
-    }
-    else {
-      // Navigate to the page with hash in URL
-      await navigateTo(`${cleanPath}#${hash}`)
+        // Check if we're already on the same page
+        if (route.path === cleanPath) {
+          // Just scroll to the section
+          const scrollResult = await scrollToSection(hash)
+          if (scrollResult.isErr()) {
+            console.warn(scrollResult.error)
+          }
+        }
+        else {
+          // Navigate to the page with hash in URL
+          await navigateTo(`${cleanPath}#${hash}`)
 
-      // Wait for element to appear and scroll
-      const element = await waitForElement(hash)
-      if (element) {
-        await scrollToSection(hash)
+          // Wait for element to appear and scroll
+          const elementResult = await waitForElement(hash)
+          await elementResult.match(
+            async (_element) => {
+              const scrollResult = await scrollToSection(hash)
+              if (scrollResult.isErr()) {
+                console.warn(scrollResult.error)
+              }
+            },
+            error => console.warn(error),
+          )
+        }
       }
-    }
-  }
-  else {
-    // No hash, just navigate to the page
-    // Remove .md extension - path should already be properly formatted
-    const cleanPath = path.replace(/\.md$/, '')
-    await navigateTo(cleanPath)
-  }
+      else {
+        // No hash, just navigate to the page
+        // Remove .md extension - path should already be properly formatted
+        const cleanPath = path.replace(/\.md$/, '')
+        await navigateTo(cleanPath)
+      }
+    },
+    error => `Navigation failed: ${error}`,
+  )()
 }
 
-const { selectedIndex, navigateUp, navigateDown, selectCurrent } = useSearchNavigation(results, navigateToResult)
+const { selectedIndex, navigateUp, navigateDown, selectCurrent } = useSearchNavigation(results, async (path) => {
+  await navigateToResult(path)
+})
 
 // Virtual list for performance with large result sets
 const itemHeight = 80 // Approximate height of each search result item
@@ -330,7 +406,10 @@ onKeyStroke('Enter', () => {
       </div>
 
       <div v-else-if="query && results.length === 0" class="search-empty">
-        <p class="text-muted">
+        <p v-if="searchError" class="text-red-500">
+          {{ searchError }}
+        </p>
+        <p v-else class="text-muted">
           No results found for "{{ query }}"
         </p>
       </div>
