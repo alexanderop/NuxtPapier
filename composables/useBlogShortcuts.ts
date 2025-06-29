@@ -63,45 +63,39 @@ export function useBlogPostNavigation(currentPost: Ref<any>) {
   const route = useRoute()
   const shortcutManager = useShortcutManager()
 
-  // Fetch all posts to determine next/prev
-  const { data: allPosts } = useAsyncData('all-blog-posts', () => {
-    return queryCollection('blog')
-      .order('date', 'DESC')
-      .orWhere(query =>
-        query
-          .where('draft', '<>', true)
-          .where('draft', 'IS NULL'),
-      )
-      .all()
-  })
+  // Use Nuxt Content's built-in surroundings API
+  const { data: surroundings } = useAsyncData(
+    `surround-${currentPost.value?.path}`,
+    async () => {
+      if (!currentPost.value?.path)
+        return [null, null] as [null, null]
 
-  // Compute next and previous posts
-  const navigationData = computed(() => {
-    if (!allPosts.value || !currentPost.value) {
-      return { next: null, prev: null, currentIndex: -1 }
-    }
+      const result = await queryCollectionItemSurroundings('blog', currentPost.value.path, {
+        fields: ['title', 'path'],
+      })
+        .orWhere(query =>
+          query
+            .where('draft', '<>', true)
+            .where('draft', 'IS NULL'),
+        )
+        .order('date', 'DESC')
 
-    const currentIndex = allPosts.value.findIndex(
-      post => post.path === currentPost.value.path,
-    )
-
-    return {
-      next: currentIndex < allPosts.value.length - 1 ? allPosts.value[currentIndex + 1] : null,
-      prev: currentIndex > 0 ? allPosts.value[currentIndex - 1] : null,
-      currentIndex,
-    }
-  })
+      return result as Array<{ path: string, title: string } | null>
+    },
+  )
 
   // Navigation functions
   function navigateToNext() {
-    if (navigationData.value.next) {
-      router.push(navigationData.value.next.path)
+    const nextPost = surroundings.value?.[1]
+    if (nextPost) {
+      router.push(nextPost.path)
     }
   }
 
   function navigateToPrev() {
-    if (navigationData.value.prev) {
-      router.push(navigationData.value.prev.path)
+    const prevPost = surroundings.value?.[0]
+    if (prevPost) {
+      router.push(prevPost.path)
     }
   }
 
@@ -129,7 +123,7 @@ export function useBlogPostNavigation(currentPost: Ref<any>) {
   })
 
   return {
-    nextPost: computed(() => navigationData.value.next),
-    prevPost: computed(() => navigationData.value.prev),
+    prevPost: computed(() => surroundings.value?.[0] || null),
+    nextPost: computed(() => surroundings.value?.[1] || null),
   }
 }

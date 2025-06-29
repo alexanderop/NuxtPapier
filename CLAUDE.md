@@ -133,6 +133,50 @@ The `content:file:afterParse` hook in `nuxt.config.ts` automatically processes m
 - Content follows Bear Blog's minimal markdown styling approach
 - See CONTENT_COMPONENTS.md for available content components
 
+### Nuxt Content v3 Query Utilities
+
+The project uses Nuxt Content v3's powerful query utilities for content management:
+
+#### queryCollection
+Basic content querying:
+```ts
+// Get single post by path
+const post = await queryCollection('blog').path('/blog/my-post').first()
+
+// Get all posts with filtering
+const posts = await queryCollection('blog')
+  .where('draft', '<>', true)
+  .order('date', 'DESC')
+  .all()
+```
+
+#### queryCollectionItemSurroundings
+Get previous/next navigation (used in blog post navigation):
+```ts
+// Returns [previousPost, nextPost]
+const surroundings = await queryCollectionItemSurroundings('blog', currentPath, {
+  fields: ['title', 'path']
+})
+  .where('draft', '<>', true)
+  .order('date', 'DESC')
+```
+
+#### queryCollectionNavigation
+Build navigation trees:
+```ts
+// Get navigation structure for docs
+const navigation = await queryCollectionNavigation('docs', ['title', 'description'])
+  .where('published', '=', true)
+  .order('order', 'ASC')
+```
+
+#### Navigation Utilities
+Helper functions from `@nuxt/content/utils`:
+- `findPageBreadcrumb(navigation, path)` - Get breadcrumb trail
+- `findPageChildren(navigation, path)` - Get direct children
+- `findPageSiblings(navigation, path)` - Get sibling pages
+- `findPageHeadline(navigation, path)` - Get parent section name
+
 ### Puppeteer MCP
 
 This project has access to **Puppeteer** - an MCP (Model Context Protocol) server that provides browser automation capabilities for testing and quality assurance. Puppeteer can be used to:
