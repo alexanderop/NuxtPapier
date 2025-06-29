@@ -177,10 +177,7 @@ export default defineNuxtConfig({
 
         // Add author defaults from site config if not provided
         if (!content.author) {
-          content.author = {
-            name: siteConfig.author,
-            url: siteConfig.url,
-          }
+          content.author = siteConfig.author
         }
 
         // Process featured image

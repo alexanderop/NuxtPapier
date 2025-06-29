@@ -58,9 +58,9 @@ onMounted(() => {
       <!-- Header -->
       <header class="py-4 sm:py-8">
         <div class="mb-4 flex items-center justify-between sm:mb-6">
-          <div class="text-2xl text-heading font-bold sm:text-4xl">
+          <NuxtLink to="/" class="text-2xl text-heading font-bold transition-colors sm:text-4xl hover:text-brand-500">
             {{ siteConfig.name }}
-          </div>
+          </NuxtLink>
 
           <!-- Desktop Actions -->
           <div class="gap-2 hidden items-center md:flex">
@@ -99,19 +99,22 @@ onMounted(() => {
         <nav class="gap-6 hidden md:flex" aria-label="Main navigation">
           <NuxtLink
             to="/"
-            class="text-body transition-colors hover:text-brand-500"
+            class="text-body pb-1 transition-all relative hover:text-brand-500"
+            active-class="text-brand-600 dark:text-brand-400 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-500"
           >
             Home
           </NuxtLink>
           <NuxtLink
             to="/blog"
-            class="text-body transition-colors hover:text-brand-500"
+            class="text-body pb-1 transition-all relative hover:text-brand-500"
+            active-class="text-brand-600 dark:text-brand-400 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-500"
           >
             Blog
           </NuxtLink>
           <NuxtLink
             to="/tags"
-            class="text-body transition-colors hover:text-brand-500"
+            class="text-body pb-1 transition-all relative hover:text-brand-500"
+            active-class="text-brand-600 dark:text-brand-400 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-500"
           >
             Tags
           </NuxtLink>
@@ -153,6 +156,7 @@ onMounted(() => {
                     <NuxtLink
                       to="/"
                       class="text-lg text-body px-4 py-3 rounded-lg block transition-colors hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900"
+                      active-class="text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900 border-l-2 border-brand-500"
                       @click="handleNavClick"
                     >
                       Home
@@ -162,6 +166,7 @@ onMounted(() => {
                     <NuxtLink
                       to="/blog"
                       class="text-lg text-body px-4 py-3 rounded-lg block transition-colors hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900"
+                      active-class="text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900 border-l-2 border-brand-500"
                       @click="handleNavClick"
                     >
                       Blog
@@ -171,6 +176,7 @@ onMounted(() => {
                     <NuxtLink
                       to="/tags"
                       class="text-lg text-body px-4 py-3 rounded-lg block transition-colors hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900"
+                      active-class="text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900 border-l-2 border-brand-500"
                       @click="handleNavClick"
                     >
                       Tags
