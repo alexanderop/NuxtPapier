@@ -1,11 +1,17 @@
 # Netlify configuration for a Nuxt 3 static site
 
 [build]
-# This command should match the "generate" script in your package.json
-command = "pnpm generate"
+# Install Playwright browsers before building
+command = "npx playwright install chromium && pnpm generate"
 # This is the directory that Nuxt generates the static site into.
 # The default is .output/public, which is correct for Nuxt 3.
 publish = ".output/public"
+
+[build.environment]
+# Increase Node.js memory limit
+NODE_OPTIONS = "--max-old-space-size=8192"
+# Skip Playwright browser downloads during regular npm install
+PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
 
 [[redirects]]
 # This rule tells Netlify to serve the index.html file for any

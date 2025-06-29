@@ -2,6 +2,7 @@
 const { pending, data: posts } = await useAsyncData('tags-posts', () =>
   queryCollection('blog')
     .where('status', '=', 'published')
+    .where('draft', '<>', true)
     .all())
 
 const tags = computed(() => {

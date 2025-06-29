@@ -9,6 +9,7 @@ const { pending, data: posts } = await useAsyncData(
     // Nuxt Content doesn't have a built-in array contains operator
     const allPosts = await queryCollection('blog')
       .where('status', '=', 'published')
+      .where('draft', '<>', true)
       .order('date', 'DESC')
       .all()
 
