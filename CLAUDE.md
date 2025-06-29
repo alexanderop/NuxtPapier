@@ -96,14 +96,31 @@ pnpm clean:content
 
 ## MCP Tools Available
 
-This project has access to **Context7** - an MCP (Model Context Protocol) server that provides up-to-date documentation and code examples for libraries and frameworks. Context7 can be used to:
+### Nuxt MCP
 
+This project has access to **Nuxt MCP** - an MCP (Model Context Protocol) server that provides specialized documentation for Nuxt and Vue. Use Nuxt MCP for:
+
+- **Nuxt official modules**: Nuxt Content, Nuxt UI
+- **Nuxt UI components**: Button, Input, Select, CommandPalette, etc.
+- **Nuxt features**: Building Nuxt apps with NuxtHub (database, blob, kv, etc.)
+- **Nuxt-specific functionality**: When you need to look up Nuxt documentation
+- **Nuxt modules**: Listing and searching for Nuxt modules
+
+**Available tools**:
+- `mcp__nuxt__search_nuxt_docs`: Search Nuxt documentation
+- `mcp__nuxt__list_nuxt_modules`: List available Nuxt modules
+
+### Context7
+
+This project has access to **Context7** - an MCP (Model Context Protocol) server that provides up-to-date documentation and code examples for libraries and frameworks. Use Context7 for:
+
+- Documentation for libraries **not related to Nuxt or Vue**
 - Get current, version-specific documentation for any library used in this project
 - Fetch real code examples and API references directly from source documentation
 - Resolve library names to their proper Context7-compatible IDs
 - Focus documentation retrieval on specific topics (e.g., "routing", "hooks", "components")
 
-**Usage**: When working with libraries like Nuxt, Vue, UnoCSS, or any other dependencies, Context7 can provide the most current documentation and examples to ensure code implementations follow the latest best practices and API specifications.
+**Usage**: When working with libraries like UnoCSS, TypeScript, or any other non-Nuxt/Vue dependencies, Context7 can provide the most current documentation and examples to ensure code implementations follow the latest best practices and API specifications.
 
 ## Content Management
 
@@ -346,12 +363,108 @@ See CONTENT_COMPONENTS.md for detailed usage.
 - **defineShortcuts**: Keyboard shortcut definitions
 - **useShortcutManager**: Global shortcut management
 
+## Error Handling with neverthrow
+
+This project uses `neverthrow` for type-safe error handling. Instead of throwing errors, we return `Result<T, E>` types that explicitly encode success (`Ok`) or failure (`Err`) states.
+
+### Basic Usage
+
+```ts
+import { Result, ok, err } from 'neverthrow'
+
+// Return Ok for success
+function divide(a: number, b: number): Result<number, string> {
+  if (b === 0) return err('Division by zero')
+  return ok(a / b)
+}
+
+// Handle results
+const result = divide(10, 2)
+result.match(
+  value => console.log(`Result: ${value}`),
+  error => console.error(`Error: ${error}`)
+)
+```
+
+### Async Operations
+
+Use `ResultAsync` for async operations:
+
+```ts
+import { ResultAsync, okAsync, errAsync } from 'neverthrow'
+
+async function fetchUserData(id: string): ResultAsync<User, ApiError> {
+  return ResultAsync.fromPromise(
+    fetch(`/api/users/${id}`).then(r => r.json()),
+    () => new ApiError('Failed to fetch user')
+  )
+}
+```
+
+### Error Handling Guidelines
+
+1. **Never throw errors** - Return `Result` or `ResultAsync` instead
+2. **Type your errors** - Create specific error types for different failure scenarios
+3. **Chain operations** - Use `andThen`, `map`, `mapErr` for composable error handling
+4. **Handle all paths** - Use `match` to ensure both success and error cases are handled
+
+### Common Patterns
+
+```ts
+// Chaining operations
+userResult
+  .andThen(validateUser)
+  .andThen(saveToDatabase)
+  .match(
+    () => console.log('User saved successfully'),
+    error => console.error('Operation failed:', error)
+  )
+
+// Error recovery
+fetchFromPrimary()
+  .orElse(() => fetchFromSecondary())
+  .unwrapOr(defaultValue)
+```
+
+### Integration with Nuxt
+
+For Nuxt-specific patterns:
+
+```ts
+// In API routes
+export default defineEventHandler(async (event): Promise<ApiResponse> => {
+  const result = await validateRequest(event)
+    .andThen(parseBody)
+    .andThen(processData)
+  
+  return result.match(
+    data => ({ success: true, data }),
+    error => ({ success: false, error: error.message })
+  )
+})
+
+// In composables
+export const useUserData = () => {
+  const { data, error, pending } = await useFetch('/api/user')
+    .then(res => res.ok ? ok(res.data) : err(res.error))
+  
+  return {
+    data: computed(() => data.value?.isOk() ? data.value.value : null),
+    error: computed(() => data.value?.isErr() ? data.value.error : null),
+    pending
+  }
+}
+```
+
+See the [neverthrow documentation](https://github.com/supermacro/neverthrow) for more details.
+
 ## Workflow
 
 Always plan first if something from vueUse when something is
 related to vue can help you
-Always use context7 and get up to date information on the libaries you want to use on how to use them
+Always use Nuxt MCP for Nuxt and Vue documentation, and Context7 for other libraries
 After you are done with a task always run lint and typecheck and fix the errors
+Use neverthrow for all error handling - never throw errors directly
 
 ## localhost:3000
 
