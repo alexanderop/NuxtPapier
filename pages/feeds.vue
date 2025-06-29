@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { siteConfig } from '~/utils/site.config'
+
 const feeds = [
   {
     name: 'RSS 2.0',

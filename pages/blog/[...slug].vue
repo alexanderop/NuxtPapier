@@ -118,7 +118,7 @@ defineArticle({
               <NuxtLink
                 v-for="tag in page.tags"
                 :key="tag"
-                :to="`/blog/tag/${tag.toLowerCase()}`"
+                :to="`/tags/${tag.toLowerCase()}`"
                 class="text-sm"
               >
                 <Badge variant="default" size="sm">
