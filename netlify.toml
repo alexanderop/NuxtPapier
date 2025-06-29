@@ -8,10 +8,12 @@ command = "pnpm generate"
 publish = ".output/public"
 
 [build.environment]
-# Increase Node.js memory limit
-NODE_OPTIONS = "--max-old-space-size=8192"
+# Set Node.js memory limit to 4GB (compatible with standard Netlify plans)
+NODE_OPTIONS = "--max-old-space-size=4096"
 # Skip Playwright browser downloads during regular npm install
 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
+# Specify pnpm version
+PNPM_VERSION = "9.9.0"
 
 [[redirects]]
 # This rule tells Netlify to serve the index.html file for any

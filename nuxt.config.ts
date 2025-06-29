@@ -10,6 +10,12 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: ['/rss.xml', '/atom.xml', '/feed.json', '/feeds'],
+      // Limit concurrent page generation to reduce memory usage
+      concurrency: 10,
+      // Disable crawling links to reduce memory overhead
+      crawlLinks: false,
+      // Continue build even if some pages fail (for debugging)
+      failOnError: false,
     },
   },
   css: [
