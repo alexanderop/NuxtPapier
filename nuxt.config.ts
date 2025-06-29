@@ -91,6 +91,12 @@ export default defineNuxtConfig({
       width: 1200,
       height: 630,
     },
+    compatibility: {
+      // Disable chromium dependency for prerendering (skips the chromium install in CIs)
+      prerender: {
+        chromium: false,
+      },
+    },
   },
   content: {
     build: {

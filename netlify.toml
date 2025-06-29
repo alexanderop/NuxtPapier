@@ -1,8 +1,8 @@
 # Netlify configuration for a Nuxt 3 static site
 
 [build]
-# Install Playwright browsers before building
-command = "npx playwright install chromium && pnpm generate"
+# Standard build command without Chromium installation
+command = "pnpm generate"
 # This is the directory that Nuxt generates the static site into.
 # The default is .output/public, which is correct for Nuxt 3.
 publish = ".output/public"
