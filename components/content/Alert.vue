@@ -25,11 +25,11 @@ const alertClasses = computed(() => {
 
 const iconName = computed(() => {
   const icons = {
-    info: 'i-octicon-info-16',
-    warning: 'i-octicon-alert-16',
-    error: 'i-octicon-x-circle-16',
-    tip: 'i-octicon-light-bulb-16',
-    success: 'i-octicon-check-circle-16',
+    info: 'octicon:info-16',
+    warning: 'octicon:alert-16',
+    error: 'octicon:x-circle-16',
+    tip: 'octicon:light-bulb-16',
+    success: 'octicon:check-circle-16',
   }
   return icons[type]
 })

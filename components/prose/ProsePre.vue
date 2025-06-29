@@ -90,7 +90,7 @@ onMounted(() => {
         class="playground-toggle"
         @click="showPlayground = !showPlayground"
       >
-        <Icon :name="showPlayground ? 'i-octicon-eye-closed-16' : 'i-octicon-eye-16'" />
+        <Icon :name="showPlayground ? 'octicon:eye-closed-16' : 'octicon:eye-16'" />
         {{ showPlayground ? 'Hide' : 'Show' }} Playground
       </button>
     </div>

@@ -26,7 +26,7 @@ function copyCode() {
       :title="copied ? 'Copied!' : 'Copy code'"
       @click="copyCode"
     >
-      <Icon :name="copied ? 'i-ph-check' : 'i-ph-copy'" />
+      <Icon :name="copied ? 'ph:check' : 'ph:copy'" />
     </button>
     <code v-bind="$attrs">
       <slot />

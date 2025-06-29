@@ -37,7 +37,7 @@ export async function getPostByPath(path: string) {
 
 export async function getPostsByTag(tag: string) {
   const allPosts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['title', 'description', 'path', 'date', 'tags', 'formattedDate', 'readingTime'])
+    .select(['title', 'description', 'path', 'date', 'tags', 'formattedDate', 'readingTime'])
     .all()
 
   return allPosts.filter((post: BlogCollectionItem) => {
@@ -53,7 +53,7 @@ export async function getPostsByTag(tag: string) {
 
 export async function getAllTags() {
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['tags'])
+    .select(['tags'])
     .all()
 
   const tagCounts = new Map<string, number>()
@@ -77,7 +77,7 @@ export async function getAllTags() {
 
 export async function getPostsForFeed() {
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['title', 'description', 'excerpt', 'date', 'tags', 'author', 'path', 'slug', 'image'])
+    .select(['title', 'description', 'excerpt', 'date', 'tags', 'author', 'path', 'slug', 'image'])
     .all()
 
   return posts
@@ -107,7 +107,7 @@ export async function searchPosts(searchQuery: string) {
   }
 
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['title', 'description', 'excerpt', 'path', 'date', 'formattedDate'])
+    .select(['title', 'description', 'excerpt', 'path', 'date', 'formattedDate'])
     .all()
 
   const query = searchQuery.toLowerCase()
@@ -121,7 +121,7 @@ export async function searchPosts(searchQuery: string) {
 
 export async function getPostsWithFields(fields: string[]) {
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(fields)
+    .select(fields)
     .all()
 
   return posts
@@ -137,14 +137,14 @@ export async function getPostsByCategory(category: string) {
 
 export async function getPostCount() {
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['path'])
+    .select(['path'])
     .all()
   return posts.length
 }
 
 export async function getPostPaths() {
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['path'])
+    .select(['path'])
     .all()
 
   return posts.map((post: BlogCollectionItem) => post.path)
@@ -152,7 +152,7 @@ export async function getPostPaths() {
 
 export async function getPostsForListing() {
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['title', 'description', 'path', 'date', 'formattedDate', 'readingTime', 'tags', 'category'])
+    .select(['title', 'description', 'path', 'date', 'formattedDate', 'readingTime', 'tags', 'category'])
     .all()
 
   return posts
@@ -170,7 +170,7 @@ export async function postExists(path: string): Promise<boolean> {
 
 export async function getPostsGroupedByTags() {
   const posts = await queryPublishedPosts(queryCollection('blog'))
-    .only(['title', 'path', 'date', 'tags', 'description'])
+    .select(['title', 'path', 'date', 'tags', 'description'])
     .all()
 
   const tagGroups = new Map<string, BlogCollectionItem[]>()

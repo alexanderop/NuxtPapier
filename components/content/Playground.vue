@@ -73,14 +73,14 @@ onMounted(() => {
   <div class="playground-container">
     <div class="playground-header">
       <div class="playground-title">
-        <Icon name="i-logos-vue" />
+        <Icon name="logos:vue" />
         <span>Vue Playground</span>
       </div>
       <button
         class="playground-toggle"
         @click="showPlayground = !showPlayground"
       >
-        <Icon :name="showPlayground ? 'i-octicon-chevron-up-16' : 'i-octicon-play-16'" />
+        <Icon :name="showPlayground ? 'octicon:chevron-up-16' : 'octicon:play-16'" />
         {{ showPlayground ? 'Hide' : 'Open' }} Playground
       </button>
     </div>
