@@ -1,5 +1,10 @@
 # for cms
 
+[build]
+  command = "pnpm generate"
+  publish = ".output/public"
+  node_version = "20.14.0"
+
 [[redirects]]
 from = "/*"
 to = "/index.html"
