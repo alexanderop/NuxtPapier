@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { BlogPost } from '~/types/content'
-
 const route = useRoute()
 const { data: page } = await useAsyncData(route.path, () => {
   return queryCollection('blog').path(route.path).first()
-}) as { data: Ref<BlogPost | null> }
+})
 
 if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found' })
@@ -20,7 +18,7 @@ const showToc = computed(() => {
 
 // SEO meta tags with modern Nuxt SEO patterns
 const seoDescription = page.value.excerpt || page.value.description
-const seoImage = page.value.image?.src || `${siteConfig.url}/og-image.png`
+const seoImage = (typeof page.value.image === 'string' ? page.value.image : page.value.image?.src) || `${siteConfig.url}/og-image.png`
 
 useSeoMeta({
   title: page.value.title,
@@ -33,7 +31,7 @@ useSeoMeta({
   articleModifiedTime: page.value.updatedAt || page.value.date || undefined,
   articleAuthor: [page.value.author?.name || siteConfig.author.name],
   articleSection: page.value.category || 'Blog',
-  articleTag: page.value.tags,
+  articleTag: Array.isArray(page.value.tags) ? page.value.tags : page.value.tags ? [page.value.tags] : undefined,
   twitterTitle: page.value.title,
   twitterDescription: seoDescription,
   twitterCard: 'summary_large_image',
@@ -114,9 +112,9 @@ defineArticle({
         <!-- Featured Image -->
         <div v-if="page.image" class="mb-12">
           <ProseImg
-            :src="page.image.src"
-            :alt="page.image.alt"
-            :caption="page.image.caption"
+            :src="typeof page.image === 'string' ? page.image : page.image.src"
+            :alt="typeof page.image === 'string' ? page.title : page.image.alt"
+            :caption="typeof page.image === 'string' ? undefined : page.image.caption"
           />
         </div>
 

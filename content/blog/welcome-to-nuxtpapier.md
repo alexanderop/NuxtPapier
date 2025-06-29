@@ -2,6 +2,7 @@
 title: "Welcome to NuxtPapier"
 description: "A minimal blog built with Nuxt 3, inspired by Bear Blog's clean design philosophy."
 date: "2024-01-15"
+tags: ["nuxt", "vue", "blog", "minimalism", "introduction"]
 ---
 
 # Welcome to NuxtPapier

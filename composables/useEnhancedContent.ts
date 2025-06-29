@@ -1,7 +1,5 @@
-import type { BlogPost } from '~/types/content'
-
 export function useEnhancedContent() {
-  const getRelatedPosts = async (post: BlogPost, limit: number = 3) => {
+  const getRelatedPosts = async (post: any, limit: number = 3) => {
     const { data } = await useAsyncData(`related-${post._id}`, () =>
       $fetch('/api/_content/query', {
         params: {

@@ -1,6 +1,7 @@
 ---
 title: MDC Test
 date: 2025-01-28
+tags: ["testing", "mdc", "components", "development"]
 ---
 
 # MDC Test Page

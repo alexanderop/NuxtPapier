@@ -2,6 +2,7 @@
 title: "Setting Up a Blog with Nuxt Content"
 description: "A practical guide to creating a content-driven blog using Nuxt 3 and Nuxt Content module."
 date: "2024-01-25"
+tags: ["nuxt", "nuxt-content", "tutorial", "markdown", "blog"]
 ---
 
 Creating a blog with Nuxt 3 and the Content module is surprisingly straightforward. Here's how I built this very blog you're reading.

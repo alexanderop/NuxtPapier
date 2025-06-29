@@ -1,13 +1,6 @@
 import type { ShortcutsConfig } from './defineShortcuts'
 
-interface BlogPost {
-  path: string
-  title: string
-  date: string
-  [key: string]: any
-}
-
-export function useBlogShortcuts(posts: Ref<BlogPost[] | null>) {
+export function useBlogShortcuts(posts: Ref<any[] | null>) {
   const router = useRouter()
   const route = useRoute()
   const shortcutManager = useShortcutManager()

@@ -2,6 +2,7 @@
 title: Code Highlighting Example
 description: Testing Shiki line highlighting with left border
 date: 2025-01-26
+tags: ["code", "syntax-highlighting", "shiki", "tutorial", "markdown"]
 ---
 
 # Code Highlighting Example

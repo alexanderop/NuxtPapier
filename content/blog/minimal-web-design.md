@@ -2,6 +2,7 @@
 title: "The Art of Minimal Web Design"
 description: "Exploring the principles and benefits of minimal web design in today's cluttered digital landscape."
 date: "2024-01-20"
+tags: ["design", "minimalism", "web-design", "ux", "performance"]
 ---
 
 In an era where websites are increasingly bloated with features, animations, and distractions, minimal web design stands as a breath of fresh air. But what exactly makes a design "minimal," and why should we care?

@@ -109,6 +109,12 @@ onMounted(() => {
           >
             Blog
           </NuxtLink>
+          <NuxtLink
+            to="/tags"
+            class="text-body transition-colors hover:text-brand-500"
+          >
+            Tags
+          </NuxtLink>
         </nav>
 
         <!-- Mobile Menu Overlay -->
@@ -159,6 +165,15 @@ onMounted(() => {
                       @click="handleNavClick"
                     >
                       Blog
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink
+                      to="/tags"
+                      class="text-lg text-body px-4 py-3 rounded-lg block transition-colors hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900"
+                      @click="handleNavClick"
+                    >
+                      Tags
                     </NuxtLink>
                   </li>
                 </ul>

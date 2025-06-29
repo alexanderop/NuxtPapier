@@ -2,6 +2,7 @@
 title: 'How I Use Claude Code and Puppeteer to Run Accessibility Audits on My Website'
 description: 'Discover how to automate accessibility testing using Claude Code with Puppeteer MCP. Learn my complete workflow for finding and fixing accessibility issues quickly.'
 date: '2025-01-22'
+tags: ["accessibility", "testing", "claude-code", "puppeteer", "automation", "tutorial"]
 ---
 
 Making websites accessible isn't just good practice—it's essential. When I built this blog, I wanted to make sure everyone could use it easily, including people who rely on screen readers or keyboard navigation. But manually checking every accessibility rule takes forever and it's easy to miss things.

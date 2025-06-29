@@ -1,16 +1,16 @@
 # Netlify configuration for a Nuxt 3 static site
 
 [build]
-  # This command should match the "generate" script in your package.json
-  command = "pnpm generate"
-  # This is the directory that Nuxt generates the static site into.
-  # The default is .output/public, which is correct for Nuxt 3.
-  publish = ".output/public"
+# This command should match the "generate" script in your package.json
+command = "pnpm generate"
+# This is the directory that Nuxt generates the static site into.
+# The default is .output/public, which is correct for Nuxt 3.
+publish = ".output/public"
 
 [[redirects]]
-  # This rule tells Netlify to serve the index.html file for any
-  # request that doesn't match a pre-rendered file. This allows
-  # Vue Router to take over and handle the routing on the client-side.
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# This rule tells Netlify to serve the index.html file for any
+# request that doesn't match a pre-rendered file. This allows
+# Vue Router to take over and handle the routing on the client-side.
+from = "/*"
+to = "/index.html"
+status = 200
