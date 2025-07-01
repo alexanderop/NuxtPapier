@@ -11,7 +11,7 @@ const currentYear = new Date().getFullYear()
 <template>
   <footer class="w-full" :class="[{ 'mt-auto': !noMarginTop }]">
     <BaseHr :no-padding="true" />
-    <BaseContainer>
+    <div class="container-app">
       <div class="py-6 flex flex-col items-center justify-between sm:py-4 sm:flex-row-reverse">
         <BaseSocials centered />
         <div class="my-2 flex flex-col whitespace-nowrap items-center sm:flex-row">
@@ -20,6 +20,6 @@ const currentYear = new Date().getFullYear()
           <span>All rights reserved.</span>
         </div>
       </div>
-    </BaseContainer>
+    </div>
   </footer>
 </template>

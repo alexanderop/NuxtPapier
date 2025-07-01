@@ -5,11 +5,9 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <BaseHeader />
-    <BaseContainer class="flex-1">
-      <main id="main-content">
-        <slot />
-      </main>
-    </BaseContainer>
+    <main id="main-content" class="container-app flex-1">
+      <slot />
+    </main>
     <BaseFooter />
   </div>
 </template>

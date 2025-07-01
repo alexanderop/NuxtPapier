@@ -16,4 +16,8 @@ export default defineConfig({
       'text-muted': 'var(--color-text-muted)',
     },
   },
+  shortcuts: {
+    'max-w-app': 'max-w-3xl',
+    'container-app': 'mx-auto max-w-3xl px-4',
+  },
 })

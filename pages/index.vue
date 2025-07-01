@@ -3,7 +3,7 @@ const appConfig = useAppConfig()
 </script>
 
 <template>
-  <BaseContainer>
+  <div class="container-app">
     <div class="py-12">
       <h1 class="text-4xl font-bold mb-4">
         {{ appConfig.site.title }}
@@ -97,5 +97,5 @@ const appConfig = useAppConfig()
         </section>
       </div>
     </div>
-  </BaseContainer>
+  </div>
 </template>
