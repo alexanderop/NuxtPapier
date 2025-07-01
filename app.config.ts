@@ -1,6 +1,6 @@
 // app.config.ts
-import type { Site, Metadata } from '~/types';
-import { SOCIALS } from '~/constants';
+import type { Metadata, Site } from '~/types'
+import { SOCIALS } from '~/constants'
 
 export default defineAppConfig({
   site: {
@@ -9,10 +9,11 @@ export default defineAppConfig({
     desc: 'A minimal, responsive and SEO-friendly Nuxt blog theme.',
     title: 'NuxtPapier',
     ogImage: 'nuxtpapier-og.jpg',
-    lightAndDarkMode: true,
+    lightAndDarkMode: false,
     postPerIndex: 4,
     postPerPage: 4,
     showBackButton: true,
+    showArchives: true,
     dynamicOgImage: true,
     dir: 'ltr',
     lang: 'en',
@@ -33,4 +34,4 @@ export default defineAppConfig({
     } satisfies Metadata,
   },
   socials: SOCIALS,
-});
+})

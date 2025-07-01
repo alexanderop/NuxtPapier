@@ -1,4 +1,4 @@
-import type { Socials } from '~/types';
+import type { Socials } from '~/types'
 
 export const SOCIALS: Socials = [
   {
@@ -25,13 +25,13 @@ export const SOCIALS: Socials = [
     linkTitle: 'Send an email',
     icon: 'mdi:email',
   },
-] as const;
+] as const
 
 export const SHARE_LINKS = [
   {
     name: 'WhatsApp',
     icon: 'mdi:whatsapp',
-    getUrl: (url: string, title: string) => `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`,
+    getUrl: (url: string, title: string) => `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`,
   },
   {
     name: 'Facebook',
@@ -58,4 +58,4 @@ export const SHARE_LINKS = [
     icon: 'mdi:email',
     getUrl: (url: string, title: string) => `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`,
   },
-] as const;
+] as const

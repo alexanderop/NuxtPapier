@@ -5,12 +5,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Essential Commands
+
 - `pnpm dev` - Start development server on http://localhost:3000
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build locally
 - `pnpm lint` - Run ESLint with auto-fix for code quality
 
 ### Production Deployment
+
 - `pnpm generate` - Generate static site for static hosting
 - `pnpm build` - Build for server deployment with SSR
 
@@ -19,13 +21,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a Nuxt 3 application using Vue 3 with the following key architectural decisions:
 
 ### Core Stack
+
 - **Framework**: Nuxt 3.17.5 with Vue 3.5.17
 - **CSS Framework**: UnoCSS with Wind4 preset (utility-first CSS)
 - **Package Manager**: pnpm (required - do not use npm or yarn)
 - **TypeScript**: Fully configured with strict type checking
 
 ### Module Architecture
+
 The application leverages Nuxt's module system with these pre-configured modules:
+
 - `@nuxt/content` - For markdown/content management
 - `@nuxt/image` - Automatic image optimization
 - `@nuxt/fonts` - Font loading optimization
@@ -33,6 +38,7 @@ The application leverages Nuxt's module system with these pre-configured modules
 - `@unocss/nuxt` - Atomic CSS framework
 
 ### Project Structure
+
 ```
 /
 ├── app.vue          # Root application component
@@ -45,6 +51,7 @@ The application leverages Nuxt's module system with these pre-configured modules
 ```
 
 ### Configuration Files
+
 - `nuxt.config.ts` - Main Nuxt configuration
 - `uno.config.ts` - UnoCSS configuration with Wind4 preset
 - `tsconfig.json` - TypeScript configuration
@@ -53,26 +60,56 @@ The application leverages Nuxt's module system with these pre-configured modules
 ## Development Guidelines
 
 ### Creating New Features
+
 1. **Pages**: Create `.vue` files in `pages/` directory for automatic routing
 2. **Components**: Use `components/` directory for auto-imported components
 3. **Composables**: Place reusable logic in `composables/` for auto-import
 4. **API Routes**: Create server API routes in `server/api/` directory
 
 ### Code Style
+
 - ESLint is configured for Vue 3 and Nuxt best practices
 - Run `pnpm lint` before committing
 - TypeScript is required for all new code
 
 ### Component Naming Convention
+
 - All UI components must use multi-word names starting with `Base` (e.g., `BaseContainer`, `BaseButton`, `BaseCard`)
 - This follows Vue's style guide and prevents conflicts with HTML elements
 
+### Vue Component Structure
+
+- Always start Vue components with `<script>` section first, then `<template>`, then `<style>` (if needed)
+- Use `<script setup>` for all components
+- Prefer `watchEffect` over `watch` when possible for reactive dependencies
+
+### Props Declaration (Vue 3.5+)
+
+- Use reactive props destructuring with default values
+- Define props types inline in `defineProps<>()` without separate interfaces
+- Do NOT use `withDefaults` - use destructuring with defaults instead
+- Example:
+
+```typescript
+const {
+  variant = 'primary',
+  size = 'md',
+  disabled = false
+} = defineProps<{
+  variant?: 'primary' | 'secondary' | 'ghost'
+  size?: 'sm' | 'md' | 'lg'
+  disabled?: boolean
+}>()
+```
+
 ### CSS/Styling
+
 - Use UnoCSS utility classes (similar to Tailwind CSS)
 - Avoid inline styles when possible
 - UnoCSS config supports Wind4 preset with modern utilities
 
 ### Important Notes
+
 - This is an ESM-only project (`"type": "module"` in package.json)
 - No testing framework is currently configured
 - Git main branch is `main` (not master)
@@ -83,12 +120,15 @@ The application leverages Nuxt's module system with these pre-configured modules
 The site configuration is centralized in two main files:
 
 ### app.config.ts
+
 Contains the main site configuration accessible via `useAppConfig()`:
+
 - **site**: Core site settings including title, description, author info, and behavior options
 - **pages**: Metadata for different pages (title, description, ogImage)
 - **socials**: Social media links imported from constants.ts
 
 Key configuration options:
+
 - `website`: Your deployed URL (leave empty in dev, required for production SEO)
 - `lightAndDarkMode`: Enable/disable theme switching
 - `postPerIndex/postPerPage`: Control post pagination
@@ -97,11 +137,14 @@ Key configuration options:
 - `dynamicOgImage`: Auto-generate OG images when not specified
 
 ### constants.ts
+
 Contains:
+
 - **SOCIALS**: Array of social media links with icons (using Iconify names)
 - **SHARE_LINKS**: Social sharing configurations with URL builders
 
 Usage example:
+
 ```vue
 <script setup>
 const appConfig = useAppConfig()
