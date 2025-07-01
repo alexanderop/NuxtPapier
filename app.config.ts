@@ -9,7 +9,7 @@ export default defineAppConfig({
     desc: 'A minimal, responsive and SEO-friendly Nuxt blog theme.',
     title: 'NuxtPapier',
     ogImage: 'nuxtpapier-og.jpg',
-    lightAndDarkMode: false,
+    lightAndDarkMode: true,
     postPerIndex: 4,
     postPerPage: 4,
     showBackButton: true,

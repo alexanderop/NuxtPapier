@@ -1,0 +1,38 @@
+:root {
+  /* Light mode colors */
+  --color-primary: #3b82f6; /* Blue 500 */
+  --color-secondary: #6b7280; /* Gray 500 */
+  --color-background: #ffffff; /* White */
+  --color-surface: #f3f4f6; /* Gray 100 */
+  --color-text: #111827; /* Gray 900 */
+
+  /* Additional semantic colors derived from the 5 base colors */
+  --color-border: #e5e7eb; /* Light border using surface color */
+  --color-text-muted: #6b7280; /* Muted text using secondary color */
+}
+
+html[data-theme='dark'] {
+  /* Dark mode colors */
+  --color-primary: #ff78c8; /* Accent pink */
+  --color-secondary: #715566; /* Muted color */
+  --color-background: #353640; /* Dark background */
+  --color-surface: #86436b; /* Border/surface color */
+  --color-text: #e9edf1; /* Foreground text */
+
+  /* Additional semantic colors for dark mode */
+  --color-border: #86436b; /* Border color */
+  --color-text-muted: #715566; /* Muted text color */
+}
+
+/* Smooth color transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}

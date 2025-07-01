@@ -9,11 +9,11 @@ const navItems = [
   { to: '/about', label: 'About' },
 ]
 
-const navLinkClasses = 'hover:text-blue-600 transition-colors'
-const activeClass = 'text-blue-600'
+const navLinkClasses = 'hover:text-[var(--color-primary)] transition-colors'
+const activeClass = 'text-[var(--color-primary)]'
 
 const menuListBaseClasses = 'mt-4 grid w-44 grid-cols-2 place-content-center gap-2'
-const menuListDesktopClasses = 'sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0'
+const menuListDesktopClasses = 'sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:items-center'
 const menuItemStyles = '[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1'
 
 function getNavClasses(path: string) {
@@ -47,7 +47,7 @@ watchEffect(() => {
     <a
       id="skip-to-content"
       href="#main-content"
-      class="text-blue-600 px-3 py-2 bg-white transition-all start-16 absolute z-50 backdrop-blur-lg -top-full focus:top-4"
+      class="text-[var(--color-primary)] px-3 py-2 bg-[var(--color-background)] transition-all start-16 absolute z-50 backdrop-blur-lg -top-full focus:top-4"
     >
       Skip to content
     </a>
@@ -57,11 +57,11 @@ watchEffect(() => {
     >
       <div
         id="top-nav-wrap"
-        class="p-4 bg-white flex w-full items-baseline justify-between relative sm:py-6 sm:items-center"
+        class="p-4 bg-[var(--color-background)] flex w-full items-center justify-between relative sm:py-6"
       >
         <NuxtLink
           to="/"
-          class="text-xl leading-8 font-semibold py-1 whitespace-nowrap absolute sm:text-2xl sm:leading-none sm:my-auto sm:static"
+          class="text-xl leading-8 font-semibold py-1 whitespace-nowrap absolute sm:text-2xl sm:leading-none sm:static"
         >
           {{ appConfig.site.title }}
         </NuxtLink>
@@ -89,26 +89,13 @@ watchEffect(() => {
               { hidden: !menuOpen },
             ]"
           >
-            <li v-for="item in navItems" :key="item.to" class="col-span-2">
+            <li v-for="item in navItems" :key="item.to" class="flex col-span-2 items-center justify-center">
               <NuxtLink
                 :to="item.to"
                 :class="getNavClasses(item.to)"
               >
                 {{ item.label }}
               </NuxtLink>
-            </li>
-            <li v-if="appConfig.site.showArchives" class="flex col-span-2 justify-center">
-              <BaseButton
-                to="/archives"
-                variant="ghost"
-                size="sm"
-                :class="getNavClasses('/archives')"
-                aria-label="archives"
-                title="Archives"
-                icon="i-heroicons-archive-box"
-              >
-                <span class="sm:sr-only">Archives</span>
-              </BaseButton>
             </li>
             <li class="flex col-span-1 items-center justify-center">
               <BaseButton
@@ -122,6 +109,9 @@ watchEffect(() => {
               >
                 <span class="sr-only">Search</span>
               </BaseButton>
+            </li>
+            <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-1 items-center justify-center">
+              <BaseToggle />
             </li>
           </ul>
         </nav>

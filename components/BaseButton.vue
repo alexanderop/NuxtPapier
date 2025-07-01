@@ -40,10 +40,10 @@ const component = computed(() => {
 
 const variantClasses = computed(() => {
   const variants = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500',
-    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
-    link: 'bg-transparent text-blue-600 hover:text-blue-700 underline-offset-4 hover:underline focus:ring-blue-500',
+    primary: 'bg-[var(--color-primary)] text-[var(--color-background)] hover:opacity-90 focus:ring-[var(--color-primary)]',
+    secondary: 'bg-[var(--color-surface)] text-[var(--color-text)] hover:opacity-80 focus:ring-[var(--color-secondary)]',
+    ghost: 'bg-transparent text-[var(--color-text)] hover:bg-[var(--color-surface)] focus:ring-[var(--color-secondary)]',
+    link: 'bg-transparent text-[var(--color-primary)] underline-offset-4 hover:underline focus:ring-[var(--color-primary)]',
   }
   return variants[variant]
 })
@@ -60,7 +60,7 @@ const sizeClasses = computed(() => {
 const buttonClasses = computed(() => {
   return [
     'inline-flex items-center justify-center font-medium transition-colors',
-    'focus:outline-none focus:ring-2 focus:ring-offset-2',
+    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--color-background)]',
     'disabled:opacity-50 disabled:cursor-not-allowed',
     variantClasses.value,
     sizeClasses.value,
