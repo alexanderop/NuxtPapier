@@ -9,7 +9,7 @@ const {
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl" :class="[noPadding ? 'px-0' : 'px-4']">
+  <div :class="[noPadding ? 'mx-auto max-w-app' : 'container-app']">
     <hr class="border-[var(--color-border)]" :aria-hidden="ariaHidden">
   </div>
 </template>

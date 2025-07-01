@@ -51,70 +51,72 @@ watchEffect(() => {
     >
       Skip to content
     </a>
-    <div
-      id="nav-container"
-      class="mx-auto flex flex-col max-w-7xl items-center justify-between sm:flex-row"
-    >
+    <div class="bg-[var(--color-background)] w-full">
       <div
-        id="top-nav-wrap"
-        class="p-4 bg-[var(--color-background)] flex w-full items-center justify-between relative sm:py-6"
+        id="nav-container"
+        class="container-app flex flex-col items-center justify-between sm:flex-row"
       >
-        <NuxtLink
-          to="/"
-          class="text-xl leading-8 font-semibold py-1 whitespace-nowrap absolute sm:text-2xl sm:leading-none sm:static"
+        <div
+          id="top-nav-wrap"
+          class="py-4 flex w-full items-center justify-between relative sm:py-6"
         >
-          {{ appConfig.site.title }}
-        </NuxtLink>
-        <nav
-          id="nav-menu"
-          class="flex flex-col w-full items-center sm:ms-2 sm:py-0 sm:flex-row sm:justify-end sm:space-x-4"
-        >
-          <BaseButton
-            id="menu-btn"
-            variant="ghost"
-            size="sm"
-            class="self-end sm:hidden"
-            :aria-label="menuOpen ? 'Close Menu' : 'Open Menu'"
-            :aria-expanded="menuOpen.toString()"
-            aria-controls="menu-items"
-            :icon="menuOpen ? 'i-heroicons-x-mark-20-solid' : 'i-heroicons-bars-3-20-solid'"
-            @click="toggleMenu"
-          />
-          <ul
-            id="menu-items"
-            :class="[
-              menuListBaseClasses,
-              menuItemStyles,
-              menuListDesktopClasses,
-              { hidden: !menuOpen },
-            ]"
+          <NuxtLink
+            to="/"
+            class="text-xl leading-8 font-semibold py-1 whitespace-nowrap absolute sm:text-2xl sm:leading-none sm:static"
           >
-            <li v-for="item in navItems" :key="item.to" class="flex col-span-2 items-center justify-center">
-              <NuxtLink
-                :to="item.to"
-                :class="getNavClasses(item.to)"
-              >
-                {{ item.label }}
-              </NuxtLink>
-            </li>
-            <li class="flex col-span-1 items-center justify-center">
-              <BaseButton
-                to="/search"
-                variant="ghost"
-                size="sm"
-                :class="getNavClasses('/search')"
-                aria-label="search"
-                title="Search"
-                icon="i-heroicons-magnifying-glass"
-              >
-                <span class="sr-only">Search</span>
-              </BaseButton>
-            </li>
-            <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-1 items-center justify-center">
-              <BaseToggle />
-            </li>
-          </ul>
-        </nav>
+            {{ appConfig.site.title }}
+          </NuxtLink>
+          <nav
+            id="nav-menu"
+            class="flex flex-col w-full items-center sm:ms-2 sm:py-0 sm:flex-row sm:justify-end sm:space-x-4"
+          >
+            <BaseButton
+              id="menu-btn"
+              variant="ghost"
+              size="sm"
+              class="self-end sm:hidden"
+              :aria-label="menuOpen ? 'Close Menu' : 'Open Menu'"
+              :aria-expanded="menuOpen.toString()"
+              aria-controls="menu-items"
+              :icon="menuOpen ? 'i-heroicons-x-mark-20-solid' : 'i-heroicons-bars-3-20-solid'"
+              @click="toggleMenu"
+            />
+            <ul
+              id="menu-items"
+              :class="[
+                menuListBaseClasses,
+                menuItemStyles,
+                menuListDesktopClasses,
+                { hidden: !menuOpen },
+              ]"
+            >
+              <li v-for="item in navItems" :key="item.to" class="flex col-span-2 items-center justify-center">
+                <NuxtLink
+                  :to="item.to"
+                  :class="getNavClasses(item.to)"
+                >
+                  {{ item.label }}
+                </NuxtLink>
+              </li>
+              <li class="flex col-span-1 items-center justify-center">
+                <BaseButton
+                  to="/search"
+                  variant="ghost"
+                  size="sm"
+                  :class="getNavClasses('/search')"
+                  aria-label="search"
+                  title="Search"
+                  icon="i-heroicons-magnifying-glass"
+                >
+                  <span class="sr-only">Search</span>
+                </BaseButton>
+              </li>
+              <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-1 items-center justify-center">
+                <BaseToggle />
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
     <BaseHr />
