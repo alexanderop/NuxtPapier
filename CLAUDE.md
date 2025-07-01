@@ -152,3 +152,7 @@ const siteTitle = appConfig.site.title
 const socials = appConfig.socials
 </script>
 ```
+
+## Best Practices
+
+- After completing a task, always run lint and typecheck and fix any issues

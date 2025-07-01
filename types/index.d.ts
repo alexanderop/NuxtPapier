@@ -27,7 +27,7 @@ export interface Social {
   name: string
   href: string
   linkTitle: string
-  icon?: string
+  icon: string
 }
 
 export type Socials = Social[]

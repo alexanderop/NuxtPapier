@@ -127,6 +127,6 @@ watchEffect(() => {
         </nav>
       </div>
     </div>
-    <hr class="border-gray-200">
+    <BaseHr />
   </header>
 </template>

@@ -1,12 +1,15 @@
 <script setup lang="ts">
-// Default layout with header
+// Default layout with header and footer
 </script>
 
 <template>
   <div class="flex flex-col min-h-screen">
     <BaseHeader />
-    <main id="main-content" class="flex-1">
-      <slot />
-    </main>
+    <BaseContainer class="flex-1">
+      <main id="main-content">
+        <slot />
+      </main>
+    </BaseContainer>
+    <BaseFooter />
   </div>
 </template>
