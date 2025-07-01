@@ -156,3 +156,24 @@ const socials = appConfig.socials
 ## Best Practices
 
 - After completing a task, always run lint and typecheck and fix any issues
+
+## Available MCP Tools
+
+Claude Code has access to the following MCP (Model Context Protocol) tools for enhanced functionality:
+
+### Puppeteer MCP
+
+- Browser automation and web scraping capabilities
+- Navigate to URLs, take screenshots, click elements, fill forms
+- Execute JavaScript in browser context
+
+### Context7 MCP
+
+- Access to up-to-date documentation for popular libraries and frameworks
+- Resolve library names to Context7-compatible IDs
+- Fetch comprehensive library documentation with code examples
+
+### Nuxt MCP
+
+- Specialized tools for Nuxt development (if configured)
+- Access to Nuxt-specific resources and documentation
