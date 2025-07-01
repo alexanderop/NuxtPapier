@@ -1,0 +1,5 @@
+<template>
+  <div class="mx-auto max-w-screen-sm px-5">
+    <slot />
+  </div>
+</template>
