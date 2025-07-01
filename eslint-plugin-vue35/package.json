@@ -1,0 +1,11 @@
+{
+  "name": "eslint-plugin-vue35",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "ESLint plugin to enforce Vue 3.5 APIs",
+  "keywords": ["eslint", "eslintplugin", "vue", "vue3"],
+  "main": "index.js",
+  "peerDependencies": {
+    "eslint": ">=8.0.0"
+  }
+}
