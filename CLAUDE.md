@@ -189,3 +189,64 @@ Claude Code has access to the following MCP (Model Context Protocol) tools for e
 - Resolve library names to Context7-compatible IDs
 - Fetch comprehensive library documentation with code examples
 - **NOTE**: Use this only for non-Nuxt/Vue related documentation needs
+
+## MDC (Markdown Components) Syntax
+
+When using Nuxt Content's MDC (Markdown Components) in markdown files, use the YAML method for better readability:
+
+### YAML Method Syntax
+
+The YAML method uses the `---` identifier to declare one prop per line. This is the preferred method for this project:
+
+```markdown
+::component-name
+---
+prop1: value1
+prop2: value2
+prop3: value3
+---
+::
+```
+
+### Example Usage
+
+```markdown
+::icon-card
+---
+icon: IconNuxt
+description: Harness the full power of Nuxt and the Nuxt ecosystem.
+title: Nuxt Architecture.
+---
+::
+```
+
+This renders an IconCard component with the specified props. The YAML method improves readability especially when dealing with multiple props or longer content.
+
+### Available MDC Components
+
+#### BaseAlert
+
+A GitHub-style alert component for highlighting important information:
+
+```markdown
+::base-alert
+---
+type: note
+title: Optional custom title
+---
+Your alert content goes here.
+::
+```
+
+**Props:**
+
+- `type`: Alert style - `note` | `tip` | `important` | `warning` | `caution` (default: `note`)
+- `title`: Custom title text (default: capitalized type name)
+
+**Examples:**
+
+- Note (blue): General information
+- Tip (green): Helpful suggestions
+- Important (purple): Key information to remember
+- Warning (yellow): Potential issues
+- Caution (red): Critical warnings
