@@ -15,7 +15,6 @@ export default antfu(
     formatters: {
       css: true,
       html: true,
-      markdown: 'prettier',
     },
 
     plugins: {

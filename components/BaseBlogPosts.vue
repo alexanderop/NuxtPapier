@@ -3,10 +3,12 @@ const {
   type = 'latest',
   limit = 3,
   showExcerpt = true,
+  showDate = false,
 } = defineProps<{
-  type?: 'featured' | 'latest'
+  type?: 'featured' | 'latest' | 'all'
   limit?: number
   showExcerpt?: boolean
+  showDate?: boolean
 }>()
 
 const { data: posts } = await useAsyncData(
@@ -18,11 +20,15 @@ const { data: posts } = await useAsyncData(
       // For featured posts, only show posts marked as featured
       query = query.where('featured', '=', true)
     }
-    else {
+    else if (type === 'latest') {
       // For latest posts, exclude drafts and featured posts
       query = query
         .where('draft', '<>', true)
         .where('featured', '<>', true)
+    }
+    else if (type === 'all') {
+      // For all posts, only exclude drafts
+      query = query.where('draft', '<>', true)
     }
 
     return await query
@@ -47,11 +53,17 @@ const { data: posts } = await useAsyncData(
           <h3 class="text-xl leading-tight">
             <NuxtLink
               :href="`${post.path}`"
-              class="text-[var(--color-text)] transition-colors hover:text-[var(--color-primary)]"
+              class="text-[var(--color-text)] transition-colors dark:text-[var(--color-primary)] hover:text-[var(--color-primary)]"
             >
               {{ post.title }}
             </NuxtLink>
           </h3>
+
+          <!-- Date -->
+          <p v-if="showDate && post.date" class="text-sm text-[var(--color-text-muted)] flex gap-1 items-center">
+            <Icon name="mdi:calendar" class="h-4 w-4" />
+            {{ new Date(post.date).toLocaleDateString() }}
+          </p>
 
           <!-- Excerpt -->
           <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed">

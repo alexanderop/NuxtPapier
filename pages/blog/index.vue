@@ -27,8 +27,9 @@ useSeoMeta({
 
     <!-- Use BaseBlogPosts component to display all posts -->
     <BaseBlogPosts
-      type="latest"
+      type="all"
       :limit="100"
+      :show-date="true"
       :show-excerpt="true"
     />
   </div>
