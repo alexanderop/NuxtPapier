@@ -56,14 +56,14 @@ const { data: posts } = await useAsyncData(
           </h3>
 
           <!-- Excerpt -->
-          <p v-if="showExcerpt && post.description" class="text-[var(--color-secondary)] leading-relaxed">
+          <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed">
             {{ post.description }}
           </p>
         </div>
       </article>
     </div>
   </div>
-  <div v-else class="text-gray-500 py-8 text-center">
+  <div v-else class="text-[var(--color-text-muted)] py-8 text-center">
     No {{ type }} posts found.
   </div>
 </template>

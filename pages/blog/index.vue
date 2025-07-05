@@ -20,7 +20,7 @@ useSeoMeta({
       <h1 class="text-4xl font-bold mb-4">
         Blog
       </h1>
-      <p class="text-lg text-gray-600 dark:text-gray-400">
+      <p class="text-lg text-[var(--color-text-muted)]">
         {{ pageDescription }}
       </p>
     </div>

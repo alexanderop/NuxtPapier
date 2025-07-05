@@ -15,6 +15,12 @@
   --color-primary-hover: #2563eb; /* Blue 600 */
   --color-secondary-hover: #4b5563; /* Gray 600 */
 
+  /* UI state colors for light mode */
+  --color-success: #10b981; /* Green 500 */
+  --color-error: #ef4444; /* Red 500 */
+  --color-warning: #f59e0b; /* Amber 500 */
+  --color-info: var(--color-primary); /* Using primary as info */
+
   /* Typography-specific variables for prose */
   --prose-headings: var(--color-text);
   --prose-body: var(--color-text);
@@ -42,12 +48,18 @@ html[data-theme='dark'] {
 
   /* Additional semantic colors for dark mode */
   --color-border: #86436b; /* Border color */
-  --color-text-muted: #715566; /* Muted text color */
+  --color-text-muted: #a8a9b3; /* Muted text color - improved contrast */
   --color-header-bg: #3a3b45; /* Slightly lighter than background for header */
 
   /* Hover states for dark mode */
   --color-primary-hover: #ff9dd9; /* Lighter pink */
   --color-secondary-hover: #86667a; /* Lighter muted */
+
+  /* UI state colors for dark mode */
+  --color-success: #34d399; /* Green 400 - lighter for dark mode */
+  --color-error: #f87171; /* Red 400 - lighter for dark mode */
+  --color-warning: #fbbf24; /* Amber 400 - lighter for dark mode */
+  --color-info: var(--color-primary); /* Using primary as info */
 
   /* Typography-specific variables for prose in dark mode */
   --prose-headings: var(--color-text);
