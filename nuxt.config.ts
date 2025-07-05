@@ -21,4 +21,8 @@ export default defineNuxtConfig({
     classSuffix: '',
     dataValue: 'theme',
   },
+
+  content: {
+    // MDC is enabled by default in Nuxt Content v2
+  },
 })

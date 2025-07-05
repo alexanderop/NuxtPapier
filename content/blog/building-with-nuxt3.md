@@ -24,6 +24,7 @@ Nuxt 3 brings several game-changing features that make it an excellent choice fo
 ### 1. Performance First
 
 With its hybrid rendering capabilities, Nuxt 3 allows you to choose between:
+
 - **Server-Side Rendering (SSR)** for better SEO and faster initial page loads
 - **Static Site Generation (SSG)** for ultimate performance
 - **Client-Side Rendering (CSR)** for dynamic applications
@@ -45,6 +46,7 @@ const { data } = await useFetch('/api/data')
 ### 3. Built-in Features
 
 Nuxt 3 comes with batteries included:
+
 - **Auto-imports**: Components, composables, and utilities are automatically imported
 - **File-based routing**: Create routes by adding files to the `pages/` directory
 - **Data fetching**: Powerful data fetching utilities with `useFetch` and `useAsyncData`

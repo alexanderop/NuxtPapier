@@ -10,7 +10,6 @@ useSeoMeta({
   description: pageDescription,
   ogTitle: pageTitle,
   ogDescription: pageDescription,
-  ogImage: appConfig.pages.blog?.ogImage || appConfig.site.ogImage,
   twitterCard: 'summary_large_image',
 })
 </script>

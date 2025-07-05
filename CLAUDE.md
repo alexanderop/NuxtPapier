@@ -133,7 +133,6 @@ Key configuration options:
 - `lightAndDarkMode`: Enable/disable theme switching
 - `postPerIndex/postPerPage`: Control post pagination
 - `showArchives/showBackButton`: Toggle UI features
-- `editPost`: Configure "Suggest Changes" feature for posts
 - `dynamicOgImage`: Auto-generate OG images when not specified
 
 ### constants.ts

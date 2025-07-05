@@ -9,7 +9,6 @@ const {
   showExcerpt?: boolean
 }>()
 
-// Query blog posts
 const { data: posts } = await useAsyncData(
   `blog-posts-${type}-${limit}`,
   async () => {
@@ -50,14 +49,14 @@ const { data: posts } = await useAsyncData(
           <h3 class="text-xl leading-tight">
             <NuxtLink
               :href="`${post.path}`"
-              class="text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
+              class="text-[var(--color-text)] transition-colors hover:text-[var(--color-primary)]"
             >
               {{ post.title }}
             </NuxtLink>
           </h3>
 
           <!-- Excerpt -->
-          <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed">
+          <p v-if="showExcerpt && post.description" class="text-[var(--color-secondary)] leading-relaxed">
             {{ post.description }}
           </p>
         </div>

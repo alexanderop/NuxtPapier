@@ -20,12 +20,19 @@ A modern, fast, and flexible starter template built with Nuxt 3, Vue 3, and UnoC
 
 Discover our most impactful content, handpicked for you:
 
-::base-blog-posts{type="featured" :limit="3" :columns="3"}
+::base-blog-posts{type="featured" :limit="3"}
 ::
 
 ## Latest Posts
 
 Stay up to date with our newest articles and insights:
 
-::base-blog-posts{type="latest" :limit="6" :columns="3"}
+::base-blog-posts{type="latest" :limit="6"}
+::
+
+## Color Palette
+
+Here are all the available colors you can use in this site:
+
+::base-color-palette
 ::
