@@ -43,7 +43,7 @@ useSeoMeta({
 
 <template>
   <div class="py-12">
-    <article class="prose prose-lg dark:prose-invert max-w-none">
+    <article class="prose-lg prose dark:prose-invert max-w-none">
       <ContentRenderer :value="page" />
     </article>
   </div>

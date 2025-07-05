@@ -27,6 +27,7 @@
     "@antfu/eslint-config": "^4.16.1",
     "@unocss/eslint-plugin": "^66.2.3",
     "@unocss/nuxt": "^66.3.2",
+    "@unocss/preset-typography": "^66.3.2",
     "@unocss/preset-web-fonts": "^66.3.2",
     "@unocss/preset-wind4": "^66.3.2",
     "eslint": "^9.29.0",

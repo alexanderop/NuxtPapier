@@ -10,6 +10,26 @@
   --color-border: #e5e7eb; /* Light border using surface color */
   --color-text-muted: #6b7280; /* Muted text using secondary color */
   --color-header-bg: #fafbfc; /* Very subtle gray for header */
+
+  /* Hover states for light mode */
+  --color-primary-hover: #2563eb; /* Blue 600 */
+  --color-secondary-hover: #4b5563; /* Gray 600 */
+
+  /* Typography-specific variables for prose */
+  --prose-headings: var(--color-text);
+  --prose-body: var(--color-text);
+  --prose-bold: var(--color-text);
+  --prose-links: var(--color-primary);
+  --prose-links-hover: var(--color-primary-hover);
+  --prose-quotes: var(--color-text-muted);
+  --prose-code: var(--color-primary);
+  --prose-code-bg: var(--color-surface);
+  --prose-pre-bg: var(--color-surface);
+  --prose-pre-border: var(--color-border);
+  --prose-hr: var(--color-border);
+  --prose-th-bg: var(--color-surface);
+  --prose-th-border: var(--color-border);
+  --prose-td-border: var(--color-border);
 }
 
 html[data-theme='dark'] {
@@ -24,6 +44,26 @@ html[data-theme='dark'] {
   --color-border: #86436b; /* Border color */
   --color-text-muted: #715566; /* Muted text color */
   --color-header-bg: #3a3b45; /* Slightly lighter than background for header */
+
+  /* Hover states for dark mode */
+  --color-primary-hover: #ff9dd9; /* Lighter pink */
+  --color-secondary-hover: #86667a; /* Lighter muted */
+
+  /* Typography-specific variables for prose in dark mode */
+  --prose-headings: var(--color-text);
+  --prose-body: var(--color-text);
+  --prose-bold: var(--color-text);
+  --prose-links: var(--color-primary);
+  --prose-links-hover: var(--color-primary-hover);
+  --prose-quotes: var(--color-text-muted);
+  --prose-code: var(--color-primary);
+  --prose-code-bg: rgba(134, 67, 107, 0.3); /* Translucent surface */
+  --prose-pre-bg: rgba(134, 67, 107, 0.2); /* Slightly translucent */
+  --prose-pre-border: var(--color-border);
+  --prose-hr: var(--color-border);
+  --prose-th-bg: rgba(134, 67, 107, 0.3);
+  --prose-th-border: var(--color-border);
+  --prose-td-border: var(--color-border);
 }
 
 /* Smooth color transitions */
@@ -37,4 +77,29 @@ html[data-theme='dark'] {
 body {
   background-color: var(--color-background);
   color: var(--color-text);
+}
+
+/* Prose/Typography utility class customization */
+.prose {
+  --uno-prose-body: var(--prose-body);
+  --uno-prose-headings: var(--prose-headings);
+  --uno-prose-links: var(--prose-links);
+  --uno-prose-lists: var(--prose-body);
+  --uno-prose-hr: var(--prose-hr);
+  --uno-prose-captions: var(--prose-quotes);
+  --uno-prose-code: var(--prose-code);
+  --uno-prose-borders: var(--prose-td-border);
+  --uno-prose-bg-soft: var(--prose-code-bg);
+  max-width: 65ch;
+}
+
+/* Custom prose color variants */
+.prose-primary {
+  --uno-prose-links: var(--color-primary);
+}
+
+.prose-secondary {
+  --uno-prose-body: var(--color-text);
+  --uno-prose-headings: var(--color-text);
+  --uno-prose-links: var(--color-secondary);
 }

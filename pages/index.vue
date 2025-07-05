@@ -16,20 +16,21 @@ if (!page.value) {
 
 const pageTitle = appConfig.site.title
 const pageDescription = page.value.description || appConfig.site.desc
+const pageOgImage = (page.value as any).ogImage || appConfig.site.ogImage
 
 useSeoMeta({
   title: pageTitle,
   description: pageDescription,
   ogTitle: pageTitle,
   ogDescription: pageDescription,
-  ogImage: page.value.ogImage || appConfig.site.ogImage,
+  ogImage: pageOgImage,
   twitterCard: 'summary_large_image',
 })
 </script>
 
 <template>
   <div class="py-12">
-    <article class="prose prose-lg dark:prose-invert max-w-none">
+    <article v-if="page" class="prose-lg prose dark:prose-invert max-w-none">
       <ContentRenderer :value="page" />
     </article>
   </div>
