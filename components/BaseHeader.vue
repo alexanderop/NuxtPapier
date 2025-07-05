@@ -49,7 +49,7 @@ watchEffect(() => {
     >
       Skip to content
     </a>
-    <div class="bg-[var(--color-background)] w-full">
+    <div class="bg-[var(--color-header-bg)] w-full">
       <div
         id="nav-container"
         class="container-app flex flex-col items-center justify-between sm:flex-row"

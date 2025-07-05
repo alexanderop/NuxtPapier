@@ -5,6 +5,10 @@
       "args": [
         "@playwright/mcp@latest"
       ]
+    },
+    "nuxt": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://mcp.nuxt.com/sse"]
     }
   }
 }

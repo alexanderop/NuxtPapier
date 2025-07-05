@@ -9,6 +9,7 @@
   /* Additional semantic colors derived from the 5 base colors */
   --color-border: #e5e7eb; /* Light border using surface color */
   --color-text-muted: #6b7280; /* Muted text using secondary color */
+  --color-header-bg: #fafbfc; /* Very subtle gray for header */
 }
 
 html[data-theme='dark'] {
@@ -22,6 +23,7 @@ html[data-theme='dark'] {
   /* Additional semantic colors for dark mode */
   --color-border: #86436b; /* Border color */
   --color-text-muted: #715566; /* Muted text color */
+  --color-header-bg: #3a3b45; /* Slightly lighter than background for header */
 }
 
 /* Smooth color transitions */

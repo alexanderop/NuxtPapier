@@ -15,7 +15,7 @@ const buttonText = computed(() => isDarkMode.value ? 'Light Mode' : 'Dark Mode')
     type="button"
     :aria-label="`Switch to ${buttonText}`"
     :title="`Switch to ${buttonText}`"
-    class="text-sm hover:text-[var(--color-primary)] transition-colors"
+    class="text-sm transition-colors hover:text-[var(--color-primary)]"
     @click="toggleMode"
   >
     {{ buttonText }}

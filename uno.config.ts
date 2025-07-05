@@ -1,6 +1,5 @@
 import presetWind4 from '@unocss/preset-wind4'
-import { presetWebFonts } from 'unocss'
-import { defineConfig } from 'unocss'
+import { defineConfig, presetWebFonts } from 'unocss'
 
 export default defineConfig({
   presets: [presetWind4(), presetWebFonts({
@@ -28,7 +27,7 @@ export default defineConfig({
       'text-muted': 'var(--color-text-muted)',
     },
     fontFamily: {
-      'mono': '"IBM Plex Mono", ui-monospace, Menlo, Monaco, monospace',
+      mono: '"IBM Plex Mono", ui-monospace, Menlo, Monaco, monospace',
     },
   },
   shortcuts: {

@@ -166,26 +166,27 @@ Claude Code has access to the following MCP (Model Context Protocol) tools for e
 - Advanced browser automation with Playwright
 - Navigate to URLs, take screenshots, click elements, fill forms
 - Execute JavaScript in browser context
+- **IMPORTANT**: Always use Playwright MCP instead of Puppeteer for browser automation tasks
+
+### Nuxt MCP (PRIMARY FOR NUXT/VUE DOCUMENTATION)
+
+- Specialized tools for Nuxt and Vue development
+- Access to official Nuxt documentation and resources
+- **IMPORTANT**: Always use Nuxt MCP for questions about Nuxt, Vue, or related ecosystem tools instead of Context7
 - Configured in `.mcp.json` with:
   ```json
   {
     "mcpServers": {
-      "playwright": {
-        "command": "npx",
-        "args": ["@playwright/mcp@latest"]
+      "nuxt": {
+        "url": "https://mcp.nuxt.com/sse"
       }
     }
   }
   ```
-- **IMPORTANT**: Always use Playwright MCP instead of Puppeteer for browser automation tasks
 
 ### Context7 MCP
 
-- Access to up-to-date documentation for popular libraries and frameworks
+- Access to documentation for other libraries and frameworks (non-Nuxt/Vue)
 - Resolve library names to Context7-compatible IDs
 - Fetch comprehensive library documentation with code examples
-
-### Nuxt MCP
-
-- Specialized tools for Nuxt development (if configured)
-- Access to Nuxt-specific resources and documentation
+- **NOTE**: Use this only for non-Nuxt/Vue related documentation needs
