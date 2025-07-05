@@ -16,23 +16,16 @@ A modern, fast, and flexible starter template built with Nuxt 3, Vue 3, and UnoC
 - **📱 Responsive** - Mobile-first design approach
 - **🔧 Developer Experience** - TypeScript, ESLint, and auto-imports
 
-## Getting Started
+## Featured Posts
 
-Get up and running with NuxtPapier in minutes:
+Discover our most impactful content, handpicked for you:
 
-```bash
-# Install dependencies
-pnpm install
+::base-blog-posts{type="featured" :limit="3" :columns="3"}
+::
 
-# Start development server
-pnpm dev
+## Latest Posts
 
-# Build for production
-pnpm build
-```
+Stay up to date with our newest articles and insights:
 
-## Why NuxtPapier?
-
-Built for developers who want a solid foundation without the bloat. Every decision is made with performance and developer experience in mind.
-
-Ready to build something amazing? Let's get started!
+::base-blog-posts{type="latest" :limit="6" :columns="3"}
+::

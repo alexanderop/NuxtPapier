@@ -4,6 +4,7 @@ const route = useRoute()
 const menuOpen = ref(false)
 
 const navItems = [
+  { to: '/blog', label: 'Blog' },
   { to: '/about', label: 'About' },
 ]
 

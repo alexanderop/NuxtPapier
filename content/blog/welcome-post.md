@@ -7,6 +7,7 @@ tags:
   - announcement
   - welcome
 draft: false
+featured: true
 image: /images/blog/welcome-cover.jpg
 ---
 

@@ -30,7 +30,7 @@ useSeoMeta({
 
 <template>
   <div class="py-12">
-    <article v-if="page" class="prose-lg prose dark:prose-invert max-w-none">
+    <article v-if="page" class="prose-lg max-w-none prose dark:prose-invert">
       <ContentRenderer :value="page" />
     </article>
   </div>
