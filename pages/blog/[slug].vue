@@ -32,6 +32,15 @@ useSeoMeta({
 <template>
   <div class="py-12">
     <article v-if="post" class="mx-auto max-w-3xl">
+      <!-- Back to blog link -->
+      <NuxtLink 
+        to="/blog" 
+        class="inline-flex items-center gap-2 mb-8 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"
+      >
+        <Icon name="i-lucide-arrow-left" class="w-4 h-4" />
+        <span>Back to Blog</span>
+      </NuxtLink>
+      
       <div class="prose-lg max-w-none prose dark:prose-invert">
         <ContentRenderer :value="post" />
       </div>
