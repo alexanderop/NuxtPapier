@@ -1,9 +1,10 @@
+  typecript: true,
 import antfu from '@antfu/eslint-config'
 import vue35Plugin from './eslint-plugin-vue35/index.js'
 
 export default antfu({
   vue: true,
-  typescript: true,
+  typecript: true,
   unocss: true,
 
   stylistic: {

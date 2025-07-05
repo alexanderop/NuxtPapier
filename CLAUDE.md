@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Essential Commands
 
-- `pnpm dev` - Start development server on http://localhost:3000
+- `pnpm dev` - Start development server on http://localhost:3000 (IMPORTANT: Never run this command automatically - the user will ensure the dev server is running)
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build locally
 - `pnpm lint` - Run ESLint with auto-fix for code quality
@@ -161,11 +161,23 @@ const socials = appConfig.socials
 
 Claude Code has access to the following MCP (Model Context Protocol) tools for enhanced functionality:
 
-### Puppeteer MCP
+### Playwright MCP (PRIMARY BROWSER AUTOMATION TOOL)
 
-- Browser automation and web scraping capabilities
+- Advanced browser automation with Playwright
 - Navigate to URLs, take screenshots, click elements, fill forms
 - Execute JavaScript in browser context
+- Configured in `.mcp.json` with:
+  ```json
+  {
+    "mcpServers": {
+      "playwright": {
+        "command": "npx",
+        "args": ["@playwright/mcp@latest"]
+      }
+    }
+  }
+  ```
+- **IMPORTANT**: Always use Playwright MCP instead of Puppeteer for browser automation tasks
 
 ### Context7 MCP
 

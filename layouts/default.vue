@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen font-mono">
     <BaseHeader />
     <main id="main-content" class="flex-1">
       <div class="container-app">
