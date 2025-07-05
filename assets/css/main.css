@@ -115,3 +115,31 @@ body {
   --uno-prose-headings: var(--color-text);
   --uno-prose-links: var(--color-secondary);
 }
+
+/* Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Staggered Content Animation */
+.animate {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: all 0.7s ease-out;
+}
+
+.animate.show {
+  opacity: 1;
+  transform: translateY(0);
+}

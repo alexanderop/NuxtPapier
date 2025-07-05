@@ -45,7 +45,7 @@ const { data: posts } = await useAsyncData(
       <article
         v-for="(post, index) in posts"
         :key="`post-${index}`"
-        class="group"
+        class="group animate"
       >
         <!-- Post Content -->
         <div class="space-y-2">

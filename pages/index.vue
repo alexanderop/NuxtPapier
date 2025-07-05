@@ -26,11 +26,14 @@ useSeoMeta({
   ogImage: pageOgImage,
   twitterCard: 'summary_large_image',
 })
+
+// Enable staggered animations
+useStaggeredAnimation()
 </script>
 
 <template>
   <div class="py-12">
-    <article v-if="page" class="prose-lg max-w-none prose dark:prose-invert">
+    <article v-if="page" class="prose-lg animate prose dark:prose-invert max-w-none">
       <ContentRenderer :value="page" />
     </article>
   </div>
