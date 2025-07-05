@@ -17,6 +17,7 @@ export default defineContentConfig({
         title: z.string().min(1),
         description: z.string().min(1),
         date: z.string().datetime(),
+        featured: z.boolean().default(false),
         author: z.string().min(1),
         tags: z.array(z.string()).default([]),
         draft: z.boolean().default(false),

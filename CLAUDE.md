@@ -199,24 +199,28 @@ When using Nuxt Content's MDC (Markdown Components) in markdown files, use the Y
 The YAML method uses the `---` identifier to declare one prop per line. This is the preferred method for this project:
 
 ```markdown
-::component-name
----
+## ::component-name
+
 prop1: value1
 prop2: value2
 prop3: value3
+
 ---
+
 ::
 ```
 
 ### Example Usage
 
 ```markdown
-::icon-card
----
+## ::icon-card
+
 icon: IconNuxt
 description: Harness the full power of Nuxt and the Nuxt ecosystem.
 title: Nuxt Architecture.
+
 ---
+
 ::
 ```
 
@@ -229,11 +233,13 @@ This renders an IconCard component with the specified props. The YAML method imp
 A GitHub-style alert component for highlighting important information:
 
 ```markdown
-::base-alert
----
+## ::base-alert
+
 type: note
 title: Optional custom title
+
 ---
+
 Your alert content goes here.
 ::
 ```

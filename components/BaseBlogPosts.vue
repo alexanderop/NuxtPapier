@@ -12,25 +12,23 @@ const {
 const { data: posts } = await useAsyncData(
   `blog-posts-${type}-${limit}`,
   async () => {
-    const query = queryCollection('blog')
+    let query = queryCollection('blog')
 
-    // Filter based on type
     if (type === 'featured') {
-      // Get featured posts
-      const allPosts = await query.all()
-      return allPosts
-        .filter((post: any) => post.featured === true && post.draft !== true)
-        .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, limit)
+      // For featured posts, only show posts marked as featured
+      query = query.where('featured', '=', true)
     }
     else {
-      // Get latest posts (excluding drafts)
-      const allPosts = await query.all()
-      return allPosts
-        .filter((post: any) => post.draft !== true)
-        .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, limit)
+      // For latest posts, exclude drafts and featured posts
+      query = query
+        .where('draft', '<>', true)
+        .where('featured', '<>', true)
     }
+
+    return await query
+      .order('date', 'DESC')
+      .limit(limit)
+      .all()
   },
 )
 </script>
