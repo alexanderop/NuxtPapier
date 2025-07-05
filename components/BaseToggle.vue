@@ -1,32 +1,23 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
 
-const modes = [
-  { value: 'light', icon: 'i-heroicons-sun', label: 'Light mode' },
-  { value: 'dark', icon: 'i-heroicons-moon', label: 'Dark mode' },
-  { value: 'system', icon: 'i-heroicons-computer-desktop', label: 'System preference' },
-]
+const isDarkMode = computed(() => colorMode.preference === 'dark')
 
-const currentMode = computed(() => modes.find(mode => mode.value === colorMode.preference))
-
-function cycleMode() {
-  const currentIndex = modes.findIndex(mode => mode.value === colorMode.preference)
-  const nextIndex = (currentIndex + 1) % modes.length
-  colorMode.preference = modes[nextIndex].value
+function toggleMode() {
+  colorMode.preference = isDarkMode.value ? 'light' : 'dark'
 }
+
+const buttonText = computed(() => isDarkMode.value ? 'Light Mode' : 'Dark Mode')
 </script>
 
 <template>
   <button
     type="button"
-    :aria-label="`Switch to ${currentMode?.label}`"
-    :title="currentMode?.label"
-    @click="cycleMode"
+    :aria-label="`Switch to ${buttonText}`"
+    :title="`Switch to ${buttonText}`"
+    class="text-sm hover:text-[var(--color-primary)] transition-colors"
+    @click="toggleMode"
   >
-    <Icon
-      v-if="currentMode"
-      :name="currentMode.icon"
-      class="h-5 w-5"
-    />
+    {{ buttonText }}
   </button>
 </template>

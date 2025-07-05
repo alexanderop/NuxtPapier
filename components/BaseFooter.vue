@@ -10,7 +10,6 @@ const currentYear = new Date().getFullYear()
 
 <template>
   <footer class="w-full" :class="[{ 'mt-auto': !noMarginTop }]">
-    <BaseHr />
     <div class="container-app">
       <div class="py-6 flex flex-col items-center justify-between sm:py-4 sm:flex-row-reverse">
         <BaseSocials centered />

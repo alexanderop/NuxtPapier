@@ -4,8 +4,6 @@ const route = useRoute()
 const menuOpen = ref(false)
 
 const navItems = [
-  { to: '/posts', label: 'Posts' },
-  { to: '/tags', label: 'Tags' },
   { to: '/about', label: 'About' },
 ]
 
@@ -99,17 +97,12 @@ watchEffect(() => {
                 </NuxtLink>
               </li>
               <li class="flex col-span-1 items-center justify-center">
-                <BaseButton
+                <NuxtLink
                   to="/search"
-                  variant="ghost"
-                  size="sm"
                   :class="getNavClasses('/search')"
-                  aria-label="search"
-                  title="Search"
-                  icon="i-heroicons-magnifying-glass"
                 >
-                  <span class="sr-only">Search</span>
-                </BaseButton>
+                  Search
+                </NuxtLink>
               </li>
               <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-1 items-center justify-center">
                 <BaseToggle />
@@ -119,6 +112,5 @@ watchEffect(() => {
         </div>
       </div>
     </div>
-    <BaseHr />
   </header>
 </template>
