@@ -2,11 +2,11 @@
 const route = useRoute()
 const appConfig = useAppConfig()
 
-const slug = route.params.slug
+const postSlug = route.params.postSlug
 
 const { data: post } = await useAsyncData(
-  `blog-post-${slug}`,
-  () => queryCollection('blog').path(`/blog/${slug}`).first(),
+  `blog-post-${postSlug}`,
+  () => queryCollection('blog').path(`/blog/${postSlug}`).first(),
 )
 
 if (!post.value) {
