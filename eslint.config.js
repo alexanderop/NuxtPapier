@@ -15,6 +15,7 @@ export default antfu(
     formatters: {
       css: true,
       html: true,
+      markdown: false,
     },
 
     plugins: {
@@ -31,5 +32,8 @@ export default antfu(
     rules: {
       'vue/multi-word-component-names': 'off',
     },
+  },
+  {
+    ignores: ['**/*.md'],
   },
 )

@@ -1,147 +1,120 @@
 # Vue 3 Routes and Pages
 
-<overview>
 The pages folder holds all your app's routes. Nuxt uses Vue Router and creates routes based on your file names and folder structure.
-</overview>
 
-<rules>
-  <rule>
-    <action>Check</action>
-    <target>https://uvr.esm.is/llms.txt</target>
-    <reason>Find the latest info on topics not covered here</reason>
-  </rule>
-  
-  <rule>
-    <action>Never use</action>
-    <target>index.vue files</target>
-    <alternative>Use group names like (home).vue instead</alternative>
-  </rule>
-  
-  <rule>
-    <action>Always use clear names</action>
-    <target>Route parameters</target>
-    <examples>
-      <good>userId, postSlug, productId</good>
-      <bad>id, slug, item</bad>
-    </examples>
-  </rule>
-  
-  <rule>
-    <action>Use dots in file names</action>
-    <target>Create paths without nesting</target>
-    <example>users.edit.vue creates /users/edit</example>
-  </rule>
-  
-  <rule>
-    <action>Use double brackets</action>
-    <target>Optional parameters</target>
-    <example>[[paramName]]</example>
-  </rule>
-  
-  <rule>
-    <action>Add + after brackets</action>
-    <target>Repeating parameters</target>
-    <example>/posts.[[slug]]+.vue matches both /posts/some-post and /posts/some/post</example>
-  </rule>
-  
-  <rule>
-    <action>Use definePage()</action>
-    <target>Set route properties</target>
-    <properties>meta, name, path, alias</properties>
-  </rule>
-  
-  <rule>
-    <action>Always check</action>
-    <target>typed-router.d.ts file</target>
-    <reason>Find correct route names and parameters</reason>
-  </rule>
-  
-  <rule>
-    <action>Use named routes</action>
-    <target>Navigation</target>
-    <good>router.push({ name: '/users/[userId]', params: { userId } })</good>
-    <bad>router.push('/users/' + userId)</bad>
-  </rule>
-  
-  <rule>
-    <action>Pass route name</action>
-    <target>useRoute() function</target>
-    <example>useRoute('/users/[userId]')</example>
-    <benefit>Get better type checking</benefit>
-  </rule>
-</rules>
+## Rules
 
-<examples>
-  <example>
-    <title>Basic File Structure</title>
-    <structure>
-      src/pages/
-      ├── (home).vue         # Groups make routes clearer
-      ├── about.vue
-      ├── [...path].vue      # Catches all unknown routes
-      ├── users.edit.vue     # Dots create paths without nesting
-      ├── users.vue          # Layout for user routes
-      └── users/
-          ├── (user-list).vue
-          └── [userId].vue
-    </structure>
-  </example>
+**Check https://uvr.esm.is/llms.txt for latest info**
+- Find updates on topics not covered here
 
-  <example>
-    <title>This Site's Structure</title>
-    <structure>
-      pages/
-      ├── (home).vue              # Home page
-      ├── [...path].vue           # Catches all content pages
-      ├── animation-demo.vue      # Shows animations
-      ├── blog/
-      │   ├── (blog-list).vue     # Lists all blog posts
-      │   └── [postSlug].vue      # Shows one blog post
-      ├── design-system.vue       # Shows design components
-      ├── design-system-preview.vue
-      ├── design-system-contrast.vue
-      └── share-demo.vue          # Shows social sharing
-    </structure>
-    
-    <improvements>
-      <improvement>Group names like (home) make routes clearer</improvement>
-      <improvement>Clear params like [postSlug] beat generic [slug]</improvement>
-      <improvement>Better catch-all name [...path] instead of [...slug]</improvement>
-    </improvements>
-  </example>
+**Never use index.vue files**
+- ✅ `(home).vue`, `(blog-list).vue`
+- ❌ `index.vue`
+- Groups make routes clearer
 
-  <example>
-    <title>Route Groups for Layouts</title>
-    <description>Groups create layouts without changing URLs</description>
-    
-    <structure>
-      src/pages/
-      ├── (admin).vue      # Layout wraps all admin pages
-      ├── (admin)/
-      │   ├── dashboard.vue
-      │   └── settings.vue
-      └── (user)/
-          ├── profile.vue
-          └── order.vue
-    </structure>
-    
-    <routes>
-      <route>
-        <url>/dashboard</url>
-        <file>src/pages/(admin)/dashboard.vue</file>
-      </route>
-      <route>
-        <url>/settings</url>
-        <file>src/pages/(admin)/settings.vue</file>
-      </route>
-      <route>
-        <url>/profile</url>
-        <file>src/pages/(user)/profile.vue</file>
-      </route>
-      <route>
-        <url>/order</url>
-        <file>src/pages/(user)/order.vue</file>
-      </route>
-    </routes>
-  </example>
-</examples>
+**Use descriptive route parameters**
+- ✅ `userId`, `postSlug`, `productId`
+- ❌ `id`, `slug`, `item`
+
+**Use dots for nested paths without folders**
+- `users.edit.vue` → `/users/edit`
+- Keeps file structure flat
+
+**Use double brackets for optional params**
+- `[[paramName]].vue` → param can be present or absent
+
+**Add + for repeating parameters**
+- `/posts.[[slug]]+.vue` → matches `/posts/some-post` and `/posts/some/post`
+
+**Use definePage() for route config**
+- Set meta, name, path, alias properties
+- Type-safe route configuration
+
+**Check typed-router.d.ts for route names**
+- Find correct route names and parameters
+- Auto-generated by Nuxt
+
+**Navigate with named routes**
+```typescript
+// ✅ Good
+router.push({ name: '/users/[userId]', params: { userId } })
+
+// ❌ Bad
+router.push('/users/' + userId)
+```
+
+**Pass route name to useRoute()**
+```typescript
+const route = useRoute('/users/[userId]')
+// Better type checking than useRoute()
+```
+
+## Examples
+
+### Basic File Structure
+```
+src/pages/
+├── (home).vue         # Groups make routes clearer
+├── about.vue
+├── [...path].vue      # Catches all unknown routes
+├── users.edit.vue     # Dots create paths without nesting
+├── users.vue          # Layout for user routes
+└── users/
+    ├── (user-list).vue
+    └── [userId].vue
+```
+
+### This Site's Structure
+```
+pages/
+├── (home).vue              # Home page
+├── [...path].vue           # Catches all content pages
+├── animation-demo.vue      # Shows animations
+├── blog/
+│   ├── (blog-list).vue     # Lists all blog posts
+│   └── [postSlug].vue      # Shows one blog post
+├── design-system.vue       # Shows design components
+├── design-system-preview.vue
+├── design-system-contrast.vue
+└── share-demo.vue          # Shows social sharing
+```
+
+**Improvements made:**
+- Group names like `(home)` clarify purpose
+- Clear params like `[postSlug]` beat generic `[slug]`
+- Better catch-all `[...path]` instead of `[...slug]`
+
+### Route Groups for Layouts
+
+Groups create layouts without changing URLs:
+
+```
+src/pages/
+├── (admin).vue      # Layout wraps all admin pages
+├── (admin)/
+│   ├── dashboard.vue  → /dashboard
+│   └── settings.vue   → /settings
+└── (user)/
+    ├── profile.vue    → /profile
+    └── order.vue      → /order
+```
+
+## Key Concepts
+
+**File-based routing**
+- File structure = URL structure
+- Automatic route generation
+
+**Dynamic segments**
+- `[param]` → Required parameter
+- `[[param]]` → Optional parameter
+- `[...param]` → Catch-all route
+
+**Route groups**
+- `(name)` → Logical grouping
+- No URL impact
+- Shared layouts
+
+**Nested routes**
+- Parent file = layout wrapper
+- Child files = nested views
