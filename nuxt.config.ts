@@ -25,5 +25,11 @@ export default defineNuxtConfig({
 
   content: {
     // MDC is enabled by default in Nuxt Content v2
+    markdown: {
+      toc: {
+        depth: 4, // Include h2, h3, and h4 in table of contents
+        searchDepth: 4,
+      },
+    },
   },
 })
