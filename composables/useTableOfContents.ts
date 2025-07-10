@@ -8,53 +8,59 @@ export interface TocLink {
 export function useTableOfContents() {
   const activeId = ref<string>('')
   const observer = shallowRef<IntersectionObserver | null>(null)
+  const checkScroll = ref<(() => void) | null>(null)
 
   function observeHeadings() {
     if (import.meta.client) {
-      // Track visible headings
-      const visibleHeadings = new Map<string, number>()
-
+      // Track all headings and their positions
+      const headingElements: Element[] = []
+      
       const callback: IntersectionObserverCallback = (entries) => {
+        // Check if we're at the bottom of the page
+        const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10
+        
+        if (isAtBottom && headingElements.length > 0) {
+          // If at bottom, highlight the last heading
+          const lastHeading = headingElements[headingElements.length - 1]
+          activeId.value = lastHeading.id
+          return
+        }
+        
+        // Otherwise, find the first visible heading or the one closest to the top
         entries.forEach((entry) => {
-          const id = entry.target.id
-          if (entry.isIntersecting) {
-            // Add to visible headings with its position
-            visibleHeadings.set(id, entry.target.getBoundingClientRect().top)
-          }
-          else {
-            // Remove from visible headings
-            visibleHeadings.delete(id)
+          if (entry.isIntersecting && entry.intersectionRatio > 0) {
+            activeId.value = entry.target.id
           }
         })
+      }
 
-        // Find the heading closest to the top of the viewport
-        if (visibleHeadings.size > 0) {
-          let closestId = ''
-          let closestDistance = Infinity
-
-          visibleHeadings.forEach((top, id) => {
-            const distance = Math.abs(top)
-            if (distance < closestDistance) {
-              closestDistance = distance
-              closestId = id
-            }
-          })
-
-          if (closestId) {
-            activeId.value = closestId
-          }
+      // Create scroll handler
+      checkScroll.value = () => {
+        const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10
+        
+        if (isAtBottom && headingElements.length > 0) {
+          const lastHeading = headingElements[headingElements.length - 1]
+          activeId.value = lastHeading.id
         }
       }
 
       observer.value = new IntersectionObserver(callback, {
-        rootMargin: '-80px 0px -50% 0px',
-        threshold: [0, 0.5, 1],
+        rootMargin: '-80px 0px -70% 0px',
+        threshold: [0],
       })
 
       // Wait for content to render
       nextTick(() => {
         const headings = document.querySelectorAll('.prose h2[id], .prose h3[id], .prose h4[id]')
-        headings.forEach(heading => observer.value?.observe(heading))
+        headings.forEach(heading => {
+          headingElements.push(heading)
+          observer.value?.observe(heading)
+        })
+        
+        // Add scroll listener for bottom detection
+        if (checkScroll.value) {
+          window.addEventListener('scroll', checkScroll.value, { passive: true })
+        }
       })
     }
   }
@@ -81,6 +87,9 @@ export function useTableOfContents() {
 
   onUnmounted(() => {
     observer.value?.disconnect()
+    if (checkScroll.value) {
+      window.removeEventListener('scroll', checkScroll.value)
+    }
   })
 
   return {

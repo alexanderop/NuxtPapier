@@ -54,7 +54,8 @@ const languageDisplay = computed(() => {
     jsx: 'JSX',
     tsx: 'TSX',
   }
-  if (!language) return ''
+  if (!language)
+    return ''
   return langMap[language] || language.toUpperCase()
 })
 </script>

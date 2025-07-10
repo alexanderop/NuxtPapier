@@ -27,6 +27,14 @@ const tocLinks = computed(() => {
   return toc?.links || []
 })
 
+// Use blog layout
+definePageMeta({
+  layout: 'blog',
+})
+
+// Enable staggered animations
+useStaggeredAnimation()
+
 useSeoMeta({
   title: pageTitle,
   description: pageDescription,
@@ -37,37 +45,37 @@ useSeoMeta({
 </script>
 
 <template>
-  <div v-if="post" class="min-h-screen relative">
-    <!-- Table of Contents - Absolutely positioned outside container -->
-    <aside class="hidden lg:h-[calc(100vh-6rem)] lg:w-[280px] lg:block lg:left-0 lg:top-24 lg:fixed lg:overflow-y-auto">
-      <div class="py-8 pl-8 pr-4">
+  <div v-if="post" class="contents">
+    <!-- Sidebar content -->
+    <aside class="hidden lg:block animate">
+      <div class="py-12 pr-8 top-24 sticky">
         <BaseTableOfContents :links="tocLinks" />
       </div>
     </aside>
 
-    <!-- Main content centered in viewport -->
-    <main>
-      <article class="mx-auto px-4 py-12 max-w-3xl">
-        <!-- Back to blog link -->
-        <NuxtLink
-          to="/blog"
-          class="text-[var(--color-text-muted)] mb-8 inline-flex gap-2 transition-colors items-center hover:text-[var(--color-primary)]"
-        >
-          <Icon name="i-lucide-arrow-left" class="h-4 w-4" />
-          <span>Back to Blog</span>
-        </NuxtLink>
+    <!-- Main content -->
+    <article class="py-12 px-4 lg:px-0">
+      <!-- Back to blog link -->
+      <NuxtLink
+        to="/blog"
+        class="animate text-[var(--color-text-muted)] mb-8 inline-flex gap-2 transition-colors items-center hover:text-[var(--color-primary)]"
+      >
+        <Icon name="i-lucide-arrow-left" class="h-4 w-4" />
+        <span>Back to Blog</span>
+      </NuxtLink>
 
-        <div class="prose-lg max-w-none prose dark:prose-invert">
-          <ContentRenderer :value="post" />
-        </div>
+      <div class="animate prose-lg max-w-none prose dark:prose-invert">
+        <ContentRenderer :value="post" />
+      </div>
 
-        <!-- Social share links -->
+      <!-- Social share links -->
+      <div class="animate">
         <BaseShareLinks
           :title="post.title"
           :description="post.description"
           variant="inline"
         />
-      </article>
-    </main>
+      </div>
+    </article>
   </div>
 </template>

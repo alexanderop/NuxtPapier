@@ -26,6 +26,9 @@ const hasEnoughHeadings = computed(() => links.length >= 1)
     aria-label="Table of contents"
   >
     <div>
+      <h2 class="text-sm font-semibold text-[var(--color-text)] mb-4">
+        Table of Contents
+      </h2>
       <ul class="text-sm space-y-1.5">
         <li
           v-for="link in links"
