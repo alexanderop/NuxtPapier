@@ -24,11 +24,35 @@ export default defineNuxtConfig({
   },
 
   content: {
-    // MDC is enabled by default in Nuxt Content v2
-    markdown: {
-      toc: {
-        depth: 4, // Include h2, h3, and h4 in table of contents
-        searchDepth: 4,
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'vitesse-light',
+            dark: 'vitesse-dark',
+          },
+          langs: [
+            'js',
+            'javascript',
+            'ts',
+            'typescript',
+            'vue',
+            'css',
+            'scss',
+            'html',
+            'bash',
+            'shell',
+            'json',
+            'md',
+            'markdown',
+            'yaml',
+            'yml',
+            'python',
+            'py',
+            'jsx',
+            'tsx',
+          ],
+        },
       },
     },
   },

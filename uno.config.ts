@@ -29,11 +29,39 @@ export default defineConfig({
           'border': '1px solid var(--color-border)',
           'border-radius': '0.5rem',
           'overflow-x': 'auto',
+          'padding': '0',
+          'margin': '1.5rem 0',
         },
         'pre code': {
           'background-color': 'transparent',
-          'padding': '0',
+          'padding': '1rem',
           'color': 'inherit',
+          'font-size': '0.875rem',
+          'line-height': '1.7',
+          'display': 'block',
+        },
+        // Shiki code blocks styling
+        '.shiki': {
+          'background-color': 'transparent !important',
+          'padding': '1rem',
+          'margin': '0',
+        },
+        '.shiki code': {
+          'background-color': 'transparent',
+          'padding': '0',
+          'font-family': 'var(--font-mono)',
+        },
+        '.shiki .line': {
+          'display': 'block',
+          'min-height': '1rem',
+        },
+        // Line highlighting
+        '.shiki .highlighted': {
+          'background-color': 'var(--color-primary)',
+          'opacity': '0.1',
+          'display': 'block',
+          'margin': '0 -1rem',
+          'padding': '0 1rem',
         },
         'blockquote': {
           'border-left': '4px solid var(--color-primary)',
@@ -94,7 +122,10 @@ export default defineConfig({
       'secondary': 'var(--color-secondary)',
       'background': 'var(--color-background)',
       'surface': 'var(--color-surface)',
+      'surface-base': 'var(--color-surface)',
+      'surface-subtle': 'var(--color-background)',
       'text': 'var(--color-text)',
+      'text-base': 'var(--color-text)',
       'primary-hover': 'var(--color-primary-hover)',
       'secondary-hover': 'var(--color-secondary-hover)',
       'border': 'var(--color-border)',

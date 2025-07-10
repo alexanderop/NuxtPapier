@@ -23,7 +23,7 @@ const pageDescription = post.value.description || `Read "${post.value.title}" on
 // Get TOC links - Nuxt Content v2 structure
 const tocLinks = computed(() => {
   // In Nuxt Content v2, toc is an object with a links array
-  const toc = post.value?.body?.toc 
+  const toc = post.value?.body?.toc
   return toc?.links || []
 })
 

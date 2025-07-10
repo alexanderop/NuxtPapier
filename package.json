@@ -33,6 +33,7 @@
     "@unocss/preset-wind4": "^66.3.2",
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
+    "sass": "^1.89.2",
     "unocss": "^66.3.2"
   }
 }

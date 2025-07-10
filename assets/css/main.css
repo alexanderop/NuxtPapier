@@ -21,6 +21,10 @@
   --color-warning: #f59e0b; /* Amber 500 */
   --color-info: var(--color-primary); /* Using primary as info */
 
+  /* Shiki theme colors for light mode */
+  --shiki-default-bg: #ffffff;
+  --shiki-default: #24292e;
+
   /* Typography-specific variables for prose */
   --prose-headings: var(--color-text);
   --prose-body: var(--color-text);
@@ -60,6 +64,10 @@ html[data-theme='dark'] {
   --color-error: #f87171; /* Red 400 - lighter for dark mode */
   --color-warning: #fbbf24; /* Amber 400 - lighter for dark mode */
   --color-info: var(--color-primary); /* Using primary as info */
+
+  /* Shiki theme colors for dark mode */
+  --shiki-dark-bg: #1e1e1e;
+  --shiki-dark: #d4d4d4;
 
   /* Typography-specific variables for prose in dark mode */
   --prose-headings: var(--color-text);
