@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     .where('draft', '=', false)
     .order('date', 'DESC')
     .limit(20)
-    .all() as any[]
+    .all()
 
   const baseUrl = appConfig.site.website || 'http://localhost:3000'
 
