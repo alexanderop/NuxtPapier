@@ -47,14 +47,14 @@ useSeoMeta({
 <template>
   <div v-if="post" class="contents">
     <!-- Sidebar content -->
-    <aside class="hidden lg:block animate">
+    <aside class="animate hidden lg:block">
       <div class="py-12 pr-8 top-24 sticky">
         <BaseTableOfContents :links="tocLinks" />
       </div>
     </aside>
 
     <!-- Main content -->
-    <article class="py-12 px-4 lg:px-0">
+    <article class="px-4 py-12 lg:px-0">
       <!-- Back to blog link -->
       <NuxtLink
         to="/blog"

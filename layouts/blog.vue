@@ -36,14 +36,14 @@
     max-width: 100%;
     padding: 0;
   }
-  
+
   .blog-grid-container > :first-child {
     grid-column: 1;
     justify-self: end;
     padding-right: 2rem;
     width: 280px;
   }
-  
+
   .blog-grid-container > :last-child {
     grid-column: 2;
     padding: 0 1rem;

@@ -21,11 +21,13 @@
     "@nuxtjs/color-mode": "3.5.2",
     "better-sqlite3": "11.10.0",
     "nuxt": "^3.17.5",
+    "rss": "^1.2.2",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",
+    "@types/rss": "^0.0.32",
     "@unocss/eslint-plugin": "^66.2.3",
     "@unocss/nuxt": "^66.3.2",
     "@unocss/preset-typography": "^66.3.2",
