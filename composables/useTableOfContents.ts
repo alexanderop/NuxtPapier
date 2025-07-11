@@ -49,8 +49,8 @@ export function useTableOfContents() {
         threshold: [0],
       })
 
-      // Wait for content to render
-      nextTick(() => {
+      // Wait for content to render with a small delay
+      setTimeout(() => {
         const headings = document.querySelectorAll('.prose h2[id], .prose h3[id], .prose h4[id]')
         headings.forEach((heading) => {
           headingElements.push(heading)
@@ -61,7 +61,18 @@ export function useTableOfContents() {
         if (checkScroll.value) {
           window.addEventListener('scroll', checkScroll.value, { passive: true })
         }
-      })
+
+        // Set initial active heading
+        if (headings.length > 0) {
+          const visibleHeadings = Array.from(headings).filter((heading) => {
+            const rect = heading.getBoundingClientRect()
+            return rect.top < window.innerHeight && rect.bottom > 0
+          })
+          if (visibleHeadings.length > 0) {
+            activeId.value = visibleHeadings[0].id
+          }
+        }
+      }, 100)
     }
   }
 

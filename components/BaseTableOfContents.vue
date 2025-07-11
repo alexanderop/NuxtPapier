@@ -22,10 +22,10 @@ const hasEnoughHeadings = computed(() => links.length >= 1)
 <template>
   <nav
     v-if="hasEnoughHeadings"
-    class="hidden lg:block"
+    class="w-full hidden lg:block"
     aria-label="Table of contents"
   >
-    <div>
+    <div class="p-6 rounded-lg bg-[var(--color-bg-secondary)]">
       <h2 class="text-sm text-[var(--color-text)] font-semibold mb-4">
         Table of Contents
       </h2>

@@ -47,10 +47,8 @@ useSeoMeta({
 <template>
   <div v-if="post" class="contents">
     <!-- Sidebar content -->
-    <aside class="animate hidden lg:block">
-      <div class="py-12 pr-8 top-24 sticky">
-        <BaseTableOfContents :links="tocLinks" />
-      </div>
+    <aside class="animate h-fit hidden top-24 sticky lg:block">
+      <BaseTableOfContents :links="tocLinks" />
     </aside>
 
     <!-- Main content -->

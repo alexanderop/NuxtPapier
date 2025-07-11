@@ -1,7 +1,3 @@
-<script setup lang="ts">
-// Blog layout with sidebar grid for table of contents
-</script>
-
 <template>
   <div class="font-mono flex flex-col min-h-screen">
     <BaseHeader />
@@ -32,27 +28,28 @@
 
 @media (min-width: 1024px) {
   .blog-grid-container {
-    grid-template-columns: 1fr 48rem 1fr;
+    grid-template-columns: minmax(280px, 1fr) 48rem minmax(1rem, 1fr);
     max-width: 100%;
-    padding: 0;
+    padding: 0 2rem;
+    gap: 3rem;
   }
 
   .blog-grid-container > :first-child {
     grid-column: 1;
-    justify-self: end;
-    padding-right: 2rem;
-    width: 280px;
+    justify-self: center;
+    max-width: 280px;
+    width: 100%;
   }
 
   .blog-grid-container > :last-child {
     grid-column: 2;
-    padding: 0 1rem;
+    padding: 0;
   }
 }
 
 @media (min-width: 1280px) {
   .blog-grid-container {
-    grid-template-columns: 1fr 48rem 1fr;
+    padding: 0 3rem;
   }
 }
 </style>
