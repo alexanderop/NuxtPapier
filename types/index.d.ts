@@ -45,3 +45,39 @@ export interface BlogPost {
   ogImage?: string
   draft?: boolean
 }
+
+export interface PageContent {
+  title: string
+  description?: string
+  ogImage?: string
+  image?: string
+  [key: string]: unknown
+}
+
+export interface SeoMetaData {
+  title?: string
+  description?: string
+  ogTitle?: string
+  ogDescription?: string
+  ogImage?: string
+  ogImageWidth?: number
+  ogImageHeight?: number
+  ogImageAlt?: string
+  ogUrl?: string
+  ogType?: 'article' | 'website' | 'book' | 'profile' | 'music.song' | 'music.album' | 'music.playlist' | 'music.radio_status' | 'video.movie' | 'video.episode' | 'video.tv_show' | 'video.other'
+  ogSiteName?: string
+  ogLocale?: string
+  twitterCard?: 'summary' | 'app' | 'summary_large_image' | 'player'
+  twitterTitle?: string
+  twitterDescription?: string
+  twitterImage?: string
+  twitterImageAlt?: string
+  twitterSite?: string
+  author?: string
+  canonical?: string
+  articleAuthor?: string[]
+  articlePublishedTime?: string
+  articleModifiedTime?: string
+  articleTag?: string[]
+  articleSection?: string
+}
