@@ -10,6 +10,9 @@ useHead({
 })
 
 useHead({
+  htmlAttrs: {
+    lang: appConfig.site.lang,
+  },
   link: [
     {
       rel: 'alternate',
@@ -20,6 +23,11 @@ useHead({
     {
       rel: 'manifest',
       href: '/manifest.json',
+    },
+    {
+      rel: 'sitemap',
+      type: 'application/xml',
+      href: '/sitemap.xml',
     },
   ],
   meta: [

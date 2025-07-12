@@ -1,7 +1,6 @@
 export function useWebsiteStructuredData() {
   const appConfig = useAppConfig()
-  const canonicalResult = useCanonicalURL()
-  const canonicalUrl = typeof canonicalResult === 'string' ? canonicalResult : canonicalResult.url
+  const canonicalUrl = useCanonicalURL()
 
   useJsonld({
     '@context': 'https://schema.org',
@@ -31,8 +30,7 @@ export function useArticleStructuredData(article: {
   tags?: string[]
 }) {
   const appConfig = useAppConfig()
-  const canonicalResult = useCanonicalURL()
-  const canonicalUrl = typeof canonicalResult === 'string' ? canonicalResult : canonicalResult.url
+  const canonicalUrl = useCanonicalURL()
 
   useJsonld({
     '@context': 'https://schema.org',

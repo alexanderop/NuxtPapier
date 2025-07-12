@@ -71,6 +71,13 @@ export default defineNuxtConfig({
     ],
   },
 
+  image: {
+    quality: 80,
+    format: ['webp'],
+    // Set lazy loading as default for all images
+    loading: 'lazy',
+  },
+
   hooks: {
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx

@@ -4,18 +4,20 @@ export function useCanonicalURL(path?: string) {
   const route = useRoute()
   const appConfig = useAppConfig()
   const runtimeConfig = useRuntimeConfig()
-  const error = ref<string | null>(null)
 
   const basePath = path || route.path
   const baseUrl = appConfig.site.website || (runtimeConfig.public?.siteUrl as string) || ''
 
   if (!baseUrl) {
-    error.value = 'No website URL configured. Set app.config.site.website or NUXT_PUBLIC_SITE_URL'
-    return { url: '', error: readonly(error) }
+    // Only warn in development
+    if (import.meta.dev) {
+      console.warn('[SEO] No website URL configured. Set app.config.site.website or NUXT_PUBLIC_SITE_URL for production')
+    }
+    return ''
   }
 
   const cleanUrl = typeof baseUrl === 'string' ? baseUrl.replace(/\/$/, '') : ''
-  return { url: `${cleanUrl}${basePath}`, error: readonly(error) }
+  return `${cleanUrl}${basePath}`
 }
 
 export function useEnhancedSeoMeta(options: {
@@ -32,8 +34,7 @@ export function useEnhancedSeoMeta(options: {
   path?: string
 }) {
   const appConfig = useAppConfig()
-  const canonicalResult = useCanonicalURL(options.path)
-  const canonicalUrl = typeof canonicalResult === 'string' ? canonicalResult : canonicalResult.url
+  const canonicalUrl = useCanonicalURL(options.path)
 
   const metaTitle = options.title || appConfig.site.title
   const metaDescription = options.description || appConfig.site.desc

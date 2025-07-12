@@ -1,27 +1,30 @@
 import type { Socials } from '~/types'
 
+// Update these social links with your actual profiles
+// You can add, remove, or modify social links as needed
+// Icons are from Iconify - find more at https://icones.js.org/
 export const SOCIALS: Socials = [
   {
     name: 'GitHub',
-    href: 'https://github.com/yourusername',
+    href: 'https://github.com/yourusername', // Replace with your GitHub username
     linkTitle: 'Visit on GitHub',
     icon: 'mdi:github',
   },
   {
     name: 'X',
-    href: 'https://x.com/yourusername',
+    href: 'https://x.com/yourusername', // Replace with your X/Twitter username
     linkTitle: 'Follow on X',
     icon: 'ri:twitter-x-fill',
   },
   {
     name: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/yourusername/',
+    href: 'https://www.linkedin.com/in/yourusername/', // Replace with your LinkedIn profile
     linkTitle: 'Connect on LinkedIn',
     icon: 'mdi:linkedin',
   },
   {
     name: 'Mail',
-    href: 'mailto:your.email@example.com',
+    href: 'mailto:your.email@example.com', // Replace with your email address
     linkTitle: 'Send an email',
     icon: 'mdi:email',
   },
