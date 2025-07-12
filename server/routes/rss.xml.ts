@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
   // @ts-expect-error - Nuxt Content v3 requires event parameter in server context
   const posts = await queryCollection(event, 'blog')
     .where('draft', '=', false)
-    .order('date', 'DESC')
     .limit(20)
     .all()
 
@@ -31,9 +30,9 @@ export default defineEventHandler(async (event) => {
       title: post.title,
       description: post.description,
       url: `${baseUrl}${post.path}`,
-      date: new Date(post.date),
-      author: post.author,
-      categories: post.tags || [],
+      date: new Date((post as any).date),
+      author: (post as any).author,
+      categories: (post as any).tags || [],
     })
   }
 
