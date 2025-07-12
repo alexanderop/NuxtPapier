@@ -11,6 +11,8 @@ const {
   showDate?: boolean
 }>()
 
+const { transitionClasses } = useAnimations()
+
 const { data: posts } = await useAsyncData(
   `blog-posts-${type}-${limit}`,
   async () => {
@@ -53,17 +55,23 @@ const { data: posts } = await useAsyncData(
           <h3 class="text-xl leading-tight">
             <NuxtLink
               :href="`${post.path}`"
-              class="text-[var(--color-text)] transition-colors dark:text-[var(--color-primary)] hover:text-[var(--color-primary)]"
+              class="text-[var(--color-text)] dark:text-[var(--color-primary)] hover:text-[var(--color-primary)]" :class="[transitionClasses]"
             >
               {{ post.title }}
             </NuxtLink>
           </h3>
 
-          <!-- Date -->
-          <p v-if="showDate && post.date" class="text-sm text-[var(--color-text-muted)] flex gap-1 items-center">
-            <Icon name="mdi:calendar" class="h-4 w-4" />
-            {{ new Date(post.date).toLocaleDateString() }}
-          </p>
+          <!-- Date and Reading Time -->
+          <div v-if="showDate && post.date" class="text-sm text-[var(--color-text-muted)] flex gap-4 items-center">
+            <span class="flex gap-1 items-center">
+              <Icon name="mdi:calendar" class="h-4 w-4" />
+              {{ new Date(post.date).toLocaleDateString() }}
+            </span>
+            <span v-if="post.readingTime" class="flex gap-1 items-center">
+              <Icon name="mdi:clock-outline" class="h-4 w-4" />
+              {{ post.readingTime }} min read
+            </span>
+          </div>
 
           <!-- Excerpt -->
           <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed">

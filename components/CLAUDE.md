@@ -36,3 +36,12 @@
 * Return `readonly` state when exposing reactive data.
 * Expose only a minimal, deliberate public API.
 * Type everything with TypeScript.
+
+define props like
+
+const { items } = defineProps<{
+  items: {
+    name: string
+    url?: string
+  }[]
+}>()

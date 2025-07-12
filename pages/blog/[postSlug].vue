@@ -27,6 +27,12 @@ const tocLinks = computed(() => {
   return toc?.links || []
 })
 
+// Format reading time
+const readingTimeText = computed(() => {
+  const minutes = post.value?.readingTime || 0
+  return minutes === 1 ? '1 min read' : `${minutes} min read`
+})
+
 // Use blog layout
 definePageMeta({
   layout: 'blog',
@@ -35,13 +41,34 @@ definePageMeta({
 // Enable staggered animations
 useStaggeredAnimation()
 
-useSeoMeta({
+useEnhancedSeoMeta({
   title: pageTitle,
   description: pageDescription,
-  ogTitle: pageTitle,
-  ogDescription: pageDescription,
-  twitterCard: 'summary_large_image',
+  image: post.value.ogImage || post.value.image,
+  type: 'article',
+  author: post.value.author || appConfig.site.author,
+  publishedTime: post.value.date,
+  modifiedTime: post.value.updatedAt || post.value.date,
+  tags: post.value.tags || [],
 })
+
+// Add article structured data
+useArticleStructuredData({
+  title: post.value.title,
+  description: post.value.description,
+  author: post.value.author,
+  date: post.value.date,
+  updatedAt: post.value.updatedAt,
+  image: post.value.ogImage || post.value.image,
+  tags: post.value.tags,
+})
+
+// Add breadcrumb structured data
+useBreadcrumbStructuredData([
+  { name: 'Home', url: '/' },
+  { name: 'Blog', url: '/blog' },
+  { name: post.value.title },
+])
 </script>
 
 <template>
@@ -53,16 +80,25 @@ useSeoMeta({
 
     <!-- Main content -->
     <article class="px-4 py-12 lg:px-0">
-      <!-- Back to blog link -->
-      <NuxtLink
-        to="/blog"
-        class="animate text-[var(--color-text-muted)] mb-8 inline-flex gap-2 transition-colors items-center hover:text-[var(--color-primary)]"
-      >
-        <Icon name="i-lucide-arrow-left" class="h-4 w-4" />
-        <span>Back to Blog</span>
-      </NuxtLink>
+      <!-- Breadcrumbs -->
+      <div class="animate mb-6">
+        <BaseBreadcrumbs
+          :items="[
+            { name: 'Home', url: '/' },
+            { name: 'Blog', url: '/blog' },
+            { name: post.title },
+          ]"
+        />
+      </div>
 
       <div class="animate prose-lg max-w-none prose dark:prose-invert">
+        <!-- Post metadata -->
+        <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
+          <span v-if="post.author">{{ post.author }}</span>
+          <span v-if="post.date">{{ new Date(post.date).toLocaleDateString() }}</span>
+          <span>{{ readingTimeText }}</span>
+        </div>
+
         <ContentRenderer :value="post" />
       </div>
 

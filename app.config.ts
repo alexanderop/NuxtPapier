@@ -4,9 +4,18 @@ import { SOCIALS } from '~/constants'
 
 export default defineAppConfig({
   site: {
-    website: '', // Leave empty for development, set your deployed URL in production
+    // IMPORTANT: Set your production URL here or via NUXT_PUBLIC_SITE_URL environment variable
+    // This is required for proper canonical URLs and social media sharing
+    // Example: 'https://yourdomain.com' (without trailing slash)
+    website: '',
+
+    // Update with your name or organization
     author: 'Your Name',
+
+    // Site description used in meta tags
     desc: 'A minimal, responsive and SEO-friendly Nuxt blog theme.',
+
+    // Site title used throughout the application
     title: 'NuxtPapier',
     ogImage: 'nuxtpapier-og.jpg',
     lightAndDarkMode: true,
@@ -18,6 +27,7 @@ export default defineAppConfig({
     dir: 'ltr',
     lang: 'en',
     timezone: 'America/New_York',
+    animations: true, // Set to false to disable all animations
   } satisfies Site,
   pages: {
     home: {

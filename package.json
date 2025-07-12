@@ -19,8 +19,10 @@
     "@nuxt/icon": "1.15.0",
     "@nuxt/image": "1.10.0",
     "@nuxtjs/color-mode": "3.5.2",
+    "@nuxtjs/sitemap": "^7.4.3",
     "better-sqlite3": "11.10.0",
     "nuxt": "^3.17.5",
+    "nuxt-jsonld": "^2.2.1",
     "rss": "^1.2.2",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
@@ -28,6 +30,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",
     "@types/rss": "^0.0.32",
+    "@types/unist": "^3.0.3",
     "@unocss/eslint-plugin": "^66.2.3",
     "@unocss/nuxt": "^66.3.2",
     "@unocss/preset-typography": "^66.3.2",
@@ -36,6 +39,7 @@
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
     "sass": "^1.89.2",
+    "unist-util-visit": "^5.0.0",
     "unocss": "^66.3.2"
   }
 }
