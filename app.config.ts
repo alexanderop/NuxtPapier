@@ -18,6 +18,7 @@ export default defineAppConfig({
     dir: 'ltr',
     lang: 'en',
     timezone: 'America/New_York',
+    animations: true, // Set to false to disable all animations
   } satisfies Site,
   pages: {
     home: {

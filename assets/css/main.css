@@ -87,7 +87,7 @@ html[data-theme='dark'] {
 }
 
 /* Smooth color transitions */
-* {
+body:not(.no-animations) * {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
@@ -124,30 +124,49 @@ body {
   --uno-prose-links: var(--color-secondary);
 }
 
-/* Page Transitions */
-.page-enter-active,
-.page-leave-active {
+/* Page Transitions - only when animations are enabled */
+body:not(.no-animations) .page-enter-active,
+body:not(.no-animations) .page-leave-active {
   transition: all 0.4s ease;
 }
 
-.page-enter-from {
+body:not(.no-animations) .page-enter-from {
   opacity: 0;
   transform: translateY(20px);
 }
 
-.page-leave-to {
+body:not(.no-animations) .page-leave-to {
   opacity: 0;
   transform: translateY(-20px);
 }
 
-/* Staggered Content Animation */
-.animate {
+/* When animations are disabled, ensure instant transitions */
+body.no-animations .page-enter-active,
+body.no-animations .page-leave-active {
+  transition: none;
+}
+
+body.no-animations .page-enter-from,
+body.no-animations .page-leave-to {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered Content Animation - only when animations are enabled */
+body:not(.no-animations) .animate {
   opacity: 0;
   transform: translateY(1rem);
   transition: all 0.7s ease-out;
 }
 
-.animate.show {
+body:not(.no-animations) .animate.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* When animations are disabled */
+body.no-animations .animate {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }

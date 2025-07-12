@@ -15,6 +15,7 @@ export interface Site {
   dir: 'ltr' | 'rtl' | 'auto'
   lang: string
   timezone: string
+  animations: boolean
 }
 
 export interface Metadata {
@@ -31,3 +32,16 @@ export interface Social {
 }
 
 export type Socials = Social[]
+
+export interface BlogPost {
+  _path: string
+  title: string
+  description?: string
+  date: string
+  updatedAt?: string
+  author?: string
+  tags?: string[]
+  image?: string
+  ogImage?: string
+  draft?: boolean
+}

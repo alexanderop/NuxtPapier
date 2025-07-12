@@ -24,6 +24,7 @@ Discover our most impactful content, handpicked for you:
 ---
 type: featured
 limit: 3
+showDate: true
 ---
 ::
 
@@ -35,5 +36,6 @@ Stay up to date with our newest articles and insights:
 ---
 type: latest
 limit: 6
+showDate: true
 ---
 ::

@@ -8,6 +8,7 @@ export default defineContentConfig({
       schema: z.object({
         title: z.string().min(1),
         description: z.string().min(1),
+        ogImage: z.string().optional(),
       }),
     }),
     blog: defineCollection({
@@ -17,11 +18,14 @@ export default defineContentConfig({
         title: z.string().min(1),
         description: z.string().min(1),
         date: z.string().datetime(),
+        updatedAt: z.string().datetime().optional(),
         featured: z.boolean().default(false),
-        author: z.string().min(1),
+        author: z.string().min(1).optional(),
         tags: z.array(z.string()).default([]),
         draft: z.boolean().default(false),
         image: z.string().optional(),
+        ogImage: z.string().optional(),
+        readingTime: z.number().optional(),
       }),
     }),
   },

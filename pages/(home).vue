@@ -18,14 +18,15 @@ const pageTitle = appConfig.site.title
 const pageDescription = page.value.description || appConfig.site.desc
 const pageOgImage = (page.value as any).ogImage || appConfig.site.ogImage
 
-useSeoMeta({
+useEnhancedSeoMeta({
   title: pageTitle,
   description: pageDescription,
-  ogTitle: pageTitle,
-  ogDescription: pageDescription,
-  ogImage: pageOgImage,
-  twitterCard: 'summary_large_image',
+  image: pageOgImage,
+  type: 'website',
 })
+
+// Add structured data for the website
+useWebsiteStructuredData()
 
 // Enable staggered animations
 useStaggeredAnimation()
