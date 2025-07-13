@@ -2,7 +2,7 @@
 const route = useRoute()
 const appConfig = useAppConfig()
 
-const postSlug = route.params.postSlug
+const { postSlug } = route.params
 
 const { data: post } = await useAsyncData(
   `blog-post-${postSlug}`,

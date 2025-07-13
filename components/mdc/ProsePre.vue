@@ -3,8 +3,6 @@ const {
   code = '',
   language = null,
   filename = null,
-  highlights: _highlights = [],
-  meta: _meta = null,
   class: className = null,
 } = defineProps<{
   code?: string

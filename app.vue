@@ -2,10 +2,9 @@
 const config = useAppConfig()
 const transition = config.site.animations ? { name: 'page', mode: 'out-in' as const } : false
 
-// Use command palette composable
-const palette = useCommandPalette()
+const { isOpen, close } = useCommandPalette()
+useKeyboardShortcuts()
 
-// Add class to body to control animations
 useHead({
   bodyAttrs: {
     class: config.site.animations ? '' : 'no-animations',
@@ -40,24 +39,6 @@ useHead({
     },
   ],
 })
-
-// Keyboard shortcut handler
-function handleKeyDown(e: KeyboardEvent) {
-  // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault()
-    palette.open()
-  }
-}
-
-// Set up keyboard event listener
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-})
 </script>
 
 <template>
@@ -66,10 +47,9 @@ onUnmounted(() => {
       <NuxtPage :transition="transition" />
     </NuxtLayout>
 
-    <!-- Command Palette -->
     <TheCommandPalette
-      :open="palette.isOpen.value"
-      @close="palette.close"
+      :open="isOpen"
+      @close="close"
     />
   </div>
 </template>
