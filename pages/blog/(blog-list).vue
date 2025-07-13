@@ -10,6 +10,11 @@ const { pageTitle, pageDescription } = usePageMeta(
   },
 )
 
+// Generate simple OG image for blog list
+defineOgImageComponent('Simple', {
+  title: pageTitle || 'Blog',
+})
+
 useEnhancedSeoMeta({
   title: pageTitle,
   description: pageDescription,

@@ -17,7 +17,7 @@ if (!post.value) {
   })
 }
 
-const { pageTitle, pageDescription, pageOgImage } = usePageMeta(post.value, { isBlogPost: true })
+const { pageTitle, pageDescription } = usePageMeta(post.value, { isBlogPost: true })
 
 const tocLinks = computed(() => {
   const toc = post.value?.body?.toc
@@ -33,10 +33,19 @@ definePageMeta({
   layout: 'blog',
 })
 useStaggeredAnimation()
+
+// Generate dynamic OG image for the blog post
+defineOgImageComponent('BlogPost', {
+  title: post.value.title,
+  description: post.value.description,
+  author: post.value.author || appConfig.site.author,
+  date: post.value.date,
+  siteName: appConfig.site.title,
+})
+
 useEnhancedSeoMeta({
   title: pageTitle,
   description: pageDescription,
-  image: pageOgImage || post.value.image,
   type: 'article',
   author: post.value.author || appConfig.site.author,
   publishedTime: post.value.date,

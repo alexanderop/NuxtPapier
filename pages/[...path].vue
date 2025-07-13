@@ -15,12 +15,16 @@ if (!page.value) {
   })
 }
 
-const { pageTitle, pageDescription, pageOgImage } = usePageMeta(page.value)
+const { pageTitle, pageDescription } = usePageMeta(page.value)
+
+// Generate simple OG image for dynamic pages
+defineOgImageComponent('Simple', {
+  title: pageTitle || page.value.title,
+})
 
 useEnhancedSeoMeta({
   title: pageTitle,
   description: pageDescription,
-  image: pageOgImage,
   type: 'website',
 })
 

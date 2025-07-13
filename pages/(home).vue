@@ -14,15 +14,19 @@ if (!page.value) {
   })
 }
 
-const { pageTitle, pageDescription, pageOgImage } = usePageMeta(page.value, {
+const { pageTitle, pageDescription } = usePageMeta(page.value, {
   isHomePage: true,
   fallbackDescription: appConfig.site.desc,
+})
+
+// Generate simple OG image for home page
+defineOgImageComponent('Simple', {
+  title: pageTitle || appConfig.site.title,
 })
 
 useEnhancedSeoMeta({
   title: pageTitle,
   description: pageDescription,
-  image: pageOgImage,
   type: 'website',
 })
 

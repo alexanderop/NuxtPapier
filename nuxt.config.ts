@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/sitemap',
     'nuxt-jsonld',
+    'nuxt-og-image',
   ],
 
   css: ['~/assets/css/main.css', '~/app.css'],
@@ -86,6 +87,23 @@ export default defineNuxtConfig({
     format: ['webp'],
     // Set lazy loading as default for all images
     loading: 'lazy',
+  },
+
+  // Site configuration required for OG image generation
+  site: {
+    url: import.meta.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    name: 'NuxtPapier',
+  },
+
+  // OG Image configuration
+  ogImage: {
+    defaults: {
+      width: 1200,
+      height: 630,
+      renderer: 'satori', // Using satori for better performance
+      extension: 'png',
+      cacheMaxAgeSeconds: 86400, // 1 day cache
+    },
   },
 
   hooks: {

@@ -50,7 +50,7 @@ const { data: posts } = await useAsyncData(
         class="group animate"
       >
         <!-- Post Content -->
-        <div class="flex items-baseline justify-between gap-4">
+        <div class="flex gap-4 items-baseline justify-between">
           <!-- Title -->
           <h3 class="text-lg leading-tight flex-1">
             <NuxtLink
