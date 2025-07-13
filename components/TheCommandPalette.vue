@@ -55,12 +55,51 @@ function handleClose() {
   emit('close')
 }
 
-function handleSelect(index?: number) {
+async function handleSelect(index?: number) {
   const i = index ?? palette.selected.value
   const item = search.results.value[i]
   if (item) {
-    navigateTo(item.path)
+    // Parse path and hash from the item path
+    const [path, hash] = item.path.split('#')
+
+    // Navigate to the page first
+    await navigateTo(path)
+
+    // Close the palette
     handleClose()
+
+    // If there's a hash, scroll to it after navigation
+    if (hash) {
+      // Wait for the page to fully render
+      await nextTick()
+
+      // Implement retry logic for dynamic content
+      const scrollToAnchor = async (attempts = 0) => {
+        const element = document.getElementById(hash)
+
+        if (element) {
+          // Use the same 80px offset as the table of contents
+          const yOffset = -80
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+
+          window.scrollTo({
+            top: y,
+            behavior: 'smooth',
+          })
+          return true
+        }
+
+        // Retry for lazy-loaded content
+        if (attempts < 20) {
+          await new Promise(resolve => setTimeout(resolve, 100))
+          return scrollToAnchor(attempts + 1)
+        }
+
+        return false
+      }
+
+      await scrollToAnchor()
+    }
   }
 }
 
