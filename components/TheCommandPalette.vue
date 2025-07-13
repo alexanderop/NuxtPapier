@@ -88,16 +88,14 @@ onUnmounted(() => {
 })
 
 watch(() => open, (newOpen) => {
+  document.body.style.overflow = newOpen ? 'hidden' : ''
+
   if (newOpen) {
     palette.open()
     nextTick(() => {
       const input = modal.value?.querySelector('input')
       input?.focus()
     })
-    document.body.style.overflow = 'hidden'
-  }
-  if (!newOpen) {
-    document.body.style.overflow = ''
   }
 })
 </script>

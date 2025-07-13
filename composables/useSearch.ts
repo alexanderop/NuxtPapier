@@ -28,16 +28,23 @@ export function useSearch() {
   onMounted(async () => {
     loading.value = true
     error.value = null
-    try {
-      // Query search sections from blog collection
-      sections.value = await queryCollectionSearchSections('blog')
+
+    // Query search sections from blog collection
+    const result = await queryCollectionSearchSections('blog')
+      .then(data => ({ success: true as const, data }))
+      .catch(err => ({
+        success: false as const,
+        error: err instanceof Error ? err : new Error('Failed to load search data'),
+      }))
+
+    if (!result.success) {
+      error.value = result.error
     }
-    catch (err) {
-      error.value = err instanceof Error ? err : new Error('Failed to load search data')
+    if (result.success) {
+      sections.value = result.data
     }
-    finally {
-      loading.value = false
-    }
+
+    loading.value = false
   })
 
   // Helper to get content snippet around search term
@@ -53,13 +60,11 @@ export function useSearch() {
     const start = Math.max(0, index - 50)
     const end = Math.min(content.length, index + searchTerm.length + 100)
 
-    let snippet = content.slice(start, end)
-
-    // Add ellipsis if needed
-    if (start > 0)
-      snippet = `...${snippet}`
-    if (end < content.length)
-      snippet = `${snippet}...`
+    const snippet = [
+      start > 0 ? '...' : '',
+      content.slice(start, end),
+      end < content.length ? '...' : '',
+    ].join('')
 
     return snippet
   }
