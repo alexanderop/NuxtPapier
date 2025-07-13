@@ -33,27 +33,6 @@ export interface Social {
 
 export type Socials = Social[]
 
-export interface BlogPost {
-  _path: string
-  title: string
-  description?: string
-  date: string
-  updatedAt?: string
-  author?: string
-  tags?: string[]
-  image?: string
-  ogImage?: string
-  draft?: boolean
-}
-
-export interface PageContent {
-  title: string
-  description?: string
-  ogImage?: string
-  image?: string
-  [key: string]: unknown
-}
-
 export interface SeoMetaData {
   title?: string
   description?: string

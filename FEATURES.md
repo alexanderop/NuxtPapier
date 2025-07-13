@@ -31,8 +31,8 @@ This document outlines the current features implemented in NuxtPapier and featur
   - BaseColorPalette - Color system display
   - BaseSocials - Social media links
   - BaseShareLinks - Social sharing functionality
-  - BaseHeader - Site navigation
-  - BaseFooter - Site footer
+  - TheHeader - Site navigation
+  - TheFooter - Site footer
   - BaseBlogPosts - Blog post listing component
 
 ### Blog Features

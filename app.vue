@@ -1,23 +1,26 @@
-<script setup>
-const appConfig = useAppConfig()
-const pageTransition = appConfig.site.animations ? { name: 'page', mode: 'out-in' } : false
+<script setup lang="ts">
+const config = useAppConfig()
+const transition = config.site.animations ? { name: 'page', mode: 'out-in' as const } : false
+
+// Use command palette composable
+const palette = useCommandPalette()
 
 // Add class to body to control animations
 useHead({
   bodyAttrs: {
-    class: appConfig.site.animations ? '' : 'no-animations',
+    class: config.site.animations ? '' : 'no-animations',
   },
 })
 
 useHead({
   htmlAttrs: {
-    lang: appConfig.site.lang,
+    lang: config.site.lang,
   },
   link: [
     {
       rel: 'alternate',
       type: 'application/rss+xml',
-      title: `${appConfig.site.title} RSS Feed`,
+      title: `${config.site.title} RSS Feed`,
       href: '/rss.xml',
     },
     {
@@ -37,10 +40,36 @@ useHead({
     },
   ],
 })
+
+// Keyboard shortcut handler
+function handleKeyDown(e: KeyboardEvent) {
+  // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault()
+    palette.open()
+  }
+}
+
+// Set up keyboard event listener
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage :transition="pageTransition" />
-  </NuxtLayout>
+  <div>
+    <NuxtLayout>
+      <NuxtPage :transition="transition" />
+    </NuxtLayout>
+
+    <!-- Command Palette -->
+    <TheCommandPalette
+      :open="palette.isOpen.value"
+      @close="palette.close"
+    />
+  </div>
 </template>

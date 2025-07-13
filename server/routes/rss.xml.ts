@@ -1,3 +1,4 @@
+import type { BlogCollectionItem } from '@nuxt/content'
 import RSS from 'rss'
 
 export default defineEventHandler(async (event) => {
@@ -8,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const posts = await queryCollection(event, 'blog')
     .where('draft', '=', false)
     .limit(20)
-    .all()
+    .all() as BlogCollectionItem[]
 
   const baseUrl = appConfig.site.website || 'http://localhost:3000'
 
@@ -30,9 +31,9 @@ export default defineEventHandler(async (event) => {
       title: post.title,
       description: post.description,
       url: `${baseUrl}${post.path}`,
-      date: new Date((post as any).date),
-      author: (post as any).author,
-      categories: (post as any).tags || [],
+      date: new Date(post.date),
+      author: post.author,
+      categories: post.tags || [],
     })
   }
 

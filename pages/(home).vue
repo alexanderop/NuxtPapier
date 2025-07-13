@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { PageContent } from '~/types'
-
 const appConfig = useAppConfig()
 
 const { data: page } = await useAsyncData(
@@ -18,7 +16,7 @@ if (!page.value) {
 
 const pageTitle = appConfig.site.title
 const pageDescription = page.value.description || appConfig.site.desc
-const pageOgImage = (page.value as unknown as PageContent).ogImage || appConfig.site.ogImage
+const pageOgImage = page.value.ogImage || appConfig.site.ogImage
 
 useEnhancedSeoMeta({
   title: pageTitle,
@@ -27,10 +25,7 @@ useEnhancedSeoMeta({
   type: 'website',
 })
 
-// Add structured data for the website
 useWebsiteStructuredData()
-
-// Enable staggered animations
 useStaggeredAnimation()
 </script>
 

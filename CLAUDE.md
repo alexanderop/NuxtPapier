@@ -55,12 +55,16 @@ Use Playwright MCP tools when you need to:
 - AVOID using `any` type
 - AVOID `let` statements
 - PREFER single word variable names where possible
+- **Code Comments**:
+  - Only save comments when they are really necessary
+  - Try to write readable code by using descriptive variables instead of comments
 
 ### Content Management
 - Uses @nuxt/content v3 with strongly-typed collections: `pages` and `blog`
 - Content stored in `/content` directory as Markdown files
 - Automatic reading time calculation for blog posts
 - Draft post support via `published` field in frontmatter
+- The collection definition for nuxt content is under @content.config.ts 
 
 ### SEO & Performance
 - SEO meta tags managed via `useEnhancedSeoMeta` composable (composables/useSeo.ts)
@@ -132,3 +136,10 @@ Composables follow specific patterns (see composables/CLAUDE.md):
 1. Edit CSS variables in `uno.config.ts`
 2. Use UnoCSS utilities in components
 3. Dark mode automatically handled via color-mode module
+
+## Quality Assurance
+
+- After completing a task, test the new feature like a QA engineer
+- Use Playwright MCP for comprehensive testing
+- Always run the server at localhost:3000 during testing
+- Verify functionality, performance, and user experience thoroughly
