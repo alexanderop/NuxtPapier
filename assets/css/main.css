@@ -171,56 +171,47 @@ body.no-animations .animate {
   transition: none;
 }
 
-/* Heading Anchor Links */
+/* Heading Anchor Links - Native Nuxt Content */
 .prose h1,
 .prose h2,
 .prose h3,
 .prose h4,
 .prose h5,
 .prose h6 {
-  position: relative;
   scroll-margin-top: 5rem; /* 80px to account for fixed header */
 }
 
-.prose h1:hover .heading-link,
-.prose h2:hover .heading-link,
-.prose h3:hover .heading-link,
-.prose h4:hover .heading-link,
-.prose h5:hover .heading-link,
-.prose h6:hover .heading-link {
-  opacity: 1;
+/* Style the native anchor links that wrap heading text */
+.prose h1 > a,
+.prose h2 > a,
+.prose h3 > a,
+.prose h4 > a,
+.prose h5 > a,
+.prose h6 > a {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
 }
 
-.heading-link {
+/* Add hash symbol on hover */
+.prose h1 > a:hover::before,
+.prose h2 > a:hover::before,
+.prose h3 > a:hover::before,
+.prose h4 > a:hover::before,
+.prose h5 > a:hover::before,
+.prose h6 > a:hover::before {
+  content: '#';
   position: absolute;
   left: -1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  text-decoration: none;
   color: var(--color-text-muted);
-  font-size: 0.875em;
-  padding: 0.25rem;
+  font-weight: normal;
 }
 
-.heading-link:hover {
+.prose h1 > a:hover,
+.prose h2 > a:hover,
+.prose h3 > a:hover,
+.prose h4 > a:hover,
+.prose h5 > a:hover,
+.prose h6 > a:hover {
   color: var(--color-primary);
-}
-
-/* Copy link notification */
-.heading-link.copied::after {
-  content: 'Copied!';
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 0.5rem;
-  background: var(--color-surface);
-  color: var(--color-text);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  pointer-events: none;
 }
