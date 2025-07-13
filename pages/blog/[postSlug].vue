@@ -17,8 +17,7 @@ if (!post.value) {
   })
 }
 
-const pageTitle = `${post.value.title} - ${appConfig.site.title}`
-const pageDescription = post.value.description || `Read "${post.value.title}" on ${appConfig.site.title}`
+const { pageTitle, pageDescription, pageOgImage } = usePageMeta(post.value, { isBlogPost: true })
 
 const tocLinks = computed(() => {
   const toc = post.value?.body?.toc
@@ -37,7 +36,7 @@ useStaggeredAnimation()
 useEnhancedSeoMeta({
   title: pageTitle,
   description: pageDescription,
-  image: post.value.ogImage || post.value.image,
+  image: pageOgImage || post.value.image,
   type: 'article',
   author: post.value.author || appConfig.site.author,
   publishedTime: post.value.date,

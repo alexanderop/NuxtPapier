@@ -14,9 +14,10 @@ if (!page.value) {
   })
 }
 
-const pageTitle = appConfig.site.title
-const pageDescription = page.value.description || appConfig.site.desc
-const pageOgImage = page.value.ogImage || appConfig.site.ogImage
+const { pageTitle, pageDescription, pageOgImage } = usePageMeta(page.value, {
+  isHomePage: true,
+  fallbackDescription: appConfig.site.desc,
+})
 
 useEnhancedSeoMeta({
   title: pageTitle,

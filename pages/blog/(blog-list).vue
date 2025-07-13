@@ -2,8 +2,13 @@
 const appConfig = useAppConfig()
 
 // SEO meta tags
-const pageTitle = `Blog - ${appConfig.site.title}`
-const pageDescription = appConfig.pages.blog?.description || `Latest blog posts from ${appConfig.site.title}`
+const { pageTitle, pageDescription } = usePageMeta(
+  { title: 'Blog' },
+  {
+    customSuffix: appConfig.site.title,
+    fallbackDescription: appConfig.pages.blog?.description || `Latest blog posts from ${appConfig.site.title}`,
+  },
+)
 
 useEnhancedSeoMeta({
   title: pageTitle,

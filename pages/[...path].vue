@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const route = useRoute()
-const appConfig = useAppConfig()
 
 const { data: page } = await useAsyncData(
   `page-${route.path}`,
@@ -16,9 +15,7 @@ if (!page.value) {
   })
 }
 
-const pageTitle = `${page.value.title} - ${appConfig.site.title}`
-const pageDescription = page.value.description || `${page.value.title} page on ${appConfig.site.title}`
-const pageOgImage = page.value.ogImage || appConfig.site.ogImage
+const { pageTitle, pageDescription, pageOgImage } = usePageMeta(page.value)
 
 useEnhancedSeoMeta({
   title: pageTitle,
