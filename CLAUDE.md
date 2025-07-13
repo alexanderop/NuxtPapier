@@ -55,6 +55,9 @@ Use Playwright MCP tools when you need to:
 - AVOID using `any` type
 - AVOID `let` statements
 - PREFER single word variable names where possible
+- **Code Comments**:
+  - Only save comments when they are really necessary
+  - Try to write readable code by using descriptive variables instead of comments
 
 ### Content Management
 - Uses @nuxt/content v3 with strongly-typed collections: `pages` and `blog`

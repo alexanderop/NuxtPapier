@@ -10,7 +10,8 @@
     "typecheck": "nuxt typecheck",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "clean:content": "rm -f .data/content/contents.sqlite"
   },
   "dependencies": {
     "@nuxt/content": "3.6.1",

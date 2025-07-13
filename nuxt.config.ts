@@ -82,33 +82,13 @@ export default defineNuxtConfig({
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx
 
-      // Only calculate reading time for blog posts
-      if (file.id.startsWith('content/blog/') && file.id.endsWith('.md')) {
-        // Function to extract text from the parsed AST
-        function extractText(node: any): string {
-          if (!node)
-            return ''
+        if (file.path.includes('/page/')) return
 
-          // If it's a text node, return its value
-          if (node.type === 'text' && node.value) {
-            return node.value
-          }
-
-          // If it has children, recursively extract text from them
-          if (node.children && Array.isArray(node.children)) {
-            return node.children.map(extractText).join(' ')
-          }
-
-          return ''
-        }
-
-        // Extract text from the parsed body
-        const text = extractText(content.body)
         const wordsPerMinute = 180
-        const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
+        const text = typeof file.body === 'string' ? file.body : ''
+        const wordCount = text.split(/\s+/).length
 
         content.readingTime = Math.ceil(wordCount / wordsPerMinute)
-      }
     },
   },
 })

@@ -9,20 +9,16 @@ export interface SearchResult {
   heading?: string
 }
 
-interface Section {
-  id: string
-  title: string
-  titles: string[]
-  content: string
-  level: number
-}
+// Extract the return type from queryCollectionSearchSections
+type SearchSectionsResult = Awaited<ReturnType<typeof queryCollectionSearchSections>>
+type SearchSection = SearchSectionsResult[number]
 
 export function useSearch() {
   // State
   const query = ref('')
   const loading = ref(false)
   const error = ref<Error | null>(null)
-  const sections = ref<Section[]>([])
+  const sections = ref<SearchSection[]>([])
 
   // Load sections on mount
   onMounted(async () => {
