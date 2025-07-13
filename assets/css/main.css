@@ -1,4 +1,8 @@
 :root {
+  /* Font families */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+
   /* Light mode colors */
   --color-primary: #3b82f6; /* Blue 500 */
   --color-secondary: #6b7280; /* Gray 500 */
