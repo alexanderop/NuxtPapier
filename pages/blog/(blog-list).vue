@@ -53,7 +53,7 @@ useStaggeredAnimation()
         type="all"
         :limit="100"
         :show-date="true"
-        :show-excerpt="true"
+        :show-excerpt="false"
       />
     </div>
   </div>

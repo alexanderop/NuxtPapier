@@ -20,41 +20,23 @@ Alert components are essential for drawing attention to important information in
 
 Our alert system includes five distinct types, each designed for specific use cases:
 
-## ::base-alert
-
-## type: note
-
+::alert
 **Note alerts** are perfect for highlighting general information that readers should be aware of. They use a calming blue color scheme and an info icon.
 ::
 
-## ::base-alert
-
-type: tip
-title: Pro Tip
-
----
-
+::alert{type="tip" title="Pro Tip"}
 **Tip alerts** help you share helpful suggestions and best practices. They feature a green color scheme with a lightbulb icon. You can also customize the title like this example!
 ::
 
-## ::base-alert
-
-## type: important
-
+::alert{type="important"}
 **Important alerts** emphasize key information that readers must understand. They use a purple color scheme with a report icon to ensure visibility.
 ::
 
-## ::base-alert
-
-## type: warning
-
+::alert{type="warning"}
 **Warning alerts** communicate potential issues or concerns that require careful consideration. They feature a yellow color scheme with an alert icon.
 ::
 
-## ::base-alert
-
-## type: caution
-
+::alert{type="caution"}
 **Caution alerts** are reserved for critical warnings or information about potentially destructive actions. They use a red color scheme with a stop icon for maximum visibility.
 ::
 
@@ -63,10 +45,7 @@ title: Pro Tip
 Using alerts in your Markdown content is straightforward with our YAML-based MDC syntax:
 
 ```markdown
-## ::base-alert
-
-## type: note
-
+::alert
 Your alert content goes here.
 ::
 ```
@@ -76,35 +55,23 @@ Your alert content goes here.
 You can override the default title (which is the capitalized type name) with your own:
 
 ```markdown
-## ::base-alert
-
-type: tip
-title: Did you know?
-
----
-
+::alert{type="tip" title="Did you know?"}
 Custom titles make your alerts more contextual and engaging!
 ::
 ```
 
 ## Best Practices
 
-## ::base-alert
-
-type: tip
-title: Best Practices for Alerts
-
----
-
+::alert{type="tip" title="Best Practices for Alerts"}
 1. **Choose the right type**: Match the alert type to your content's urgency and purpose
 2. **Keep it concise**: Alerts should highlight key information, not contain entire sections
 3. **Use sparingly**: Too many alerts can overwhelm readers and reduce their effectiveness
 4. **Consider accessibility**: Our alerts use color and icons together for better accessibility
-   ::
+::
 
 ## Technical Implementation
 
-The BaseAlert component is built with:
+The Alert component is built with:
 
 - **Vue 3 Composition API** for reactive props and computed properties
 - **UnoCSS utilities** for consistent styling
@@ -112,26 +79,14 @@ The BaseAlert component is built with:
 - **Dark mode support** with carefully chosen color schemes
 - **TypeScript** for type safety
 
-## ::base-alert
-
-type: note
-title: Component Location
-
----
-
-You can find the BaseAlert component at `components/BaseAlert.vue` if you want to customize its appearance or behavior.
+::alert{type="note" title="Component Location"}
+You can find the Alert component at `components/mdc/Alert.vue` if you want to customize its appearance or behavior.
 ::
 
 ## Conclusion
 
 Alert components are a powerful tool for enhancing your content's clarity and user experience. By using the appropriate alert type for each situation, you can guide readers' attention to the most important information while maintaining a clean, professional appearance.
 
-## ::base-alert
-
-type: tip
-title: Start Using Alerts Today
-
----
-
+::alert{type="tip" title="Start Using Alerts Today"}
 Try adding alerts to your own blog posts and documentation to see how they improve readability and user engagement!
 ::
