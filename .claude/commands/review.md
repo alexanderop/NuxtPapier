@@ -33,11 +33,26 @@ Analyze the last commit for potential bugs and style guide violations based on t
    - Missing null/undefined checks
    - Unhandled promise rejections
 
-6. Generate a detailed report showing:
-   - Files reviewed
-   - Style violations found (with line numbers if possible)
-   - Potential bugs detected
-   - Suggestions for improvement
-   - Overall code quality assessment
+6. Generate a detailed report in the following format:
+
+```
+📋 Code Review Report for commit [commit-hash]
+
+Files Reviewed:
+- [list of changed files]
+
+🔍 Style Violations Found:
+❌ [file]:[line] - [description of violation]
+
+🐛 Potential Bugs Detected:
+⚠️ [file]:[line] - [description of potential bug]
+
+💡 Suggestions:
+1. [specific actionable suggestion]
+2. [specific actionable suggestion]
+3. [specific actionable suggestion]
+
+Overall Quality: ⭐⭐⭐ (Good, but needs improvements)
+```
 
 Remember: Focus on the specific guidelines defined in the CLAUDE.md files. Be constructive and provide actionable feedback.
