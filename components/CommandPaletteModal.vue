@@ -9,14 +9,14 @@ const {
   /** Search query */
   query?: string
   /** Search results */
-  searchResults?: Array<{
+  searchResults?: readonly {
     id: string
     title: string
     blogTitle?: string
     heading?: string
     content?: string
     path: string
-  }>
+  }[]
   /** Loading state */
   searchLoading?: boolean
   /** Selected result index */

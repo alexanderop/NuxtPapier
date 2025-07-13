@@ -85,8 +85,8 @@ export function useTableOfContents() {
         const offsetPosition = elementPosition + window.scrollY - offset
 
         window.scrollTo({
-          top: offsetPosition,
           behavior: 'smooth',
+          top: offsetPosition,
         })
       }
     }

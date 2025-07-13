@@ -35,24 +35,24 @@ async function copyCode() {
 // Get language display name
 const languageDisplay = computed(() => {
   const langMap: Record<string, string> = {
-    js: 'JavaScript',
-    javascript: 'JavaScript',
-    ts: 'TypeScript',
-    typescript: 'TypeScript',
-    vue: 'Vue',
+    bash: 'Bash',
     css: 'CSS',
     html: 'HTML',
-    bash: 'Bash',
-    shell: 'Shell',
+    javascript: 'JavaScript',
+    js: 'JavaScript',
     json: 'JSON',
-    md: 'Markdown',
+    jsx: 'JSX',
     markdown: 'Markdown',
+    md: 'Markdown',
+    py: 'Python',
+    python: 'Python',
+    shell: 'Shell',
+    ts: 'TypeScript',
+    tsx: 'TSX',
+    typescript: 'TypeScript',
+    vue: 'Vue',
     yaml: 'YAML',
     yml: 'YAML',
-    python: 'Python',
-    py: 'Python',
-    jsx: 'JSX',
-    tsx: 'TSX',
   }
   if (!language)
     return ''

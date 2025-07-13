@@ -29,8 +29,8 @@ export default function useModalStore() {
     props: Modal['props'] = {},
   ) {
     state.modals.push({
-      id: ++id,
       component,
+      id: ++id,
       props,
     })
   }
@@ -53,12 +53,12 @@ export default function useModalStore() {
   }
 
   return {
-    modals: readonly(modals),
-    topModal: readonly(topModal),
-    hasModals: readonly(hasModals),
-    openModal,
-    closeTopModal,
     closeAllModals,
     closeModalById,
+    closeTopModal,
+    hasModals: readonly(hasModals),
+    modals: readonly(modals),
+    openModal,
+    topModal: readonly(topModal),
   }
 }

@@ -40,6 +40,7 @@
     "@unocss/preset-wind4": "^66.3.2",
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
     "sass": "^1.89.2",
     "unist-util-visit": "^5.0.0",
     "unocss": "^66.3.2"

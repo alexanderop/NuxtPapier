@@ -11,9 +11,9 @@ const { data: post } = await useAsyncData(
 
 if (!post.value) {
   throw createError({
+    fatal: true,
     statusCode: 404,
     statusMessage: 'Blog post not found',
-    fatal: true,
   })
 }
 
@@ -36,31 +36,31 @@ useStaggeredAnimation()
 
 // Generate dynamic OG image for the blog post
 defineOgImageComponent('BlogPost', {
-  title: post.value.title,
-  description: post.value.description,
   author: post.value.author || appConfig.site.author,
   date: post.value.date,
+  description: post.value.description,
   siteName: appConfig.site.title,
+  title: post.value.title,
 })
 
 useEnhancedSeoMeta({
-  title: pageTitle,
-  description: pageDescription,
-  type: 'article',
   author: post.value.author || appConfig.site.author,
-  publishedTime: post.value.date,
+  description: pageDescription,
   modifiedTime: post.value.updatedAt || post.value.date,
+  publishedTime: post.value.date,
   tags: post.value.tags || [],
+  title: pageTitle,
+  type: 'article',
 })
 
 useArticleStructuredData({
-  title: post.value.title,
-  description: post.value.description,
   author: post.value.author,
   date: post.value.date,
-  updatedAt: post.value.updatedAt,
+  description: post.value.description,
   image: post.value.ogImage || post.value.image,
   tags: post.value.tags,
+  title: post.value.title,
+  updatedAt: post.value.updatedAt,
 })
 
 useBreadcrumbStructuredData([

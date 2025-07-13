@@ -51,19 +51,19 @@ const component = computed(() => {
 
 const variantClasses = computed(() => {
   const variants = {
-    primary: 'bg-[var(--color-primary)] text-[var(--color-background)] hover:opacity-90 focus:ring-[var(--color-primary)]',
-    secondary: 'bg-[var(--color-surface)] text-[var(--color-text)] hover:opacity-80 focus:ring-[var(--color-secondary)]',
     ghost: 'bg-transparent text-[var(--color-text)] hover:bg-[var(--color-surface)] focus:ring-[var(--color-secondary)]',
     link: 'bg-transparent text-[var(--color-primary)] underline-offset-4 hover:underline focus:ring-[var(--color-primary)]',
+    primary: 'bg-[var(--color-primary)] text-[var(--color-background)] hover:opacity-90 focus:ring-[var(--color-primary)]',
+    secondary: 'bg-[var(--color-surface)] text-[var(--color-text)] hover:opacity-80 focus:ring-[var(--color-secondary)]',
   }
   return variants[variant]
 })
 
 const sizeClasses = computed(() => {
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
     lg: 'px-6 py-3 text-lg',
+    md: 'px-4 py-2 text-base',
+    sm: 'px-3 py-1.5 text-sm',
   }
   return sizes[size]
 })

@@ -5,18 +5,18 @@ export function useWebsiteStructuredData() {
   useJsonld({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    'name': appConfig.site.title,
-    'description': appConfig.site.desc,
-    'url': canonicalUrl || undefined,
     'author': {
       '@type': 'Person',
       'name': appConfig.site.author,
     },
+    'description': appConfig.site.desc,
+    'inLanguage': appConfig.site.lang,
+    'name': appConfig.site.title,
     'publisher': {
       '@type': 'Organization',
       'name': appConfig.site.title,
     },
-    'inLanguage': appConfig.site.lang,
+    'url': canonicalUrl || undefined,
   })
 }
 
@@ -35,31 +35,31 @@ export function useArticleStructuredData(article: {
   useJsonld({
     '@context': 'https://schema.org',
     '@type': 'Article',
-    'headline': article.title,
-    'description': article.description,
     'author': {
       '@type': 'Person',
       'name': article.author || appConfig.site.author,
     },
-    'datePublished': article.date,
     'dateModified': article.updatedAt || article.date,
+    'datePublished': article.date,
+    'description': article.description,
+    'headline': article.title,
+    'image': article.image ? [article.image] : undefined,
+    'inLanguage': appConfig.site.lang,
+    'keywords': article.tags?.join(', '),
+    'mainEntityOfPage': {
+      '@id': canonicalUrl,
+      '@type': 'WebPage',
+    },
     'publisher': {
       '@type': 'Organization',
-      'name': appConfig.site.title,
       'logo': appConfig.site.website
         ? {
             '@type': 'ImageObject',
             'url': `${appConfig.site.website}/${appConfig.site.ogImage}`,
           }
         : undefined,
+      'name': appConfig.site.title,
     },
-    'mainEntityOfPage': {
-      '@type': 'WebPage',
-      '@id': canonicalUrl,
-    },
-    'image': article.image ? [article.image] : undefined,
-    'keywords': article.tags?.join(', '),
-    'inLanguage': appConfig.site.lang,
   })
 }
 
@@ -69,9 +69,9 @@ export function useBreadcrumbStructuredData(items: Array<{ name: string, url?: s
 
   const itemListElement = items.map((item, index) => ({
     '@type': 'ListItem' as const,
-    'position': index + 1,
-    'name': item.name,
     'item': item.url ? `${baseUrl}${item.url}` : undefined,
+    'name': item.name,
+    'position': index + 1,
   }))
 
   useJsonld({

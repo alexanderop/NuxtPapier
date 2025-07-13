@@ -9,8 +9,8 @@ const menuOpen = ref(false)
 const modalStore = useModalStore()
 
 const navItems = [
-  { to: '/blog', label: 'Blog' },
-  { to: '/about', label: 'About' },
+  { label: 'Blog', to: '/blog' },
+  { label: 'About', to: '/about' },
 ]
 
 const navLinkClasses = 'hover:text-[var(--color-primary)] transition-colors'

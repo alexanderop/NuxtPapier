@@ -31,16 +31,18 @@ export function useCommandPalette() {
 
   // Return state and methods
   return {
+
+    close,
+
     // State
     isOpen: readonly(isOpen),
-    selected: readonly(selected),
 
+    next,
     // Methods
     open,
-    close,
-    next,
     prev,
     reset,
     select,
+    selected: readonly(selected),
   }
 }

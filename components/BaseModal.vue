@@ -90,8 +90,8 @@ onMounted(() => {
 })
 
 defineExpose({
-  open: openModal,
   close: closeModal,
+  open: openModal,
 })
 </script>
 

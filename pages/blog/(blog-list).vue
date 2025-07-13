@@ -16,8 +16,8 @@ defineOgImageComponent('Simple', {
 })
 
 useEnhancedSeoMeta({
-  title: pageTitle,
   description: pageDescription,
+  title: pageTitle,
   type: 'website',
 })
 

@@ -17,9 +17,6 @@ const errorMessages: Record<number | 'default', {
   ascii: string
 }> = {
   404: {
-    title: 'Oops! Lost in cyberspace',
-    description: 'This page went on vacation and forgot to leave a forwarding address.',
-    icon: 'i-heroicons-map',
     ascii: `
        ___
       /   \\
@@ -33,11 +30,11 @@ const errorMessages: Record<number | 'default', {
     |  ___  |
      \\_____/
     `,
+    description: 'This page went on vacation and forgot to leave a forwarding address.',
+    icon: 'i-heroicons-map',
+    title: 'Oops! Lost in cyberspace',
   },
   500: {
-    title: 'Server needs coffee',
-    description: 'Our hamsters stopped running. We\'re getting them back on the wheel!',
-    icon: 'i-heroicons-fire',
     ascii: `
       ___
      |o o|
@@ -49,11 +46,11 @@ const errorMessages: Record<number | 'default', {
     // | \\\\
    //  |  \\\\
     `,
+    description: 'Our hamsters stopped running. We\'re getting them back on the wheel!',
+    icon: 'i-heroicons-fire',
+    title: 'Server needs coffee',
   },
   default: {
-    title: 'Something weird happened',
-    description: 'Even we don\'t know what went wrong. That\'s... concerning.',
-    icon: 'i-heroicons-question-mark-circle',
     ascii: `
      _____
     |     |
@@ -64,6 +61,9 @@ const errorMessages: Record<number | 'default', {
     |     |
     |_____|
     `,
+    description: 'Even we don\'t know what went wrong. That\'s... concerning.',
+    icon: 'i-heroicons-question-mark-circle',
+    title: 'Something weird happened',
   },
 }
 

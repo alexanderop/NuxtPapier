@@ -15,25 +15,25 @@ export default defineEventHandler(async (event) => {
 
   // Create RSS feed
   const feed = new RSS({
-    title: appConfig.site.title || 'NuxtPapier Blog',
-    description: appConfig.site.desc || 'A minimal, responsive and SEO-friendly Nuxt blog theme.',
-    site_url: baseUrl,
-    feed_url: `${baseUrl}/rss.xml`,
     copyright: `© ${new Date().getFullYear()} ${appConfig.site.author || 'Your Name'}`,
+    description: appConfig.site.desc || 'A minimal, responsive and SEO-friendly Nuxt blog theme.',
+    feed_url: `${baseUrl}/rss.xml`,
     language: appConfig.site.lang || 'en',
     pubDate: new Date(),
+    site_url: baseUrl,
+    title: appConfig.site.title || 'NuxtPapier Blog',
     ttl: 60,
   })
 
   // Add posts to feed
   for (const post of posts) {
     feed.item({
-      title: post.title,
-      description: post.description,
-      url: `${baseUrl}${post.path}`,
-      date: new Date(post.date),
       author: post.author,
       categories: post.tags || [],
+      date: new Date(post.date),
+      description: post.description,
+      title: post.title,
+      url: `${baseUrl}${post.path}`,
     })
   }
 

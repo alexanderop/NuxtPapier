@@ -10,8 +10,8 @@ const keys = computed(() => {
   const shortcuts: Record<string, string[]> = {
     'cmd-k': ['⌘', 'K'],
     'ctrl-k': ['Ctrl', 'K'],
-    'escape': ['Esc'],
     'enter': ['Enter'],
+    'escape': ['Esc'],
   }
   return shortcuts[shortcut] || shortcut.split('-').map(k => k.charAt(0).toUpperCase() + k.slice(1))
 })

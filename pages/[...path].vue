@@ -9,9 +9,9 @@ const { data: page } = await useAsyncData(
 
 if (!page.value) {
   throw createError({
+    fatal: true,
     statusCode: 404,
     statusMessage: 'Page not found',
-    fatal: true,
   })
 }
 
@@ -23,8 +23,8 @@ defineOgImageComponent('Simple', {
 })
 
 useEnhancedSeoMeta({
-  title: pageTitle,
   description: pageDescription,
+  title: pageTitle,
   type: 'website',
 })
 

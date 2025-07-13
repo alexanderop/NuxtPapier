@@ -8,15 +8,15 @@ const { data: page } = await useAsyncData(
 
 if (!page.value) {
   throw createError({
+    fatal: true,
     statusCode: 404,
     statusMessage: 'Home page not found',
-    fatal: true,
   })
 }
 
 const { pageTitle, pageDescription } = usePageMeta(page.value, {
-  isHomePage: true,
   fallbackDescription: appConfig.site.desc,
+  isHomePage: true,
 })
 
 // Generate simple OG image for home page
@@ -25,8 +25,8 @@ defineOgImageComponent('Simple', {
 })
 
 useEnhancedSeoMeta({
-  title: pageTitle,
   description: pageDescription,
+  title: pageTitle,
   type: 'website',
 })
 

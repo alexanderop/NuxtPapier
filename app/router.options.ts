@@ -24,8 +24,8 @@ export default <RouterConfig>{
             const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
 
             window.scrollTo({
-              top: y,
               behavior: 'smooth',
+              top: y,
             })
 
             resolve({})
@@ -51,8 +51,8 @@ export default <RouterConfig>{
                 const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
 
                 window.scrollTo({
-                  top: y,
                   behavior: 'smooth',
+                  top: y,
                 })
 
                 resolve({})
@@ -74,7 +74,7 @@ export default <RouterConfig>{
         }
 
         // Default: scroll to top
-        resolve({ top: 0, behavior: 'smooth' })
+        resolve({ behavior: 'smooth', top: 0 })
       })
     })
   },

@@ -34,8 +34,8 @@ export function usePageMeta(content: PageContent, options: PageMetaOptions = {})
   const pageOgImage = content.ogImage || appConfig.site.ogImage
 
   return {
-    pageTitle,
     pageDescription,
     pageOgImage,
+    pageTitle,
   }
 }
