@@ -2,6 +2,7 @@
 import type { TocLink } from '~/composables/useTableOfContents'
 
 const { links = [] } = defineProps<{
+  /** Array of table of contents links with hierarchy */
   links?: TocLink[]
 }>()
 

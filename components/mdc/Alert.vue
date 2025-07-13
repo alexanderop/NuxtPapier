@@ -3,7 +3,9 @@ const {
   type = 'note',
   title = '',
 } = defineProps<{
+  /** Type of alert that determines the styling and icon */
   type?: 'note' | 'tip' | 'important' | 'warning' | 'caution'
+  /** Custom title for the alert (defaults to the type) */
   title?: string
 }>()
 

@@ -7,9 +7,13 @@ const {
   description = '',
   variant = 'inline',
 } = defineProps<{
+  /** The URL to share (defaults to current page URL) */
   url?: string
+  /** Title of the content being shared */
   title?: string
+  /** Description of the content being shared */
   description?: string
+  /** Display variant: inline or floating sidebar */
   variant?: 'inline' | 'floating'
 }>()
 

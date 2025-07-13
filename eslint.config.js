@@ -24,6 +24,33 @@ export default antfu(
 
     rules: {
       'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+      'vue/no-unused-properties': ['error', {
+        groups: ['props', 'data', 'computed', 'methods', 'setup'],
+        deepData: true,
+      }],
+      'vue/block-lang': ['error', {
+        script: {
+          lang: 'ts',
+        },
+      }],
+      'vue/component-api-style': ['error', ['script-setup']],
+      'vue/define-emits-declaration': ['error', 'type-based'],
+      'vue/define-macros-order': ['error', {
+        order: ['defineProps', 'defineEmits'],
+        defineExposeLast: true,
+      }],
+      'vue/define-props-declaration': ['error', 'type-based'],
+      'vue/define-props-destructuring': ['error', {
+        destructure: 'always',
+      }],
+      'vue/html-button-has-type': 'error',
+      'vue/max-template-depth': ['error', { maxDepth: 8 }],
+      'vue/no-ref-object-reactivity-loss': 'error',
+      'vue/no-unused-emit-declarations': 'error',
+      'vue/no-use-v-else-with-v-for': 'error',
+      'vue/prefer-true-attribute-shorthand': 'error',
+      'vue/require-prop-comment': 'error',
+      'vue/require-typed-ref': 'error',
       'vue35/no-with-defaults': 'error',
       'no-else-return': 'error',
 

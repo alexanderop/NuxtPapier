@@ -12,16 +12,27 @@ const {
   icon,
   iconPosition = 'left',
 } = defineProps<{
+  /** Visual style variant of the button */
   variant?: 'primary' | 'secondary' | 'ghost' | 'link'
+  /** Size of the button */
   size?: 'sm' | 'md' | 'lg'
+  /** Internal navigation target (for NuxtLink) */
   to?: string
+  /** External link URL */
   href?: string
+  /** Whether the button is disabled */
   disabled?: boolean
+  /** Whether the button is in loading state */
   loading?: boolean
+  /** HTML button type attribute */
   type?: 'button' | 'submit' | 'reset'
+  /** Accessibility label for screen readers */
   ariaLabel?: string
+  /** Tooltip text shown on hover */
   title?: string
+  /** Icon name to display */
   icon?: string
+  /** Position of the icon relative to text */
   iconPosition?: 'left' | 'right'
 }>()
 

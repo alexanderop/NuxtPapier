@@ -1,5 +1,6 @@
 <script setup lang="ts">
-defineProps<{
+const { title } = defineProps<{
+  /** The title to display in the OG image */
   title?: string
 }>()
 </script>

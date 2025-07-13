@@ -4,8 +4,11 @@ const {
   title,
   external = true,
 } = defineProps<{
+  /** The URL to link to */
   href: string
+  /** Optional title attribute for accessibility */
   title?: string
+  /** Whether to open the link in a new tab */
   external?: boolean
 }>()
 </script>

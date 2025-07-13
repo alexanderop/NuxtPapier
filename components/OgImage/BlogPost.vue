@@ -1,23 +1,8 @@
 <script setup lang="ts">
-defineProps<{
+const { title } = defineProps<{
+  /** The title to display in the OG image */
   title?: string
-  description?: string
-  author?: string
-  date?: string
-  siteName?: string
 }>()
-
-function formatDate(dateString?: string) {
-  if (!dateString)
-    return ''
-
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-}
 </script>
 
 <template>

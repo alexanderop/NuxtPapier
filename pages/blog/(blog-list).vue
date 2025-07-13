@@ -57,7 +57,7 @@ useStaggeredAnimation()
       <BaseBlogPosts
         type="all"
         :limit="100"
-        :show-date="true"
+        show-date
         :show-excerpt="false"
       />
     </div>

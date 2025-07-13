@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { error } = defineProps<{
+  /** The error object containing status and message information */
   error: {
     statusCode: number
     statusMessage?: string
@@ -91,6 +92,7 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
 
       <div class="space-y-4">
         <button
+          type="button"
           class="bg-gradient-to-r text-white font-medium px-8 py-4 rounded-lg inline-flex transform transition-all duration-200 items-center from-blue-600 to-purple-600 hover:shadow-lg hover:scale-105"
           @click="handleError"
         >
@@ -100,6 +102,7 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
 
         <div class="text-sm text-gray-500 dark:text-gray-500">
           <button
+            type="button"
             class="underline transition-colors hover:text-gray-700 dark:hover:text-gray-300"
             @click="$router.back()"
           >

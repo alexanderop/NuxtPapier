@@ -2,7 +2,6 @@
 const config = useAppConfig()
 const transition = config.site.animations ? { name: 'page', mode: 'out-in' as const } : false
 
-const { isOpen, close } = useCommandPalette()
 useKeyboardShortcuts()
 
 useHead({
@@ -47,9 +46,6 @@ useHead({
       <NuxtPage :transition="transition" />
     </NuxtLayout>
 
-    <TheCommandPalette
-      :open="isOpen"
-      @close="close"
-    />
+    <ModalController />
   </div>
 </template>

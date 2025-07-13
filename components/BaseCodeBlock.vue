@@ -1,9 +1,11 @@
 <script setup lang="ts">
 const { code = '', language = '', filename = '' } = defineProps<{
+  /** The code content to display */
   code?: string
+  /** Programming language for syntax highlighting */
   language?: string
+  /** Optional filename to display in the header */
   filename?: string
-  meta?: string
 }>()
 
 // Copy functionality

@@ -5,9 +5,13 @@ const {
   showExcerpt = true,
   showDate = false,
 } = defineProps<{
+  /** Type of posts to display: featured, latest, or all posts */
   type?: 'featured' | 'latest' | 'all'
+  /** Maximum number of posts to display */
   limit?: number
+  /** Whether to show the post excerpt/description */
   showExcerpt?: boolean
+  /** Whether to show the post date */
   showDate?: boolean
 }>()
 
