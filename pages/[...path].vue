@@ -9,18 +9,22 @@ const { data: page } = await useAsyncData(
 
 if (!page.value) {
   throw createError({
+    fatal: true,
     statusCode: 404,
     statusMessage: 'Page not found',
-    fatal: true,
   })
 }
 
-const { pageTitle, pageDescription, pageOgImage } = usePageMeta(page.value)
+const { pageTitle, pageDescription } = usePageMeta(page.value)
+
+// Generate simple OG image for dynamic pages
+defineOgImageComponent('Simple', {
+  title: pageTitle || page.value.title,
+})
 
 useEnhancedSeoMeta({
-  title: pageTitle,
   description: pageDescription,
-  image: pageOgImage,
+  title: pageTitle,
   type: 'website',
 })
 
@@ -37,7 +41,7 @@ if (route.path !== '/') {
 
 <template>
   <div v-if="page" class="py-12">
-    <BaseBreadcrumbs
+    <Breadcrumbs
       v-if="route.path !== '/'"
       :items="[
         { name: 'Home', url: '/' },

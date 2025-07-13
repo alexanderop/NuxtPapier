@@ -27,10 +27,10 @@ export function useSearch() {
 
     // Query search sections from blog collection
     const result = await queryCollectionSearchSections('blog')
-      .then(data => ({ success: true as const, data }))
+      .then(data => ({ data, success: true as const }))
       .catch(err => ({
-        success: false as const,
         error: err instanceof Error ? err : new Error('Failed to load search data'),
+        success: false as const,
       }))
 
     if (!result.success) {
@@ -89,14 +89,14 @@ export function useSearch() {
         const heading = isHeading ? section.title : undefined
 
         return {
-          id: section.id,
-          title: section.title,
-          path,
+          blogTitle,
+          breadcrumb: section.titles.length > 0 ? section.titles : [section.title],
           category: 'Blog',
           content: getContentSnippet(section.content, query.value),
-          breadcrumb: section.titles.length > 0 ? section.titles : [section.title],
-          blogTitle,
           heading,
+          id: section.id,
+          path,
+          title: section.title,
         }
       })
       .slice(0, 15) // Limit results
@@ -117,14 +117,17 @@ export function useSearch() {
 
   // Return readonly state and methods
   return {
-    // State
-    query: readonly(query),
-    results: readonly(results),
-    loading: readonly(loading),
+
+    clear,
+
     error: readonly(error),
 
+    loading: readonly(loading),
+    // State
+    query: readonly(query),
+
+    results: readonly(results),
     // Methods
     search,
-    clear,
   }
 }

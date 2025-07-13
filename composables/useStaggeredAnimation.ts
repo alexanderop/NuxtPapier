@@ -96,10 +96,12 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
 
   // Return public API
   return {
+
+    animatedCount: readonly(animatedCount),
+
+    error: readonly(error),
     // State
     isAnimating: readonly(isAnimating),
-    animatedCount: readonly(animatedCount),
-    error: readonly(error),
     // Computed
     isComplete,
     // Methods

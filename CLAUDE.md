@@ -36,6 +36,7 @@ Claude has access to Playwright MCP (Model Context Protocol) for browser automat
 Use Playwright MCP tools when you need to:
 - Test the application in a real browser environment
 - Debug visual or interaction issues
+- Always use localhost:3000 for Playwright MCP testing. Never start the development server yourself - assume it's already running on localhost:3000.
 
 ## Architecture & Key Patterns
 

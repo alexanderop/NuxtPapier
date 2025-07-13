@@ -2,6 +2,7 @@
 const {
   noMarginTop = false,
 } = defineProps<{
+  /** Whether to disable automatic top margin */
   noMarginTop?: boolean
 }>()
 

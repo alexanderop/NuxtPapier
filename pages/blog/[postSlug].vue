@@ -11,13 +11,13 @@ const { data: post } = await useAsyncData(
 
 if (!post.value) {
   throw createError({
+    fatal: true,
     statusCode: 404,
     statusMessage: 'Blog post not found',
-    fatal: true,
   })
 }
 
-const { pageTitle, pageDescription, pageOgImage } = usePageMeta(post.value, { isBlogPost: true })
+const { pageTitle, pageDescription } = usePageMeta(post.value, { isBlogPost: true })
 
 const tocLinks = computed(() => {
   const toc = post.value?.body?.toc
@@ -33,25 +33,34 @@ definePageMeta({
   layout: 'blog',
 })
 useStaggeredAnimation()
-useEnhancedSeoMeta({
-  title: pageTitle,
-  description: pageDescription,
-  image: pageOgImage || post.value.image,
-  type: 'article',
+
+// Generate dynamic OG image for the blog post
+defineOgImageComponent('BlogPost', {
   author: post.value.author || appConfig.site.author,
-  publishedTime: post.value.date,
+  date: post.value.date,
+  description: post.value.description,
+  siteName: appConfig.site.title,
+  title: post.value.title,
+})
+
+useEnhancedSeoMeta({
+  author: post.value.author || appConfig.site.author,
+  description: pageDescription,
   modifiedTime: post.value.updatedAt || post.value.date,
+  publishedTime: post.value.date,
   tags: post.value.tags || [],
+  title: pageTitle,
+  type: 'article',
 })
 
 useArticleStructuredData({
-  title: post.value.title,
-  description: post.value.description,
   author: post.value.author,
   date: post.value.date,
-  updatedAt: post.value.updatedAt,
+  description: post.value.description,
   image: post.value.ogImage || post.value.image,
   tags: post.value.tags,
+  title: post.value.title,
+  updatedAt: post.value.updatedAt,
 })
 
 useBreadcrumbStructuredData([
@@ -64,12 +73,12 @@ useBreadcrumbStructuredData([
 <template>
   <div v-if="post" class="contents">
     <aside class="animate h-fit hidden top-24 sticky lg:block">
-      <BaseTableOfContents :links="tocLinks" />
+      <TableOfContents :links="tocLinks" />
     </aside>
 
     <article class="px-4 py-12 lg:px-0">
       <div class="animate mb-6">
-        <BaseBreadcrumbs
+        <Breadcrumbs
           :items="[
             { name: 'Home', url: '/' },
             { name: 'Blog', url: '/blog' },
@@ -89,7 +98,7 @@ useBreadcrumbStructuredData([
       </div>
 
       <div class="animate">
-        <BaseShareLinks
+        <ShareLinks
           :title="post.title"
           :description="post.description"
           variant="inline"

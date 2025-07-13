@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import TheCommandPalette from './TheCommandPalette.vue'
+
 const appConfig = useAppConfig()
 const route = useRoute()
 const menuOpen = ref(false)
 
-// Use command palette composable
-const palette = useCommandPalette()
+// Use modal store for opening command palette
+const modalStore = useModalStore()
 
 const navItems = [
-  { to: '/blog', label: 'Blog' },
-  { to: '/about', label: 'About' },
+  { label: 'Blog', to: '/blog' },
+  { label: 'About', to: '/about' },
 ]
 
 const navLinkClasses = 'hover:text-[var(--color-primary)] transition-colors'
@@ -101,17 +103,7 @@ watchEffect(() => {
                 </NuxtLink>
               </li>
               <li class="flex col-span-2 items-center justify-center sm:col-span-1">
-                <button
-                  type="button"
-                  class="px-2 py-1 flex gap-3 transition-colors items-center hover:text-[var(--color-primary)]"
-                  @click="palette.open()"
-                >
-                  <span class="tracking-wider">Search</span>
-                  <kbd class="text-xs text-[var(--color-text-muted)] px-2 py-0.5 rounded-md bg-[var(--color-text-muted)]/10 inline-flex gap-0.5 items-center">
-                    <span class="text-[10px]">⌘</span>
-                    <span>K</span>
-                  </kbd>
-                </button>
+                <SearchButton @click="modalStore.openModal(TheCommandPalette)" />
               </li>
               <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-2 items-center justify-center sm:col-span-1">
                 <BaseToggle />

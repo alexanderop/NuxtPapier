@@ -45,25 +45,25 @@ export function useEnhancedSeoMeta(options: {
   const imageHeight = options.imageHeight || 630
 
   const seoMeta: SeoMetaData = {
-    title: metaTitle,
+    author: options.author || appConfig.site.author,
     description: metaDescription,
-    ogTitle: metaTitle,
     ogDescription: metaDescription,
     ogImage: metaImage,
-    ogImageWidth: imageWidth,
-    ogImageHeight: imageHeight,
     ogImageAlt: metaTitle,
-    ogUrl: canonicalUrl,
-    ogType: options.type || 'website',
-    ogSiteName: appConfig.site.title,
+    ogImageHeight: imageHeight,
+    ogImageWidth: imageWidth,
     ogLocale: appConfig.site.lang === 'en' ? 'en_US' : appConfig.site.lang,
+    ogSiteName: appConfig.site.title,
+    ogTitle: metaTitle,
+    ogType: options.type || 'website',
+    ogUrl: canonicalUrl,
+    title: metaTitle,
     twitterCard: 'summary_large_image',
-    twitterTitle: metaTitle,
     twitterDescription: metaDescription,
     twitterImage: metaImage,
     twitterImageAlt: metaTitle,
     twitterSite: appConfig.socials?.find((s: Social) => s.name === 'Twitter')?.href?.split('/').pop(),
-    author: options.author || appConfig.site.author,
+    twitterTitle: metaTitle,
   }
 
   if (canonicalUrl && canonicalUrl.length > 0) {
@@ -87,7 +87,7 @@ export function useEnhancedSeoMeta(options: {
   if (canonicalUrl && canonicalUrl.length > 0) {
     useHead({
       link: [
-        { rel: 'canonical', href: canonicalUrl },
+        { href: canonicalUrl, rel: 'canonical' },
       ],
     })
   }

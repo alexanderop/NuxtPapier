@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { error } = defineProps<{
+  /** The error object containing status and message information */
   error: {
     statusCode: number
     statusMessage?: string
@@ -16,9 +17,6 @@ const errorMessages: Record<number | 'default', {
   ascii: string
 }> = {
   404: {
-    title: 'Oops! Lost in cyberspace',
-    description: 'This page went on vacation and forgot to leave a forwarding address.',
-    icon: 'i-heroicons-map',
     ascii: `
        ___
       /   \\
@@ -32,11 +30,11 @@ const errorMessages: Record<number | 'default', {
     |  ___  |
      \\_____/
     `,
+    description: 'This page went on vacation and forgot to leave a forwarding address.',
+    icon: 'i-heroicons-map',
+    title: 'Oops! Lost in cyberspace',
   },
   500: {
-    title: 'Server needs coffee',
-    description: 'Our hamsters stopped running. We\'re getting them back on the wheel!',
-    icon: 'i-heroicons-fire',
     ascii: `
       ___
      |o o|
@@ -48,11 +46,11 @@ const errorMessages: Record<number | 'default', {
     // | \\\\
    //  |  \\\\
     `,
+    description: 'Our hamsters stopped running. We\'re getting them back on the wheel!',
+    icon: 'i-heroicons-fire',
+    title: 'Server needs coffee',
   },
   default: {
-    title: 'Something weird happened',
-    description: 'Even we don\'t know what went wrong. That\'s... concerning.',
-    icon: 'i-heroicons-question-mark-circle',
     ascii: `
      _____
     |     |
@@ -63,6 +61,9 @@ const errorMessages: Record<number | 'default', {
     |     |
     |_____|
     `,
+    description: 'Even we don\'t know what went wrong. That\'s... concerning.',
+    icon: 'i-heroicons-question-mark-circle',
+    title: 'Something weird happened',
   },
 }
 
@@ -91,6 +92,7 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
 
       <div class="space-y-4">
         <button
+          type="button"
           class="bg-gradient-to-r text-white font-medium px-8 py-4 rounded-lg inline-flex transform transition-all duration-200 items-center from-blue-600 to-purple-600 hover:shadow-lg hover:scale-105"
           @click="handleError"
         >
@@ -100,6 +102,7 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
 
         <div class="text-sm text-gray-500 dark:text-gray-500">
           <button
+            type="button"
             class="underline transition-colors hover:text-gray-700 dark:hover:text-gray-300"
             @click="$router.back()"
           >

@@ -5,9 +5,13 @@ const {
   showExcerpt = true,
   showDate = false,
 } = defineProps<{
+  /** Type of posts to display: featured, latest, or all posts */
   type?: 'featured' | 'latest' | 'all'
+  /** Maximum number of posts to display */
   limit?: number
+  /** Whether to show the post excerpt/description */
   showExcerpt?: boolean
+  /** Whether to show the post date */
   showDate?: boolean
 }>()
 
@@ -50,7 +54,7 @@ const { data: posts } = await useAsyncData(
         class="group animate"
       >
         <!-- Post Content -->
-        <div class="flex items-baseline justify-between gap-4">
+        <div class="flex gap-4 items-baseline justify-between">
           <!-- Title -->
           <h3 class="text-lg leading-tight flex-1">
             <NuxtLink

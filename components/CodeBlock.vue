@@ -1,9 +1,11 @@
 <script setup lang="ts">
 const { code = '', language = '', filename = '' } = defineProps<{
+  /** The code content to display */
   code?: string
+  /** Programming language for syntax highlighting */
   language?: string
+  /** Optional filename to display in the header */
   filename?: string
-  meta?: string
 }>()
 
 // Copy functionality
@@ -21,20 +23,20 @@ async function copyCode() {
 // Get language display name
 const languageDisplay = computed(() => {
   const langMap: Record<string, string> = {
-    js: 'JavaScript',
-    ts: 'TypeScript',
-    vue: 'Vue',
+    bash: 'Bash',
     css: 'CSS',
     html: 'HTML',
-    bash: 'Bash',
+    js: 'JavaScript',
     json: 'JSON',
+    jsx: 'JSX',
     md: 'Markdown',
+    py: 'Python',
+    python: 'Python',
+    ts: 'TypeScript',
+    tsx: 'TSX',
+    vue: 'Vue',
     yaml: 'YAML',
     yml: 'YAML',
-    python: 'Python',
-    py: 'Python',
-    jsx: 'JSX',
-    tsx: 'TSX',
   }
   return langMap[language] || language.toUpperCase()
 })

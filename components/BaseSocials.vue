@@ -4,6 +4,7 @@ import { SOCIALS } from '~/constants'
 const {
   centered = false,
 } = defineProps<{
+  /** Whether to center the social links horizontally */
   centered?: boolean
 }>()
 </script>

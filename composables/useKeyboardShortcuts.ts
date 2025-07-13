@@ -1,11 +1,12 @@
 export function useKeyboardShortcuts() {
-  const palette = useCommandPalette()
+  const modalStore = useModalStore()
 
-  function handleKeyDown(e: KeyboardEvent) {
+  async function handleKeyDown(e: KeyboardEvent) {
     // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault()
-      palette.open()
+      const { default: TheCommandPalette } = await import('~/components/TheCommandPalette.vue')
+      modalStore.openModal(TheCommandPalette)
     }
   }
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { items } = defineProps<{
+  /** Array of breadcrumb items with name and optional URL */
   items: {
     name: string
     url?: string

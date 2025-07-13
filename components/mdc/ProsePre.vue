@@ -5,11 +5,13 @@ const {
   filename = null,
   class: className = null,
 } = defineProps<{
+  /** The code content to display */
   code?: string
+  /** Programming language for syntax highlighting */
   language?: string | null
+  /** Optional filename to display in the header */
   filename?: string | null
-  highlights?: number[]
-  meta?: string | null
+  /** Additional CSS classes to apply to the pre element */
   class?: string | null
 }>()
 
@@ -33,24 +35,24 @@ async function copyCode() {
 // Get language display name
 const languageDisplay = computed(() => {
   const langMap: Record<string, string> = {
-    js: 'JavaScript',
-    javascript: 'JavaScript',
-    ts: 'TypeScript',
-    typescript: 'TypeScript',
-    vue: 'Vue',
+    bash: 'Bash',
     css: 'CSS',
     html: 'HTML',
-    bash: 'Bash',
-    shell: 'Shell',
+    javascript: 'JavaScript',
+    js: 'JavaScript',
     json: 'JSON',
-    md: 'Markdown',
+    jsx: 'JSX',
     markdown: 'Markdown',
+    md: 'Markdown',
+    py: 'Python',
+    python: 'Python',
+    shell: 'Shell',
+    ts: 'TypeScript',
+    tsx: 'TSX',
+    typescript: 'TypeScript',
+    vue: 'Vue',
     yaml: 'YAML',
     yml: 'YAML',
-    python: 'Python',
-    py: 'Python',
-    jsx: 'JSX',
-    tsx: 'TSX',
   }
   if (!language)
     return ''
@@ -77,7 +79,7 @@ const languageDisplay = computed(() => {
           <Icon name="mdi:check-circle" class="icon" />
           <i>Copied!</i>
         </span>
-        <button class="copy-btn" @click="copyCode">
+        <button type="button" class="copy-btn" @click="copyCode">
           <Icon name="mdi:content-copy" class="icon" />
           Copy
         </button>

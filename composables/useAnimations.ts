@@ -22,8 +22,8 @@ export function useAnimations() {
 
   return {
     enabled: readonly(enabled),
-    transitionClasses,
     fadeInClasses,
     slideUpClasses,
+    transitionClasses,
   }
 }
