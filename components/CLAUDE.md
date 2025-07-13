@@ -1,5 +1,8 @@
 ### 1  Naming & File Structure
-* Use multi-word names prefixed with **`Base`** (e.g., `BaseButton`) to avoid clashes with native elements.
+* **All component names must be multi-word** (except root App components) to avoid clashes with native HTML elements.
+* Use **`Base`** prefix only for pure UI components (presentational, dumb, or pure components) that apply app-specific styling and conventions (e.g., `BaseButton`, `BaseInput`, `BaseCard`).
+* Use **`The`** prefix for single-instance components that should only ever have one active instance (e.g., `TheHeader`, `TheSidebar`).
+* Use **parent component name as prefix** for tightly coupled child components (e.g., `TodoList` → `TodoListItem` → `TodoListItemButton`).
 * Keep component names in source code PascalCase.
 * Name files in PascalCase (`UserProfile.vue`) or kebab-case (`user-profile.vue`).
 * Compose file names general → specific (`SearchButtonClear.vue`).

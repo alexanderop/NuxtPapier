@@ -1,6 +1,6 @@
 <template>
   <div class="font-mono flex flex-col min-h-screen">
-    <BaseHeader />
+    <TheHeader />
     <main id="main-content" class="flex-1">
       <div class="blog-grid-wrapper">
         <div class="blog-grid-container">
@@ -8,7 +8,7 @@
         </div>
       </div>
     </main>
-    <BaseFooter />
+    <TheFooter />
   </div>
 </template>
 

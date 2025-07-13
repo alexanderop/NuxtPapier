@@ -3,6 +3,9 @@ const appConfig = useAppConfig()
 const route = useRoute()
 const menuOpen = ref(false)
 
+// Use command palette composable
+const palette = useCommandPalette()
+
 const navItems = [
   { to: '/blog', label: 'Blog' },
   { to: '/about', label: 'About' },
@@ -13,7 +16,7 @@ const activeClass = 'text-[var(--color-primary)]'
 
 const menuListBaseClasses = 'mt-4 grid w-44 grid-cols-2 place-content-center gap-2'
 const menuListDesktopClasses = 'sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:items-center'
-const menuItemStyles = '[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1'
+const menuItemStyles = '[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1 [&>li>button]:font-medium'
 
 function getNavClasses(path: string) {
   return [navLinkClasses, isActive(path) ? activeClass : '']
@@ -97,15 +100,20 @@ watchEffect(() => {
                   {{ item.label }}
                 </NuxtLink>
               </li>
-              <li class="flex col-span-1 items-center justify-center">
-                <NuxtLink
-                  to="/search"
-                  :class="getNavClasses('/search')"
+              <li class="flex col-span-2 items-center justify-center sm:col-span-1">
+                <button
+                  type="button"
+                  class="px-2 py-1 flex gap-3 transition-colors items-center hover:text-[var(--color-primary)]"
+                  @click="palette.open()"
                 >
-                  Search
-                </NuxtLink>
+                  <span class="uppercase tracking-wider">Search</span>
+                  <kbd class="text-xs bg-[var(--color-text-muted)]/10 text-[var(--color-text-muted)] px-2 py-0.5 rounded-md inline-flex items-center gap-0.5">
+                    <span class="text-[10px]">⌘</span>
+                    <span>K</span>
+                  </kbd>
+                </button>
               </li>
-              <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-1 items-center justify-center">
+              <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-2 items-center justify-center sm:col-span-1">
                 <BaseToggle />
               </li>
             </ul>
