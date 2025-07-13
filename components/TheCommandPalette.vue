@@ -64,11 +64,16 @@ function handleSelect(index?: number) {
   }
 }
 
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 function highlightSearchTerm(text: string, term: string) {
   if (!term)
     return text
 
-  const regex = new RegExp(`(${term})`, 'gi')
+  const escapedTerm = escapeRegExp(term)
+  const regex = new RegExp(`(${escapedTerm})`, 'gi')
   return text.replace(regex, '<mark class="bg-[var(--color-primary)]/20 text-[var(--color-primary)] px-0.5 rounded">$1</mark>')
 }
 
