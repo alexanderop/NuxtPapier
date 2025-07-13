@@ -1,17 +1,15 @@
 <script setup lang="ts">
 const {
-  zIndex = 1000,
   overlayClass = '',
   contentClass = '',
   ariaLabel = 'Modal dialog',
   ariaLabelledby = '',
   ariaDescribedby = '',
-  trapFocus = true,
   closeOnEscape = true,
   closeOnBackdrop = true,
+  returnFocus = true,
+  position = 'center',
 } = defineProps<{
-  /** Z-index for modal stacking */
-  zIndex?: number
   /** Custom overlay CSS classes */
   overlayClass?: string
   /** Custom content container CSS classes */
@@ -22,169 +20,153 @@ const {
   ariaLabelledby?: string
   /** ID of element that describes the modal */
   ariaDescribedby?: string
-  /** Whether to trap focus within modal */
-  trapFocus?: boolean
   /** Whether to close modal on Escape key */
   closeOnEscape?: boolean
   /** Whether to close modal on backdrop click */
   closeOnBackdrop?: boolean
+  /** Whether to return focus to previous element on close */
+  returnFocus?: boolean
+  /** Modal position: center, top, command-palette */
+  position?: 'center' | 'top' | 'command-palette'
 }>()
 
 const emit = defineEmits<{
   close: []
 }>()
 
-// Modal element reference
-const modalRef = ref<HTMLElement>()
+const dialogRef = ref<HTMLDialogElement>()
 const previouslyFocusedElement = ref<HTMLElement>()
 
-// Generate unique IDs for accessibility
-const modalId = `modal-${Math.random().toString(36).substr(2, 9)}`
+const positionClasses = computed(() => {
+  switch (position) {
+    case 'top':
+      return 'items-start pt-[10vh]'
+    case 'command-palette':
+      return 'items-start pt-[20vh]'
+    case 'center':
+    default:
+      return 'items-center'
+  }
+})
 
-// Focus management
-function getFocusableElements(): HTMLElement[] {
-  if (!modalRef.value)
-    return []
-
-  const focusableSelectors = [
-    'button:not([disabled])',
-    'input:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'a[href]',
-    '[tabindex]:not([tabindex="-1"])',
-    '[contenteditable="true"]',
-  ].join(', ')
-
-  return Array.from(modalRef.value.querySelectorAll(focusableSelectors))
-}
-
-function trapFocusHandler(e: KeyboardEvent) {
-  if (!trapFocus || e.key !== 'Tab')
+function openModal() {
+  if (!dialogRef.value)
     return
 
-  const focusableElements = getFocusableElements()
-  if (focusableElements.length === 0)
-    return
-
-  const [firstElement] = focusableElements
-  const lastElement = focusableElements[focusableElements.length - 1]
-
-  if (e.shiftKey) {
-    if (document.activeElement === firstElement) {
-      e.preventDefault()
-      lastElement.focus()
-    }
-  }
-  else {
-    if (document.activeElement === lastElement) {
-      e.preventDefault()
-      firstElement.focus()
-    }
-  }
+  previouslyFocusedElement.value = document.activeElement as HTMLElement
+  dialogRef.value.showModal()
 }
 
-function handleEscape(e: KeyboardEvent) {
-  if (closeOnEscape && e.key === 'Escape') {
-    e.preventDefault()
-    emit('close')
+function closeModal() {
+  if (!dialogRef.value)
+    return
+
+  dialogRef.value.close()
+  emit('close')
+
+  if (returnFocus && previouslyFocusedElement.value) {
+    nextTick(() => {
+      previouslyFocusedElement.value?.focus()
+    })
   }
 }
 
 function handleBackdropClick(e: MouseEvent) {
-  if (closeOnBackdrop && e.target === e.currentTarget) {
-    emit('close')
+  if (closeOnBackdrop && e.target === dialogRef.value) {
+    closeModal()
   }
 }
 
-// Body scroll management
-function disableBodyScroll() {
-  document.body.style.overflow = 'hidden'
-  document.body.setAttribute('aria-hidden', 'true')
+function handleCancel(e: Event) {
+  if (!closeOnEscape) {
+    e.preventDefault()
+    return
+  }
+  emit('close')
 }
 
-function enableBodyScroll() {
-  document.body.style.overflow = ''
-  document.body.removeAttribute('aria-hidden')
-}
-
-// Lifecycle management
 onMounted(() => {
-  // Store previously focused element
-  previouslyFocusedElement.value = document.activeElement as HTMLElement
-
-  // Disable body scroll
-  disableBodyScroll()
-
-  // Add event listeners
-  document.addEventListener('keydown', handleEscape)
-  document.addEventListener('keydown', trapFocusHandler)
-
-  // Focus management
-  nextTick(() => {
-    if (modalRef.value) {
-      const focusableElements = getFocusableElements()
-      if (focusableElements.length > 0) {
-        focusableElements[0].focus()
-      }
-      else {
-        modalRef.value.focus()
-      }
-    }
-  })
+  openModal()
 })
 
-onUnmounted(() => {
-  // Restore body scroll
-  enableBodyScroll()
-
-  // Remove event listeners
-  document.removeEventListener('keydown', handleEscape)
-  document.removeEventListener('keydown', trapFocusHandler)
-
-  // Restore focus
-  nextTick(() => {
-    previouslyFocusedElement.value?.focus()
-  })
+defineExpose({
+  open: openModal,
+  close: closeModal,
 })
 </script>
 
 <template>
-  <div
-    :id="modalId"
-    ref="modalRef"
-    class="inset-0 fixed overflow-y-auto"
-    :style="{ zIndex }"
-    role="dialog"
-    aria-modal="true"
+  <dialog
+    ref="dialogRef"
+    class="modal-dialog bg-transparent backdrop:bg-black/20 backdrop:backdrop-blur-lg backdrop:backdrop-brightness-110 backdrop:backdrop-saturate-150 dark:backdrop:bg-black/30 dark:backdrop:backdrop-blur-xl dark:backdrop:backdrop-brightness-75"
+    :class="overlayClass"
     :aria-label="ariaLabelledby ? undefined : ariaLabel"
     :aria-labelledby="ariaLabelledby || undefined"
     :aria-describedby="ariaDescribedby || undefined"
-    tabindex="-1"
-    @click.self="handleBackdropClick"
+    @cancel="handleCancel"
   >
-    <!-- Enhanced Backdrop with smooth transitions -->
     <div
-      class="bg-black/20 transition-all duration-300 ease-out inset-0 fixed backdrop-blur-lg backdrop-saturate-150 backdrop-brightness-110 dark:bg-black/30 dark:backdrop-blur-xl dark:backdrop-brightness-75" :class="[
-        overlayClass,
-      ]"
-    />
-
-    <!-- Modal Container with enhanced positioning -->
-    <div
-      class="px-4 py-8 flex min-h-screen transition-all duration-300 ease-out items-center justify-center relative" :class="[
-        contentClass,
-      ]"
+      class="p-4 flex h-full w-full justify-center"
+      :class="positionClasses"
+      @click="handleBackdropClick"
     >
-      <!-- Content wrapper with subtle shadow and scale animation -->
-      <div class="animate-in scale-100 transform transition-all duration-300 ease-out">
+      <div
+        class="animate-in focus-within:ring-primary-500/50 rounded-lg transform transition-all duration-300 ease-out relative focus-within:ring-2"
+        :class="contentClass"
+        @click.stop
+      >
         <slot />
       </div>
     </div>
-  </div>
+  </dialog>
 </template>
 
 <style scoped>
+.modal-dialog {
+  padding: 0;
+  margin: 0;
+  border: none;
+  overflow: visible;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialog::backdrop {
+  background: transparent;
+}
+
+.modal-dialog[open] {
+  display: flex;
+  animation: dialog-show 0.3s ease-out;
+}
+
+.modal-dialog[open]::backdrop {
+  animation: backdrop-show 0.3s ease-out;
+}
+
+@keyframes dialog-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdrop-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes animate-in {
   from {
     opacity: 0;
@@ -198,5 +180,10 @@ onUnmounted(() => {
 
 .animate-in {
   animation: animate-in 0.3s ease-out;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 </style>

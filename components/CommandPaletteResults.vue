@@ -29,7 +29,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="pb-2 max-h-[60vh] overflow-y-auto">
+  <div class="pb-2 overflow-y-auto">
     <button
       v-for="(result, index) in results"
       :key="result.id"

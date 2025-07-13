@@ -41,8 +41,7 @@ const localQuery = computed({
 
 <template>
   <BaseModal
-    :z-index="50"
-    content-class="pt-[10vh] items-start"
+    position="command-palette"
     @close="$emit('close')"
   >
     <CommandPalette
@@ -51,7 +50,7 @@ const localQuery = computed({
       :search-loading="searchLoading"
       :selected-index="selectedIndex"
       :highlight-fn="highlightFn"
-      container-class="max-w-2xl w-full"
+      container-class="max-w-2xl w-full mx-auto"
       @close="$emit('close')"
       @select="$emit('select', $event)"
       @hover="$emit('hover', $event)"
