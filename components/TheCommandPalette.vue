@@ -98,18 +98,33 @@ function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+function escapeHtml(text: string): string {
+  const div = document.createElement('div')
+  div.textContent = text
+  return div.innerHTML
+}
+
 function highlightSearchTerm(text: string, term: string) {
   if (!term)
-    return text
+    return escapeHtml(text)
 
+  // First escape the HTML entities in the input text
+  const escapedText = escapeHtml(text)
   const escapedTerm = escapeRegExp(term)
   const regex = new RegExp(`(${escapedTerm})`, 'gi')
-  return text.replace(regex, '<mark class="bg-[var(--color-primary)]/20 text-[var(--color-primary)] px-0.5 rounded">$1</mark>')
+
+  // Apply highlighting only to the escaped text
+  return escapedText.replace(regex, '<mark class="bg-[var(--color-primary)]/20 text-[var(--color-primary)] px-0.5 rounded">$1</mark>')
 }
 
 // Initialize the command palette state
 onMounted(() => {
   palette.open()
+})
+
+// Clean up the command palette state
+onUnmounted(() => {
+  palette.close()
 })
 </script>
 
@@ -120,10 +135,10 @@ onMounted(() => {
     :search-loading="search.loading.value"
     :selected-index="palette.selected.value"
     :highlight-fn="highlightSearchTerm"
-    :on-close="handleClose"
-    :on-select="handleSelect"
-    :on-hover="palette.select"
-    :on-keydown="handleKeyDown"
-    :on-update-query="(value: string) => q = value"
+    @close="handleClose"
+    @select="handleSelect"
+    @hover="palette.select"
+    @keydown="handleKeyDown"
+    @update:query="(value: string) => q = value"
   />
 </template>

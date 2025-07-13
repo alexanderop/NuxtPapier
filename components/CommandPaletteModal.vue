@@ -40,26 +40,22 @@ const localQuery = computed({
 </script>
 
 <template>
-  <div
-    class="inset-0 fixed z-50 overflow-y-auto"
-    @click.self="$emit('close')"
+  <BaseModal
+    :z-index="50"
+    content-class="pt-[10vh] items-start"
+    @close="$emit('close')"
   >
-    <!-- Backdrop -->
-    <div class="bg-black/60 inset-0 fixed backdrop-blur-sm dark:bg-black/80" />
-
-    <!-- Modal Container -->
-    <div class="px-4 pt-[10vh] flex min-h-screen items-start justify-center relative">
-      <CommandPaletteContent
-        v-model:query="localQuery"
-        :search-results="searchResults"
-        :search-loading="searchLoading"
-        :selected-index="selectedIndex"
-        :highlight-fn="highlightFn"
-        @close="$emit('close')"
-        @select="$emit('select', $event)"
-        @hover="$emit('hover', $event)"
-        @keydown="$emit('keydown', $event)"
-      />
-    </div>
-  </div>
+    <CommandPalette
+      v-model:query="localQuery"
+      :search-results="searchResults"
+      :search-loading="searchLoading"
+      :selected-index="selectedIndex"
+      :highlight-fn="highlightFn"
+      container-class="max-w-2xl w-full"
+      @close="$emit('close')"
+      @select="$emit('select', $event)"
+      @hover="$emit('hover', $event)"
+      @keydown="$emit('keydown', $event)"
+    />
+  </BaseModal>
 </template>

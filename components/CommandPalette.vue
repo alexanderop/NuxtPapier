@@ -5,11 +5,7 @@ const {
   searchLoading = false,
   selectedIndex = 0,
   highlightFn,
-  onClose,
-  onSelect,
-  onHover,
-  onKeydown,
-  onUpdateQuery,
+  containerClass = 'max-w-[90vw] w-[600px]',
 } = defineProps<{
   /** Search query */
   query?: string
@@ -28,33 +24,35 @@ const {
   selectedIndex?: number
   /** Function to highlight search terms */
   highlightFn: (_text: string, _term: string) => string
-  /** Close handler */
-  onClose: () => void
-  /** Select handler */
-  onSelect: (_index: number) => void
-  /** Hover handler */
-  onHover: (_index: number) => void
-  /** Keydown handler */
-  onKeydown: (_event: KeyboardEvent) => void
-  /** Query update handler */
-  onUpdateQuery: (_value: string) => void
+  /** Custom container CSS classes */
+  containerClass?: string
+}>()
+
+const emit = defineEmits<{
+  'close': []
+  'select': [index: number]
+  'hover': [index: number]
+  'keydown': [event: KeyboardEvent]
+  'update:query': [value: string]
 }>()
 
 const localQuery = computed({
   get: () => query,
-  set: value => onUpdateQuery(value),
+  set: value => emit('update:query', value),
 })
 </script>
 
 <template>
   <div
-    class="border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] max-w-[90vw] w-[600px] shadow-2xl relative"
-    @keydown="onKeydown"
+    class="border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] shadow-2xl relative" :class="[
+      containerClass,
+    ]"
+    @keydown="emit('keydown', $event)"
   >
     <!-- Search Input -->
     <CommandPaletteInput
       v-model="localQuery"
-      @close="onClose"
+      @close="emit('close')"
     />
 
     <!-- Results -->
@@ -67,8 +65,8 @@ const localQuery = computed({
         :selected-index="selectedIndex"
         :query="query"
         :highlight-fn="highlightFn"
-        @select="onSelect"
-        @hover="onHover"
+        @select="emit('select', $event)"
+        @hover="emit('hover', $event)"
       />
     </template>
 

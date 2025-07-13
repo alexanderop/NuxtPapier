@@ -1,8 +1,9 @@
+import type { Component } from 'vue'
 import { computed, reactive, readonly, toRefs } from 'vue'
 
 export interface Modal {
   id: number
-  component: any
+  component: Component
   props?: Record<string, unknown>
 }
 
@@ -24,7 +25,7 @@ export default function useModalStore() {
   const hasModals = computed(() => modals.value.length > 0)
 
   function openModal(
-    component: any,
+    component: Component,
     props: Modal['props'] = {},
   ) {
     state.modals.push({
