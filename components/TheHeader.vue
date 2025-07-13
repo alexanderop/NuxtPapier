@@ -106,7 +106,7 @@ watchEffect(() => {
                   class="px-2 py-1 flex gap-3 transition-colors items-center hover:text-[var(--color-primary)]"
                   @click="palette.open()"
                 >
-                  <span class="tracking-wider uppercase">Search</span>
+                  <span class="tracking-wider">Search</span>
                   <kbd class="text-xs text-[var(--color-text-muted)] px-2 py-0.5 rounded-md bg-[var(--color-text-muted)]/10 inline-flex gap-0.5 items-center">
                     <span class="text-[10px]">⌘</span>
                     <span>K</span>
