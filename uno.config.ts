@@ -106,13 +106,13 @@ export default defineConfig({
     presetWebFonts({
       provider: 'google',
       fonts: {
-        sans: ['Inter'],
-        mono: ['IBM Plex Mono:400,500,600,700'],
+        sans: ['Inter:400,500,600,700,800,900'],
+        mono: ['Fira Code:400,500,600,700'],
         serif: ['Merriweather'],
         display: ['Bebas Neue'],
-        body: ['Inter'],
-        heading: ['Inter'],
-        monospace: ['IBM Plex Mono:400,500,600,700'],
+        body: ['Inter:400,500,600,700,800,900'],
+        heading: ['Inter:400,500,600,700,800,900'],
+        monospace: ['Fira Code:400,500,600,700'],
       },
     }),
   ],
@@ -132,7 +132,8 @@ export default defineConfig({
       'text-muted': 'var(--color-text-muted)',
     },
     fontFamily: {
-      mono: '"IBM Plex Mono", ui-monospace, Menlo, Monaco, monospace',
+      sans: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      mono: '"Fira Code", "JetBrains Mono", Consolas, "Courier New", monospace',
     },
   },
   shortcuts: {

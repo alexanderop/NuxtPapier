@@ -43,16 +43,16 @@ const { data: posts } = await useAsyncData(
 
 <template>
   <div v-if="posts && posts.length > 0" class="my-8">
-    <div class="space-y-8">
+    <div class="space-y-4">
       <article
         v-for="(post, index) in posts"
         :key="`post-${index}`"
         class="group animate"
       >
         <!-- Post Content -->
-        <div class="space-y-2">
+        <div class="flex items-baseline justify-between gap-4">
           <!-- Title -->
-          <h3 class="text-xl leading-tight">
+          <h3 class="text-lg leading-tight flex-1">
             <NuxtLink
               :href="`${post.path}`"
               class="text-[var(--color-text)] dark:text-[var(--color-primary)] hover:text-[var(--color-primary)]" :class="[transitionClasses]"
@@ -61,23 +61,16 @@ const { data: posts } = await useAsyncData(
             </NuxtLink>
           </h3>
 
-          <!-- Date and Reading Time -->
-          <div v-if="showDate && post.date" class="text-sm text-[var(--color-text-muted)] flex gap-4 items-center">
-            <span class="flex gap-1 items-center">
-              <Icon name="mdi:calendar" class="h-4 w-4" />
-              {{ new Date(post.date).toLocaleDateString() }}
-            </span>
-            <span v-if="post.readingTime" class="flex gap-1 items-center">
-              <Icon name="mdi:clock-outline" class="h-4 w-4" />
-              {{ post.readingTime }} min read
-            </span>
+          <!-- Date -->
+          <div v-if="showDate && post.date" class="text-sm text-[var(--color-text-muted)] whitespace-nowrap">
+            {{ new Date(post.date).toLocaleDateString() }}
           </div>
-
-          <!-- Excerpt -->
-          <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed">
-            {{ post.description }}
-          </p>
         </div>
+
+        <!-- Excerpt -->
+        <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed mt-2">
+          {{ post.description }}
+        </p>
       </article>
     </div>
   </div>

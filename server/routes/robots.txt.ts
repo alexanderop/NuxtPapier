@@ -1,4 +1,4 @@
-export default defineEventHandler(async (event) => {
+export default defineEventHandler((event) => {
   const appConfig = useAppConfig()
   const runtimeConfig = useRuntimeConfig()
 

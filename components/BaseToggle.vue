@@ -7,7 +7,7 @@ function toggleMode() {
   colorMode.preference = isDarkMode.value ? 'light' : 'dark'
 }
 
-const buttonText = computed(() => isDarkMode.value ? 'Light Mode' : 'Dark Mode')
+const buttonText = computed(() => (isDarkMode.value ? 'Light Mode' : 'Dark Mode'))
 </script>
 
 <template>

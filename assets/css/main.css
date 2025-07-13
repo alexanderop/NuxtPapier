@@ -1,4 +1,8 @@
 :root {
+  /* Font families */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+
   /* Light mode colors */
   --color-primary: #3b82f6; /* Blue 500 */
   --color-secondary: #6b7280; /* Gray 500 */
@@ -169,4 +173,49 @@ body.no-animations .animate {
   opacity: 1;
   transform: none;
   transition: none;
+}
+
+/* Heading Anchor Links - Native Nuxt Content */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 5rem; /* 80px to account for fixed header */
+}
+
+/* Style the native anchor links that wrap heading text */
+.prose h1 > a,
+.prose h2 > a,
+.prose h3 > a,
+.prose h4 > a,
+.prose h5 > a,
+.prose h6 > a {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+/* Add hash symbol on hover */
+.prose h1 > a:hover::before,
+.prose h2 > a:hover::before,
+.prose h3 > a:hover::before,
+.prose h4 > a:hover::before,
+.prose h5 > a:hover::before,
+.prose h6 > a:hover::before {
+  content: '#';
+  position: absolute;
+  left: -1.5rem;
+  color: var(--color-text-muted);
+  font-weight: normal;
+}
+
+.prose h1 > a:hover,
+.prose h2 > a:hover,
+.prose h3 > a:hover,
+.prose h4 > a:hover,
+.prose h5 > a:hover,
+.prose h6 > a:hover {
+  color: var(--color-primary);
 }
