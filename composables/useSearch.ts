@@ -3,6 +3,18 @@ export interface SearchResult {
   title: string
   path: string
   category: string
+  content?: string
+  breadcrumb?: string[]
+  blogTitle?: string
+  heading?: string
+}
+
+interface Section {
+  id: string
+  title: string
+  titles: string[]
+  content: string
+  level: number
 }
 
 export function useSearch() {
@@ -10,56 +22,85 @@ export function useSearch() {
   const query = ref('')
   const loading = ref(false)
   const error = ref<Error | null>(null)
+  const sections = ref<Section[]>([])
 
-  // Hardcoded results for now - will be replaced with Nuxt Content query
-  const items: SearchResult[] = [
-    {
-      id: '1',
-      title: 'Integrating Long-Term Memory with Gemini 2.5',
-      path: '/blog/integrating-long-term-memory-gemini',
-      category: 'Blog',
-    },
-    {
-      id: '2',
-      title: 'The New Skill in AI is Not Prompting, It\'s Context Engineering',
-      path: '/blog/context-engineering',
-      category: 'Blog',
-    },
-    {
-      id: '3',
-      title: 'Single vs Multi-Agent System?',
-      path: '/blog/single-vs-multi-agent',
-      category: 'Blog',
-    },
-    {
-      id: '4',
-      title: 'Zero to One: Learning Agentic Patterns',
-      path: '/blog/agentic-patterns',
-      category: 'Blog',
-    },
-    {
-      id: '5',
-      title: 'Google Gemini LangChain Cheatsheet',
-      path: '/blog/gemini-langchain-cheatsheet',
-      category: 'Blog',
-    },
-    {
-      id: '6',
-      title: 'OpenAI Codex CLI, how does it work?',
-      path: '/blog/openai-codex-cli',
-      category: 'Blog',
-    },
-  ]
+  // Load sections on mount
+  onMounted(async () => {
+    loading.value = true
+    error.value = null
+    try {
+      // Query search sections from blog collection
+      sections.value = await queryCollectionSearchSections('blog')
+    }
+    catch (err) {
+      error.value = err instanceof Error ? err : new Error('Failed to load search data')
+    }
+    finally {
+      loading.value = false
+    }
+  })
 
-  // Computed
+  // Helper to get content snippet around search term
+  function getContentSnippet(content: string, searchTerm: string, maxLength = 150): string {
+    const lowerContent = content.toLowerCase()
+    const lowerTerm = searchTerm.toLowerCase()
+    const index = lowerContent.indexOf(lowerTerm)
+
+    if (index === -1)
+      return `${content.slice(0, maxLength)}...`
+
+    // Get surrounding context
+    const start = Math.max(0, index - 50)
+    const end = Math.min(content.length, index + searchTerm.length + 100)
+
+    let snippet = content.slice(start, end)
+
+    // Add ellipsis if needed
+    if (start > 0)
+      snippet = `...${snippet}`
+    if (end < content.length)
+      snippet = `${snippet}...`
+
+    return snippet
+  }
+
+  // Computed results with filtering and transformation
   const results = computed(() => {
-    if (!query.value)
-      return items
+    if (!query.value || sections.value.length === 0)
+      return []
 
     const q = query.value.toLowerCase()
-    return items.filter(item =>
-      item.title.toLowerCase().includes(q),
-    )
+
+    // Filter sections by title and content
+    const filtered = sections.value
+      .filter(section =>
+        section.title.toLowerCase().includes(q)
+        || section.content.toLowerCase().includes(q),
+      )
+      .map((section) => {
+        // Section IDs are already in the format: /blog/slug or /blog/slug#anchor
+        // Just use them directly as the path
+        const path = section.id
+
+        // Extract blog title and heading
+        const blogTitle = section.titles.length > 0 ? section.titles[0] : section.title
+        const isHeading = section.title !== blogTitle
+        const heading = isHeading ? section.title : undefined
+
+        return {
+          id: section.id,
+          title: section.title,
+          path,
+          category: 'Blog',
+          content: getContentSnippet(section.content, query.value),
+          breadcrumb: section.titles.length > 0 ? section.titles : [section.title],
+          blogTitle,
+          heading,
+        }
+      })
+      .slice(0, 15) // Limit results
+
+    return filtered
   })
 
   // Methods
@@ -72,20 +113,6 @@ export function useSearch() {
     query.value = ''
     error.value = null
   }
-
-  // TODO: Replace with real search using Nuxt Content
-  // async function search(q: string) {
-  //   loading.value = true
-  //   error.value = null
-  //
-  //   const { data } = await queryCollection('blog')
-  //     .where('title', { $contains: q })
-  //     .or('description', { $contains: q })
-  //     .limit(10)
-  //     .find()
-  //
-  //   loading.value = false
-  // }
 
   // Return readonly state and methods
   return {

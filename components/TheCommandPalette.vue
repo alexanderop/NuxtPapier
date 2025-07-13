@@ -64,6 +64,14 @@ function handleSelect(index?: number) {
   }
 }
 
+function highlightSearchTerm(text: string, term: string) {
+  if (!term)
+    return text
+
+  const regex = new RegExp(`(${term})`, 'gi')
+  return text.replace(regex, '<mark class="bg-[var(--color-primary)]/20 text-[var(--color-primary)] px-0.5 rounded">$1</mark>')
+}
+
 // Focus management
 const modal = ref<HTMLElement>()
 
@@ -150,14 +158,29 @@ watch(() => open, (newOpen) => {
                   v-for="(result, index) in search.results.value"
                   :key="result.id"
                   type="button"
-                  class="px-4 py-3 text-left w-full transition-colors hover:bg-[var(--color-surface)]"
+                  class="text-sm px-4 py-2 text-left border-b border-[var(--color-border)] flex gap-2 w-full transition-colors items-center last:border-b-0 hover:bg-[var(--color-surface)]"
                   :class="{ 'bg-[var(--color-primary)]/10': index === palette.selected.value }"
                   @click="handleSelect(index)"
                   @mouseenter="palette.select(index)"
                 >
-                  <div class="text-[var(--color-text)]">
-                    {{ result.title }}
-                  </div>
+                  <!-- Blog Title -->
+                  <span class="text-[var(--color-text)] font-medium shrink-0">
+                    {{ result.blogTitle || result.title }}
+                  </span>
+
+                  <!-- Separator -->
+                  <span class="text-[var(--color-text-muted)]">&gt;</span>
+
+                  <!-- Heading (if exists) -->
+                  <template v-if="result.heading">
+                    <span class="text-[var(--color-text)] shrink-0">
+                      {{ result.heading }}
+                    </span>
+                    <span class="text-[var(--color-text-muted)]">&gt;</span>
+                  </template>
+
+                  <!-- Content preview -->
+                  <span class="text-[var(--color-text-muted)] truncate" v-html="highlightSearchTerm(result.content || '', q)" />
                 </button>
               </div>
             </div>
