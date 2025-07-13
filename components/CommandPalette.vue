@@ -48,7 +48,7 @@ const localQuery = computed({
 
 <template>
   <div
-    class="border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] w-[600px] max-w-[90vw] shadow-2xl relative"
+    class="border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] max-w-[90vw] w-[600px] shadow-2xl relative"
     @keydown="onKeydown"
   >
     <!-- Search Input -->

@@ -20,7 +20,7 @@ A modern, fast, and flexible starter template built with Nuxt 3, Vue 3, and UnoC
 
 Discover our most impactful content, handpicked for you:
 
-::base-blog-posts
+::blog-posts
 ---
 type: featured
 limit: 3
@@ -32,7 +32,7 @@ showDate: true
 
 Stay up to date with our newest articles and insights:
 
-::base-blog-posts
+::blog-posts
 ---
 type: latest
 limit: 6

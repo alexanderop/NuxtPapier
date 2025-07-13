@@ -39,7 +39,7 @@ defineEmits<{
       @click="$emit('select', index)"
       @mouseenter="$emit('hover', index)"
     >
-      <BaseSearchResult
+      <SearchResult
         :result="result"
         :query="query"
         :highlight-fn="highlightFn"

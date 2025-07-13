@@ -73,12 +73,12 @@ useBreadcrumbStructuredData([
 <template>
   <div v-if="post" class="contents">
     <aside class="animate h-fit hidden top-24 sticky lg:block">
-      <BaseTableOfContents :links="tocLinks" />
+      <TableOfContents :links="tocLinks" />
     </aside>
 
     <article class="px-4 py-12 lg:px-0">
       <div class="animate mb-6">
-        <BaseBreadcrumbs
+        <Breadcrumbs
           :items="[
             { name: 'Home', url: '/' },
             { name: 'Blog', url: '/blog' },
@@ -98,7 +98,7 @@ useBreadcrumbStructuredData([
       </div>
 
       <div class="animate">
-        <BaseShareLinks
+        <ShareLinks
           :title="post.title"
           :description="post.description"
           variant="inline"

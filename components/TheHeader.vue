@@ -103,7 +103,7 @@ watchEffect(() => {
                 </NuxtLink>
               </li>
               <li class="flex col-span-2 items-center justify-center sm:col-span-1">
-                <BaseSearchButton @click="modalStore.openModal(TheCommandPalette)" />
+                <SearchButton @click="modalStore.openModal(TheCommandPalette)" />
               </li>
               <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-2 items-center justify-center sm:col-span-1">
                 <BaseToggle />

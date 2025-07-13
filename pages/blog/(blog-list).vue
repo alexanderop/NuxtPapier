@@ -35,7 +35,7 @@ useStaggeredAnimation()
   <div class="py-12">
     <!-- Breadcrumbs -->
     <div class="animate mb-8">
-      <BaseBreadcrumbs
+      <Breadcrumbs
         :items="[
           { name: 'Home', url: '/' },
           { name: 'Blog' },
@@ -54,7 +54,7 @@ useStaggeredAnimation()
 
     <!-- Use BaseBlogPosts component to display all posts -->
     <div class="animate">
-      <BaseBlogPosts
+      <BlogPosts
         type="all"
         :limit="100"
         show-date

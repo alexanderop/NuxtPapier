@@ -28,12 +28,12 @@ This document outlines the current features implemented in NuxtPapier and featur
   - BaseLink - Enhanced link component
   - BaseToggle - Theme switcher
   - BaseAlert - Alert/notification component
-  - BaseColorPalette - Color system display
+  - ColorPalette - Color system display
   - BaseSocials - Social media links
-  - BaseShareLinks - Social sharing functionality
+  - ShareLinks - Social sharing functionality
   - TheHeader - Site navigation
   - TheFooter - Site footer
-  - BaseBlogPosts - Blog post listing component
+  - BlogPosts - Blog post listing component
 
 ### Blog Features
 - **Blog Post Listing** - Featured, latest, and all posts views

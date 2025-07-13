@@ -41,7 +41,7 @@ if (route.path !== '/') {
 
 <template>
   <div v-if="page" class="py-12">
-    <BaseBreadcrumbs
+    <Breadcrumbs
       v-if="route.path !== '/'"
       :items="[
         { name: 'Home', url: '/' },
