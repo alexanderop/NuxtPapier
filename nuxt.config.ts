@@ -82,13 +82,14 @@ export default defineNuxtConfig({
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx
 
-        if (file.path.includes('/page/')) return
+      if (!file.path.includes('/blog/'))
+        return
 
-        const wordsPerMinute = 180
-        const text = typeof file.body === 'string' ? file.body : ''
-        const wordCount = text.split(/\s+/).length
+      const wordsPerMinute = 180
+      const text = typeof file.body === 'string' ? file.body : ''
+      const wordCount = text.split(/\s+/).length
 
-        content.readingTime = Math.ceil(wordCount / wordsPerMinute)
+      content.readingTime = Math.ceil(wordCount / wordsPerMinute)
     },
   },
 })

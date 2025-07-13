@@ -3,7 +3,7 @@ const appConfig = useAppConfig()
 
 const { data: page } = await useAsyncData(
   'home-page',
-  () => queryCollection('pages').path('/').first()
+  () => queryCollection('pages').path('/').first(),
 )
 
 if (!page.value) {

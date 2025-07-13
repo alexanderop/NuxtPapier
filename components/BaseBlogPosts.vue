@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { BlogCollectionItem } from '@nuxt/content'
-
 const {
   type = 'latest',
   limit = 3,
