@@ -47,6 +47,12 @@ const localQuery = computed({
     class="border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] flex flex-col h-[500px] max-h-[70vh] shadow-2xl relative" :class="[
       containerClass,
     ]"
+    role="combobox"
+    aria-label="Command palette search"
+    aria-expanded="true"
+    aria-controls="command-results"
+    aria-haspopup="listbox"
+    tabindex="-1"
     @keydown="emit('keydown', $event)"
   >
     <!-- Search Input - Fixed at top -->
@@ -58,7 +64,7 @@ const localQuery = computed({
     </div>
 
     <!-- Results Container - Scrollable area -->
-    <div class="flex-1 min-h-0 overflow-y-auto">
+    <div id="command-results" class="flex-1 min-h-0 overflow-y-auto">
       <!-- Results -->
       <template v-if="searchResults.length > 0">
         <div class="text-xs text-[var(--color-text-muted)] tracking-wider px-4 py-2 bg-[var(--color-background)] uppercase top-0 sticky">
@@ -71,6 +77,7 @@ const localQuery = computed({
           :highlight-fn="highlightFn"
           @select="emit('select', $event)"
           @hover="emit('hover', $event)"
+          @focus="emit('hover', $event)"
         />
       </template>
 

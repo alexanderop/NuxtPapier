@@ -22,6 +22,7 @@ onMounted(() => {
       v-model="model"
       type="text"
       placeholder="Type to search..."
+      aria-label="Search"
       class="text-[var(--color-text)] px-4 py-4 bg-transparent flex-1 placeholder:text-[var(--color-text-muted)] focus:outline-none"
     >
     <button

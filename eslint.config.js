@@ -1,5 +1,6 @@
 import antfu from '@antfu/eslint-config'
 import sortKeysFixPlugin from 'eslint-plugin-sort-keys-fix'
+import pluginVueA11y from 'eslint-plugin-vuejs-accessibility'
 import vue35Plugin from './eslint-plugin-vue35/index.js'
 
 export default antfu(
@@ -101,6 +102,7 @@ export default antfu(
 
     vue: true,
   },
+  ...pluginVueA11y.configs['flat/recommended'],
   {
     files: ['pages/**/*.vue'],
     rules: {

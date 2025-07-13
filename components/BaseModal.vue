@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useFocus } from '@vueuse/core'
+
 const {
   overlayClass = '',
   contentClass = '',
@@ -9,6 +11,7 @@ const {
   closeOnBackdrop = true,
   returnFocus = true,
   position = 'center',
+  autoFocus = true,
 } = defineProps<{
   /** Custom overlay CSS classes */
   overlayClass?: string
@@ -28,6 +31,8 @@ const {
   returnFocus?: boolean
   /** Modal position: center, top, command-palette */
   position?: 'center' | 'top' | 'command-palette'
+  /** Whether to auto-focus first focusable element */
+  autoFocus?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -36,6 +41,7 @@ const emit = defineEmits<{
 
 const dialogRef = ref<HTMLDialogElement>()
 const previouslyFocusedElement = ref<HTMLElement>()
+const firstFocusableElementRef = ref<HTMLElement>()
 
 const positionClasses = computed(() => {
   switch (position) {
@@ -49,12 +55,28 @@ const positionClasses = computed(() => {
   }
 })
 
+// Use VueUse's useFocus for the first focusable element
+const { focused } = useFocus(firstFocusableElementRef, {
+  initialValue: false,
+})
+
 function openModal() {
   if (!dialogRef.value)
     return
 
   previouslyFocusedElement.value = document.activeElement as HTMLElement
   dialogRef.value.showModal()
+
+  // Focus the first focusable element in the modal if autoFocus is enabled
+  if (autoFocus) {
+    nextTick(() => {
+      const firstFocusable = dialogRef.value?.querySelector<HTMLElement>('input, textarea, select, button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+      if (firstFocusable) {
+        firstFocusableElementRef.value = firstFocusable
+        focused.value = true
+      }
+    })
+  }
 }
 
 function closeModal() {
@@ -108,6 +130,7 @@ defineExpose({
     <div
       class="p-4 flex h-full w-full justify-center"
       :class="positionClasses"
+      role="presentation"
       @click="handleBackdropClick"
     >
       <div

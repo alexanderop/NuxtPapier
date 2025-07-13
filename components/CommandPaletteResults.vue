@@ -38,6 +38,7 @@ defineEmits<{
       :class="{ 'bg-[var(--color-primary)]/10': index === selectedIndex }"
       @click="$emit('select', index)"
       @mouseenter="$emit('hover', index)"
+      @focus="$emit('hover', index)"
     >
       <SearchResult
         :result="result"

@@ -54,6 +54,7 @@ const localQuery = computed({
       @close="$emit('close')"
       @select="$emit('select', $event)"
       @hover="$emit('hover', $event)"
+      @focus="$emit('hover', $event)"
       @keydown="$emit('keydown', $event)"
     />
   </BaseModal>

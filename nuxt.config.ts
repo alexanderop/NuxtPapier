@@ -89,6 +89,7 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
     '@nuxtjs/sitemap',
+    '@vueuse/nuxt',
     'nuxt-jsonld',
     'nuxt-og-image',
   ],
