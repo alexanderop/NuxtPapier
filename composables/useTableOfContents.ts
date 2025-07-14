@@ -48,6 +48,36 @@ const HEADING_CONFIG = {
 
 const DEBOUNCE_DELAY = 50
 
+/**
+ * Composable for managing table of contents functionality
+ *
+ * Tracks the active heading in a document based on scroll position and provides
+ * smooth scrolling to specific headings. Automatically updates when content changes.
+ *
+ * @example
+ * ```vue
+ * <script setup>
+ * const { activeId, scrollToHeading } = useTableOfContents()
+ * </script>
+ *
+ * <template>
+ *   <nav>
+ *     <a
+ *       v-for="heading in headings"
+ *       :key="heading.id"
+ *       :class="{ active: activeId === heading.id }"
+ *       @click="scrollToHeading(heading.id)"
+ *     >
+ *       {{ heading.text }}
+ *     </a>
+ *   </nav>
+ * </template>
+ * ```
+ *
+ * @returns Table of contents controls
+ * @returns.activeId - Currently active heading ID (readonly)
+ * @returns.scrollToHeading - Function to scroll to a heading by ID
+ */
 export function useTableOfContents() {
   const activeId = ref<string>('')
   const headingElements = ref<HTMLElement[]>([])
