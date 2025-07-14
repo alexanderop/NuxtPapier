@@ -1,13 +1,8 @@
 {
   "name": "nuxt-app",
   "type": "module",
-  "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alexanderop/NuxtPapier.git"
-  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -16,9 +11,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "clean:content": "rm -f .data/content/contents.sqlite",
-    "prepare": "husky install",
-    "commit": "cz"
+    "clean:content": "rm -f .data/content/contents.sqlite"
   },
   "dependencies": {
     "@nuxt/content": "3.6.1",
@@ -43,13 +36,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^13.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.3",
-    "@semantic-release/release-notes-generator": "^14.0.3",
     "@types/rss": "^0.0.32",
     "@types/unist": "^3.0.3",
     "@typescript-eslint/parser": "^8.36.0",
@@ -58,22 +44,13 @@
     "@unocss/preset-typography": "^66.3.2",
     "@unocss/preset-web-fonts": "^66.3.2",
     "@unocss/preset-wind4": "^66.3.2",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "eslint-utils": "^3.0.0",
-    "husky": "^9.1.7",
     "sass": "^1.89.2",
-    "semantic-release": "^24.2.7",
     "unist-util-visit": "^5.0.0",
     "unocss": "^66.3.2"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   }
 }
