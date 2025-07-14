@@ -122,7 +122,7 @@ export default antfu(
         destructure: 'always',
       }],
       'vue/html-button-has-type': 'error',
-      'vue/max-template-depth': ['error', { maxDepth: 7 }],
+      'vue/max-template-depth': ['error', { maxDepth: 6 }],
       'vue/no-mutating-props': 'error',
       'vue/no-ref-object-reactivity-loss': 'error',
       'vue/no-unused-emit-declarations': 'error',

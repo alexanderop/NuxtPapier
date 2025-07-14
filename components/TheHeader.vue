@@ -15,32 +15,25 @@ const navItems = [
 <template>
   <header>
     <BaseSkipToContent />
-    <div class="bg-[var(--color-header-bg)] w-full">
-      <div
-        id="nav-container"
-        class="container-app flex flex-col items-center justify-between sm:flex-row"
+    <div
+      id="nav-container"
+      class="container-app py-4 bg-[var(--color-header-bg)] flex flex-col w-full items-center justify-between sm:py-6 sm:flex-row"
+    >
+      <BaseLogo
+        :title="appConfig.site.title"
+        class="absolute sm:static"
+      />
+      <BaseNavMenu
+        id="nav-menu"
+        :items="navItems"
       >
-        <div
-          id="top-nav-wrap"
-          class="py-4 flex w-full items-center justify-between relative sm:py-6"
-        >
-          <BaseLogo
-            :title="appConfig.site.title"
-            class="absolute sm:static"
-          />
-          <BaseNavMenu
-            id="nav-menu"
-            :items="navItems"
-          >
-            <li class="flex col-span-2 items-center justify-center sm:col-span-1">
-              <SearchButton @click="modalStore.openModal(TheCommandPalette)" />
-            </li>
-            <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-2 items-center justify-center sm:col-span-1">
-              <BaseToggle />
-            </li>
-          </BaseNavMenu>
-        </div>
-      </div>
+        <li class="flex col-span-2 items-center justify-center sm:col-span-1">
+          <SearchButton @click="modalStore.openModal(TheCommandPalette)" />
+        </li>
+        <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-2 items-center justify-center sm:col-span-1">
+          <BaseToggle />
+        </li>
+      </BaseNavMenu>
     </div>
   </header>
 </template>
