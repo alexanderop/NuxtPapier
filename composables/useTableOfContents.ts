@@ -1,6 +1,3 @@
-import { isClient } from '~/utils/browser'
-import { trySafe, unwrapOr } from '~/utils/result'
-
 function isElementVisible(element: HTMLElement, viewportHeight: number) {
   const rect = element.getBoundingClientRect()
   return rect.top < viewportHeight && rect.bottom > 0

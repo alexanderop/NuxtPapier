@@ -9,13 +9,15 @@ const query = ref('')
 const debouncedQuery = refDebounced(query, 300)
 
 // Sync debounced query with search composable
-watch(debouncedQuery, (v) => {
-  search.search(v)
+watchEffect(() => {
+  search.search(debouncedQuery.value)
 })
 
 // Reset selected when results change
-watch(search.results, () => {
-  palette.reset()
+watchEffect(() => {
+  if (search.results.value) {
+    palette.reset()
+  }
 })
 
 // Handle keyboard navigation

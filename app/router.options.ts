@@ -1,5 +1,34 @@
 import type { RouterConfig } from '@nuxt/schema'
 
+// Helper functions using Result pattern
+function findElement(selector: string): Result<Element> {
+  const element = document.querySelector(selector)
+  return element ? ok(element) : err(new Error(`Element not found: ${selector}`))
+}
+
+function getVisibleElement(selector: string): Result<Element> {
+  const elementResult = findElement(selector)
+  if (!isOk(elementResult))
+    return elementResult
+
+  const rect = elementResult.value.getBoundingClientRect()
+  return rect.height > 0
+    ? ok(elementResult.value)
+    : err(new Error(`Element not visible: ${selector}`))
+}
+
+function scrollToElement(element: Element, offset: number = -80): Result<void> {
+  const rect = element.getBoundingClientRect()
+  const y = rect.top + window.pageYOffset + offset
+
+  window.scrollTo({
+    behavior: 'smooth',
+    top: y,
+  })
+
+  return ok(undefined)
+}
+
 export default <RouterConfig>{
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve) => {
@@ -17,17 +46,9 @@ export default <RouterConfig>{
 
         // Handle same-page anchor navigation
         if (to.path === from.path && to.hash) {
-          const element = document.querySelector(to.hash)
-          if (element) {
-            // Use the same 80px offset as the table of contents
-            const yOffset = -80
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
-
-            window.scrollTo({
-              behavior: 'smooth',
-              top: y,
-            })
-
+          const elementResult = findElement(to.hash)
+          if (isOk(elementResult)) {
+            scrollToElement(elementResult.value)
             resolve({})
             return
           }
@@ -35,41 +56,27 @@ export default <RouterConfig>{
 
         // Handle cross-page anchor navigation
         if (to.hash) {
-          // Retry logic for dynamic content
-          let retries = 0
-          const maxRetries = 50
+          // Use VueUse's until for cleaner retry logic
+          const elementRef = ref<Result<Element>>(err(new Error('Element not found')))
+          const isVisible = computed(() => {
+            const result = getVisibleElement(to.hash)
+            elementRef.value = result
+            return isOk(result)
+          })
 
-          const findElement = () => {
-            const element = document.querySelector(to.hash)
+          const waitResult = await until(isVisible).toBe(true, { timeout: 5000 }).then(() => ok(undefined)).catch(() => err(new Error('Timeout waiting for element')))
 
-            if (element) {
-              // Check if element is visible
-              const rect = element.getBoundingClientRect()
-              if (rect.height > 0) {
-                // Use the same 80px offset as the table of contents
-                const yOffset = -80
-                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
-
-                window.scrollTo({
-                  behavior: 'smooth',
-                  top: y,
-                })
-
-                resolve({})
-                return
-              }
-            }
-
-            if (retries < maxRetries) {
-              retries++
-              setTimeout(findElement, 100)
-            }
-            else {
-              resolve({ top: 0 })
+          if (isOk(waitResult)) {
+            const elementResult = unref(elementRef)
+            if (isOk(elementResult)) {
+              scrollToElement(elementResult.value)
+              resolve({})
+              return
             }
           }
 
-          findElement()
+          // Timeout or error - scroll to top
+          resolve({ top: 0 })
           return
         }
 

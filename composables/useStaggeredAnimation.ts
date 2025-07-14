@@ -87,8 +87,10 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
 
   // Watchers
   const route = useRoute()
-  watch(() => route.path, () => {
-    replay()
+  watchEffect(() => {
+    if (route.path) {
+      replay()
+    }
   })
 
   // Return public API

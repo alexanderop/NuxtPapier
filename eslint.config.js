@@ -49,6 +49,24 @@ export default antfu(
             name: '@vueuse/core',
           },
         ],
+        patterns: [
+          {
+            group: ['~/utils/*', '~/utils/**'],
+            message: 'Use auto-imports instead of importing from ~/utils/*. Utilities are automatically available in Nuxt.',
+          },
+          {
+            group: ['~/composables/*', '~/composables/**'],
+            message: 'Use auto-imports instead of importing from ~/composables/*. Composables are automatically available in Nuxt.',
+          },
+          {
+            group: ['~/components/*', '~/components/**'],
+            message: 'Use auto-imports instead of importing from ~/components/*. Components are automatically available in Nuxt.',
+          },
+          {
+            group: ['~/server/utils/*', '~/server/utils/**'],
+            message: 'Use auto-imports instead of importing from ~/server/utils/*. Server utilities are automatically available in Nuxt.',
+          },
+        ],
       }],
       'no-restricted-syntax': ['error', {
         message: 'Use ref() instead of reactive() for better performance and type safety.',
