@@ -1,6 +1,7 @@
-[build]
-command = "npm run generate"
-publish = "dist"
+# for cms
 
-[build.environment]
-NODE_VERSION = "20"
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+force = false
