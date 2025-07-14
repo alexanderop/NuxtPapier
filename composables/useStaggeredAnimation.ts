@@ -1,6 +1,3 @@
-import { useRoute } from '#app'
-import { computed, onMounted, ref, watch } from 'vue'
-
 interface StaggeredAnimationOptions {
   /** CSS selector for elements to animate */
   selector?: string
@@ -90,8 +87,10 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
 
   // Watchers
   const route = useRoute()
-  watch(() => route.path, () => {
-    replay()
+  watchEffect(() => {
+    if (route.path) {
+      replay()
+    }
   })
 
   // Return public API

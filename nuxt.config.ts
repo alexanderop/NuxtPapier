@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
 
   content: {
+
     build: {
       markdown: {
         highlight: {
@@ -78,6 +79,9 @@ export default defineNuxtConfig({
     loading: 'lazy',
 
     quality: 80,
+
+    // For better Netlify compatibility, you can optionally use Netlify's provider
+    // provider: 'netlify',
   },
 
   modules: [
@@ -95,9 +99,21 @@ export default defineNuxtConfig({
   ],
 
   nitro: {
+    // Nuxt Content will automatically detect Netlify environment
+    // For static generation, we don't set a preset - nuxi generate handles it
+    
     prerender: {
       routes: ['/rss.xml'],
     },
+
+    // Ensure public assets are copied to output
+    publicAssets: [
+      {
+        baseURL: 'images',
+        dir: 'public/images',
+        maxAge: 31536000, // 1 year cache
+      },
+    ],
   },
 
   // OG Image configuration

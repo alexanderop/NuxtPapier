@@ -4,7 +4,7 @@ defineEmits<{
 }>()
 
 const model = defineModel<string>()
-const inputRef = ref<HTMLInputElement>()
+const inputRef = useTemplateRef<HTMLInputElement>('inputRef')
 
 onMounted(() => {
   inputRef.value?.focus()

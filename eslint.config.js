@@ -26,6 +26,56 @@ export default antfu(
       'no-loop-func': 'error',
       'no-new-func': 'error',
       'no-param-reassign': 'error',
+      'no-restricted-imports': ['error', {
+        paths: [
+          {
+            message: 'Use auto-imports instead of importing from vue. Vue composables are automatically available in Nuxt.',
+            name: 'vue',
+          },
+          {
+            message: 'Use auto-imports instead of importing from #app. Nuxt composables are automatically available.',
+            name: '#app',
+          },
+          {
+            message: 'Use auto-imports instead of importing from #imports. Composables are automatically available.',
+            name: '#imports',
+          },
+          {
+            message: 'Use auto-imports instead of importing from nuxt/app. Nuxt composables are automatically available.',
+            name: 'nuxt/app',
+          },
+          {
+            message: 'Use auto-imports instead of importing from @vueuse/core. VueUse composables are automatically available via @vueuse/nuxt.',
+            name: '@vueuse/core',
+          },
+          {
+            message: 'Use auto-imports instead of importing from @nuxt/schema. Nuxt types are automatically available.',
+            name: '@nuxt/schema',
+          },
+        ],
+        patterns: [
+          {
+            group: ['~/utils/*', '~/utils/**'],
+            message: 'Use auto-imports instead of importing from ~/utils/*. Utilities are automatically available in Nuxt.',
+          },
+          {
+            group: ['~/composables/*', '~/composables/**'],
+            message: 'Use auto-imports instead of importing from ~/composables/*. Composables are automatically available in Nuxt.',
+          },
+          {
+            group: ['~/components/*', '~/components/**'],
+            message: 'Use auto-imports instead of importing from ~/components/*. Components are automatically available in Nuxt.',
+          },
+          {
+            group: ['~/server/utils/*', '~/server/utils/**'],
+            message: 'Use auto-imports instead of importing from ~/server/utils/*. Server utilities are automatically available in Nuxt.',
+          },
+        ],
+      }],
+      'no-restricted-syntax': ['error', {
+        message: 'Use ref() instead of reactive() for better performance and type safety.',
+        selector: 'CallExpression[callee.name="reactive"]',
+      }],
       'no-return-assign': 'error',
       'no-self-compare': 'error',
       'no-sequences': 'error',
@@ -83,6 +133,7 @@ export default antfu(
       'vue/no-unused-vars': 'error',
       'vue/no-use-v-else-with-v-for': 'error',
       'vue/prefer-true-attribute-shorthand': 'error',
+      'vue/prefer-use-template-ref': 'error',
       'vue/require-prop-comment': 'error',
       'vue/require-typed-ref': 'error',
       'vue/sort-keys': 'off',

@@ -1,24 +1,25 @@
 export function useKeyboardShortcuts() {
   const modalStore = useModalStore()
+  const keys = useMagicKeys({
+    onEventFired(e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k' && e.type === 'keydown')
+        e.preventDefault()
+    },
+    passive: false,
+  })
 
-  async function handleKeyDown(e: KeyboardEvent) {
-    // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault()
-      const { default: TheCommandPalette } = await import('~/components/TheCommandPalette.vue')
-      modalStore.openModal(TheCommandPalette)
-    }
+  const cmdK = keys['cmd+k']
+  const ctrlK = keys['ctrl+k']
+
+  const openCommandPalette = async () => {
+    const { default: TheCommandPalette } = await import('~/components/TheCommandPalette.vue')
+    modalStore.openModal(TheCommandPalette)
   }
 
-  onMounted(() => {
-    window.addEventListener('keydown', handleKeyDown)
-  })
-
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyDown)
-  })
+  whenever(cmdK, openCommandPalette)
+  whenever(ctrlK, openCommandPalette)
 
   return {
-    handleKeyDown,
+    keys,
   }
 }

@@ -28,16 +28,10 @@ const shareUrl = computed(() => {
 })
 
 // Copy link functionality
-const copied = ref(false)
-async function copyLink() {
-  if (import.meta.client && shareUrl.value) {
-    await navigator.clipboard.writeText(shareUrl.value)
-    copied.value = true
-    setTimeout(() => {
-      copied.value = false
-    }, 2000)
-  }
-}
+const { copy, copied, isSupported } = useClipboard({
+  copiedDuring: 2000,
+  source: shareUrl, // 2 seconds timeout to match original behavior
+})
 </script>
 
 <template>
@@ -73,13 +67,14 @@ async function copyLink() {
 
       <!-- Copy link button -->
       <BaseButton
+        v-if="isSupported"
         variant="ghost"
         size="md"
         :icon="copied ? 'mdi:check' : 'mdi:link-variant'"
         :title="copied ? 'Copied!' : 'Copy link'"
         :aria-label="copied ? 'Copied!' : 'Copy link'"
         class="transition-all relative hover:text-primary !p-2 !bg-transparent hover:scale-110"
-        @click="copyLink"
+        @click="copy()"
       >
         <!-- Tooltip for copied state -->
         <span

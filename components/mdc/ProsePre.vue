@@ -15,22 +15,10 @@ const {
   class?: string | null
 }>()
 
-const codeCopied = ref(false)
-
-async function copyCode() {
-  if (import.meta.client && code) {
-    try {
-      await navigator.clipboard.writeText(code)
-      codeCopied.value = true
-      setTimeout(() => {
-        codeCopied.value = false
-      }, 3000)
-    }
-    catch (error) {
-      console.error('Error: Unable to copy code.', error)
-    }
-  }
-}
+const { copy, copied: codeCopied, isSupported } = useClipboard({
+  copiedDuring: 3000,
+  source: code, // 3 seconds timeout to match original behavior
+})
 
 // Get language display name
 const languageDisplay = computed(() => {
@@ -79,7 +67,7 @@ const languageDisplay = computed(() => {
           <Icon name="mdi:check-circle" class="icon" />
           <i>Copied!</i>
         </span>
-        <button type="button" class="copy-btn" @click="copyCode">
+        <button v-if="isSupported" type="button" class="copy-btn" @click="copy()">
           <Icon name="mdi:content-copy" class="icon" />
           Copy
         </button>
