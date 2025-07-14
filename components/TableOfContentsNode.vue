@@ -10,10 +10,10 @@ const { link, depth = 0 } = defineProps<{
 }>()
 
 const tocProvider = inject(tocKey, {
-  activeId: ref(''),
-  handleClick: () => {},
-  isActive: () => false,
-  scrollToHeading: () => {},
+  activeId: readonly(ref('')),
+  handleClick: (_event: Event, _id: string) => {},
+  isActive: (_id: string) => false,
+  scrollToHeading: (_id: string) => {},
   withinToc: false,
 })
 

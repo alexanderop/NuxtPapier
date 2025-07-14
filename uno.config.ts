@@ -3,6 +3,10 @@ import presetWind4 from '@unocss/preset-wind4'
 import { defineConfig, presetWebFonts } from 'unocss'
 
 export default defineConfig({
+  safelist: [
+    // Dynamic margin-left classes for TableOfContentsNode indentation
+    ...Array.from({ length: 10 }, (_, i) => `ml-${i * 3}`),
+  ],
   presets: [
     presetWind4(),
     presetTypography({
