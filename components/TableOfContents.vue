@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TocLink } from '@nuxt/content'
-import { tocKey } from './tocKey'
 import TocNode from './TableOfContentsNode.vue'
+import { tocKey } from './tocKey'
 
 const { links = [] } = defineProps<{
   /** Array of table of contents links with hierarchy */
