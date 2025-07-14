@@ -1,3 +1,5 @@
+import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
+
 const SCROLL_OFFSET_FOR_FIXED_HEADER = -80
 const ELEMENT_VISIBILITY_TIMEOUT = 5000
 
@@ -36,8 +38,13 @@ function scrollToElement(element: Element, offset: number = SCROLL_OFFSET_FOR_FI
   return ok(undefined)
 }
 
-export default <RouterConfig>{
-  scrollBehavior(to, from, savedPosition) {
+interface ScrollPosition {
+  left?: number
+  top?: number
+}
+
+export default {
+  scrollBehavior(to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded, savedPosition: ScrollPosition | null) {
     return new Promise((resolve) => {
       const nuxtApp = useNuxtApp()
 

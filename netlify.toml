@@ -29,4 +29,6 @@ conditions = { Role = [ "admin" ] }
 
 # Environment variables (if needed)
 [build.environment]
-NODE_VERSION = "18"
+NODE_VERSION = "20"
+NODE_OPTIONS = "--max-old-space-size=4096"
+NITRO_PRESET = "static"

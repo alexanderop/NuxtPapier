@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
 
   content: {
+
     build: {
       markdown: {
         highlight: {
@@ -103,9 +104,9 @@ export default defineNuxtConfig({
       routes: ['/rss.xml'],
     },
 
-    // For better Netlify deployment, use 'static' preset for full static generation
-    // This avoids potential edge function issues with images
-    // preset: 'static',
+    // Use static preset for full static generation on Netlify
+    preset: 'static',
+
     // Ensure public assets are copied to output
     publicAssets: [
       {

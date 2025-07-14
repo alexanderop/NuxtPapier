@@ -1,154 +1,161 @@
+Here’s a more concise and structured rewrite of your `CLAUDE.md`:
+
+---
+
 # CLAUDE.md
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+Guidance for Claude Code (claude.ai/code) when working with this repo.
+
+---
+
 ## Project Overview
 
-NuxtPapier is a minimal, responsive, and SEO-friendly Nuxt 3 blog theme built with modern web technologies. It's a content-driven blog platform with a focus on performance, accessibility, and developer experience.
+**NuxtPapier** is a minimal, SEO-friendly Nuxt 3 blog theme focused on content, performance, accessibility, and developer experience.
 
-## Development Commands
+---
+
+## Development
 
 ```bash
-# Development
-pnpm dev              # Start dev server on http://localhost:3000
-
-# Build & Deploy
-pnpm build           # Build for production
-pnpm generate        # Generate static site
-pnpm preview         # Preview production build
-
-# Code Quality - Run these after making changes
-pnpm lint            # Run ESLint with auto-fix
-pnpm typecheck       # TypeScript type checking
+pnpm dev         # Start dev server
+pnpm build       # Build for production
+pnpm generate    # Generate static site
+pnpm preview     # Preview production build
+pnpm lint        # Run ESLint with auto-fix
+pnpm typecheck   # TypeScript type checking
 ```
 
-## Available Tools
+---
 
-### Playwright MCP
-Claude has access to Playwright MCP (Model Context Protocol) for browser automation and testing. This enables:
-- Browser navigation and interaction
-- Screenshot capture
-- Page element inspection and manipulation
-- Network request monitoring
-- Automated testing generation
-- Multi-tab management
+## Tools
 
-## Architecture & Key Patterns
+**Playwright MCP** enables Claude to:
+
+* Navigate/interact with pages
+* Capture screenshots
+* Inspect/manipulate DOM
+* Monitor network
+* Generate tests
+* Manage multiple tabs
+
+---
 
 ## Code Style
 
-- **Imports**: Use relative imports for local modules, named imports preferred
-- **Naming**: camelCase for variables/functions, PascalCase for classes/namespaces
-- **Error handling**: Use Result patterns, avoid throwing exceptions in tools
-- **Error Handling Best Practices**:
-  - For every operation that could result in an error, use `@utils/result.ts` so that the error is part of the type system
+* **Imports**: Relative for locals, named preferred
+* **Naming**:
 
-## IMPORTANT
+  * camelCase → vars/functions
+  * PascalCase → classes/components
+  * UPPER\_SNAKE\_CASE → constants
+  * Booleans start with `is` / `has` / `can`
+  * Functions: verbNoun (`fetchUserData`)
+* **Avoid**: `any`, `let`, `else`, `try/catch` (unless essential)
+* **Variables**: Use descriptive names (`searchQuery`, `userProfile`)
+* **Comments**: Only for complex logic—favor self-explanatory code
 
-- Try to keep things in one function unless composable or reusable
-- DO NOT use `else` statements unless necessary
-- DO NOT use `try`/`catch` if it can be avoided
-- AVOID `try`/`catch` where possible
-- AVOID `else` statements
-- AVOID using `any` type
-- AVOID `let` statements
-- **Variable Naming**:
-  - Use descriptive, self-documenting variable names
-  - Examples: `searchQuery` not `q`, `userProfile` not `u`, `isLoading` not `loading`
-  - Boolean variables should start with `is`, `has`, `can`, etc.
-  - Functions should use verb-noun pattern: `fetchUserData`, `validateEmail`
-  - Constants should be UPPER_SNAKE_CASE: `MAX_RETRY_COUNT`
-- **Code Comments**:
-  - AVOID comments - code should be self-explanatory through good naming
-  - Only add comments for complex algorithms or business logic that cannot be simplified
+---
 
-### Content Management
-- Uses @nuxt/content v3 with strongly-typed collections: `pages` and `blog`
-- Content stored in `/content` directory as Markdown files
-- Automatic reading time calculation for blog posts
-- Draft post support via `published` field in frontmatter
-- The collection definition for nuxt content is under @content.config.ts 
+## Architecture & Patterns
 
+### Content
 
-### Component Development Rules
-Components follow strict conventions (see components/CLAUDE.md):
-- Prefix with `Base` (e.g., `BaseButton`, `BaseHeader`)
-- Use `<script setup lang="ts">` with reactive prop destructuring (Vue 3.5+)
-- Define props using generic syntax without `withDefaults()`
-- Order: script → template → style
-- Style exclusively with UnoCSS utility classes
+* Uses `@nuxt/content v3`
+* Markdown files in `/content`
+* Collections: `pages`, `blog`
+* Reading time auto-calculated
+* Drafts via `published: false`
+* Config: `content.config.ts`
 
-### Composable Development Rules
-Composables follow specific patterns (see composables/CLAUDE.md):
-- Prefix with `use` (e.g., `useCounter`, `useSeo`)
-- Single responsibility principle
-- Always expose error state
-- Return readonly state when appropriate
-- TypeScript-first approach with comprehensive typing
+### Components
 
-### VueUse-Style Guidelines
-- Import all Vue APIs from "vue"
-- Use `ref` over `reactive`, prefer `shallowRef` for large data
-- Use options object as arguments for flexibility
-- Support `configurableWindow`/`configurableDocument` for globals
-- Make `watch`/`watchEffect` options configurable (`immediate`, `flush`)
-- Use `tryOnUnmounted` for cleanup
-- Expose `isSupported` flag for Web APIs
-- Return PromiseLike for async composables
-- Provide `controls` option for common single-ref usage
-- Use render functions for renderless components
+* Located in `/components/`, prefixed with `Base`
+* `<script setup lang="ts">`, reactive prop destructuring
+* Use TypeScript generics, no `withDefaults()`
+* Order: script → template → style
+* Styled with UnoCSS only
 
-### VueUse Best Practices
-- **Destructuring**: Return object of refs for ES6 destructuring or use `reactive()` to unwrap
-- **Side-effect cleanup**: Functions auto-cleanup on unmount (like `useEventListener`)
-- **Manual cleanup**: Some return stop handlers, or use `effectScope` for grouped disposal
-- **Reactive arguments**: Accept refs, computed refs, or getter functions as arguments for flexibility
+### Composables
 
-### Routing & Pages
-- File-based routing with dynamic catch-all route at `pages/[...path].vue`
-- Blog posts at `/blog/[postSlug]`
-- Homepage at `pages/(home).vue`
-- Custom 404 handling
+* Prefixed with `use`
+* Single-responsibility
+* Expose error state
+* Return readonly state when needed
+* Fully typed
 
-### Styling
-- UnoCSS with Wind4 preset for utility-first CSS
-- Typography plugin for prose styling
-- CSS variables for theming (light/dark mode)
-- Theme colors defined in `uno.config.ts`
+---
 
-### Server-Side Features
-- RSS feed generation at `/server/routes/rss.xml.ts`
-- Sitemap at `/server/routes/sitemap.xml.ts`
-- Robots.txt at `/server/routes/robots.txt.ts`
-- API endpoints in `/server/api/`
+## VueUse Style Guide
 
-## Key Files & Their Purposes
+* Import APIs from `vue`
+* Prefer `ref`, use `shallowRef` for large objects
+* Accept refs/computed/functions as args
+* Use `tryOnUnmounted` for cleanup
+* Return `isSupported`, `PromiseLike`, `controls` when relevant
+* Allow config options (e.g. `flush`, `immediate`)
 
-- `app.config.ts` - Runtime configuration (site metadata, social links)
-- `nuxt.config.ts` - Build-time configuration and module setup
-- `uno.config.ts` - UnoCSS configuration and theme
-- `content.config.ts` - Content parsing configuration (reading time, etc.)
-- `constants.ts` - Application constants (social links, etc.)
-- `types/index.d.ts` - TypeScript type definitions
+---
+
+## Routing
+
+* File-based routing
+* Catch-all: `pages/[...path].vue`
+* Homepage: `pages/(home).vue`
+* Blog posts: `/blog/[postSlug]`
+* Custom 404 supported
+
+---
+
+## Styling
+
+* UnoCSS + Wind4 preset
+* Typography plugin for prose
+* Theming via CSS variables (light/dark)
+* Config: `uno.config.ts`
+
+---
+
+## Server Features
+
+* RSS: `/server/routes/rss.xml.ts`
+* Sitemap: `/server/routes/sitemap.xml.ts`
+* Robots: `/server/routes/robots.txt.ts`
+* APIs: `/server/api/`
+
+---
+
+## Key Files
+
+* `app.config.ts`: Site metadata
+* `nuxt.config.ts`: Nuxt modules/config
+* `uno.config.ts`: CSS config
+* `content.config.ts`: Content parsing rules
+* `constants.ts`: Constants (social links, etc.)
+* `types/index.d.ts`: Shared types
+
+---
 
 ## Common Tasks
 
-### Adding a New Blog Post
-1. Create a new `.md` file in `/content/blog/`
-2. Include required frontmatter: title, description, date, published
-3. Optional: tags, image, readingTime (auto-calculated)
+### Add Blog Post
 
-### Creating a New Component
-1. Create file in `/components/` with `Base` prefix
-2. Follow component structure rules from components/CLAUDE.md
-3. Use TypeScript and UnoCSS utilities
+1. Add `.md` file to `/content/blog/`
+2. Include frontmatter: `title`, `description`, `date`, `published`
+3. Optional: `tags`, `image`
 
-### Adding SEO Meta Tags
-1. Use `useEnhancedSeoMeta()` composable in pages
-2. Structured data via `useStructuredData()` for articles/breadcrumbs
-3. Update `app.config.ts` for site-wide metadata
+### Create Component
 
-### Modifying Theme/Styling
-1. Edit CSS variables in `uno.config.ts`
-2. Use UnoCSS utilities in components
-3. Dark mode automatically handled via color-mode module
+1. Add file to `/components/` with `Base` prefix
+2. Follow rules in `components/CLAUDE.md`
 
-```
+### Add SEO
+
+1. Use `useEnhancedSeoMeta()` and `useStructuredData()`
+2. Update `app.config.ts` if global
+
+### Modify Styling
+
+1. Edit variables in `uno.config.ts`
+2. Use UnoCSS in components
+
+---
