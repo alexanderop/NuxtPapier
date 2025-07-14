@@ -17,7 +17,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "clean:content": "rm -f .data/content/contents.sqlite",
-    "prepare": "husky",
+    "prepare": "husky install",
     "commit": "cz"
   },
   "dependencies": {
