@@ -3,7 +3,7 @@ import TheCommandPalette from './TheCommandPalette.vue'
 
 const appConfig = useAppConfig()
 const route = useRoute()
-const menuOpen = ref(false)
+const [menuOpen, toggleMenu] = useToggle(false)
 
 // Use modal store for opening command palette
 const modalStore = useModalStore()
@@ -35,13 +35,9 @@ function isActive(path: string) {
   return currentPath === path || currentPathArray[0] === pathArray[0]
 }
 
-function toggleMenu() {
-  menuOpen.value = !menuOpen.value
-}
-
 watchEffect(() => {
   if (route.path) {
-    menuOpen.value = false
+    toggleMenu(false)
   }
 })
 </script>
@@ -83,7 +79,7 @@ watchEffect(() => {
               :aria-expanded="menuOpen.toString()"
               aria-controls="menu-items"
               :icon="menuOpen ? 'i-heroicons-x-mark-20-solid' : 'i-heroicons-bars-3-20-solid'"
-              @click="toggleMenu"
+              @click="() => toggleMenu()"
             />
             <ul
               id="menu-items"
