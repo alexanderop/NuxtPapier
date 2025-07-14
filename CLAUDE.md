@@ -48,10 +48,15 @@ Claude has access to Playwright MCP (Model Context Protocol) for browser automat
 - AVOID `else` statements
 - AVOID using `any` type
 - AVOID `let` statements
-- PREFER single word variable names where possible
+- **Variable Naming**:
+  - Use descriptive, self-documenting variable names
+  - Examples: `searchQuery` not `q`, `userProfile` not `u`, `isLoading` not `loading`
+  - Boolean variables should start with `is`, `has`, `can`, etc.
+  - Functions should use verb-noun pattern: `fetchUserData`, `validateEmail`
+  - Constants should be UPPER_SNAKE_CASE: `MAX_RETRY_COUNT`
 - **Code Comments**:
-  - Only save comments when they are really necessary
-  - Try to write readable code by using descriptive variables instead of comments
+  - AVOID comments - code should be self-explanatory through good naming
+  - Only add comments for complex algorithms or business logic that cannot be simplified
 
 ### Content Management
 - Uses @nuxt/content v3 with strongly-typed collections: `pages` and `blog`

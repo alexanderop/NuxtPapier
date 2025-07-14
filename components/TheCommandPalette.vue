@@ -1,14 +1,15 @@
 <script setup lang="ts">
-// Use composables
 const palette = useCommandPalette()
 const search = useSearch()
 const modalStore = useModalStore()
 
-// Local query state for v-model
-const q = ref('')
+const query = ref('')
 
-// Sync local query with search composable
-watch(q, (v) => {
+// Debounced query value (300ms delay)
+const debouncedQuery = refDebounced(query, 300)
+
+// Sync debounced query with search composable
+watch(debouncedQuery, (v) => {
   search.search(v)
 })
 
@@ -42,7 +43,7 @@ function handleKeyDown(e: KeyboardEvent) {
 function handleClose() {
   palette.close()
   search.clear()
-  q.value = ''
+  query.value = ''
   modalStore.closeTopModal()
 }
 
@@ -130,7 +131,7 @@ onUnmounted(() => {
 
 <template>
   <CommandPalette
-    :query="q"
+    :query="query"
     :search-results="search.results.value"
     :search-loading="search.loading.value"
     :selected-index="palette.selected.value"
@@ -139,6 +140,6 @@ onUnmounted(() => {
     @select="handleSelect"
     @hover="palette.select"
     @keydown="handleKeyDown"
-    @update:query="(value: string) => q = value"
+    @update:query="(value: string) => query = value"
   />
 </template>

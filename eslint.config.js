@@ -50,6 +50,10 @@ export default antfu(
           },
         ],
       }],
+      'no-restricted-syntax': ['error', {
+        message: 'Use ref() instead of reactive() for better performance and type safety.',
+        selector: 'CallExpression[callee.name="reactive"]',
+      }],
       'no-return-assign': 'error',
       'no-self-compare': 'error',
       'no-sequences': 'error',

@@ -4,15 +4,10 @@ export interface Modal {
   props?: Record<string, unknown>
 }
 
-const state = reactive({
-  modals: [] as Modal[],
-})
-
+const modals = ref<Modal[]>([])
 let id = 0
 
 export default function useModalStore() {
-  const { modals } = toRefs(state)
-
   const topModal = computed(() =>
     (modals.value.length > 0
       ? modals.value[modals.value.length - 1]
@@ -25,7 +20,7 @@ export default function useModalStore() {
     component: Component,
     props: Modal['props'] = {},
   ) {
-    state.modals.push({
+    modals.value.push({
       component,
       id: ++id,
       props,
@@ -33,19 +28,19 @@ export default function useModalStore() {
   }
 
   function closeTopModal() {
-    if (state.modals.length > 0) {
-      state.modals.pop()
+    if (modals.value.length > 0) {
+      modals.value.pop()
     }
   }
 
   function closeAllModals() {
-    state.modals.length = 0
+    modals.value = []
   }
 
   function closeModalById(modalId: number) {
-    const index = state.modals.findIndex(modal => modal.id === modalId)
+    const index = modals.value.findIndex(modal => modal.id === modalId)
     if (index !== -1) {
-      state.modals.splice(index, 1)
+      modals.value.splice(index, 1)
     }
   }
 
