@@ -1,4 +1,5 @@
 import { useIntersectionObserver, useMutationObserver, useScroll, watchDebounced } from '@vueuse/core'
+import { isClient } from '~/utils/browser'
 import { trySafe, unwrapOr } from '~/utils/result'
 
 function isElementVisible(element: HTMLElement, viewportHeight: number) {
@@ -80,12 +81,20 @@ const DEBOUNCE_DELAY = 50
  */
 export function useTableOfContents() {
   const activeId = ref<string>('')
+
+  if (!isClient) {
+    return {
+      activeId: readonly(activeId),
+      scrollToHeading: () => {},
+    }
+  }
+
   const headingElements = ref<HTMLElement[]>([])
   const observerCleanup = ref<(() => void) | null>(null)
   const isProgrammaticScroll = ref(false)
 
   const { y, arrivedState } = useScroll(
-    typeof window !== 'undefined' ? window : undefined,
+    window,
     SCROLL_CONFIG,
   )
 
@@ -134,9 +143,6 @@ export function useTableOfContents() {
   }
 
   function scrollToHeading(id: string) {
-    if (!import.meta.client)
-      return
-
     const elementResult = trySafe(() => document.getElementById(id))
     const element = unwrapOr(elementResult, null)
 
@@ -153,38 +159,36 @@ export function useTableOfContents() {
   }
 
   // Set up lifecycle hooks
-  if (import.meta.client) {
-    // Watch for bottom arrival state changes
-    watchDebounced(
-      () => arrivedState.bottom,
-      (isAtBottom) => {
-        if (isAtBottom && !isProgrammaticScroll.value)
-          activateLastHeading()
+  // Watch for bottom arrival state changes
+  watchDebounced(
+    () => arrivedState.bottom,
+    (isAtBottom) => {
+      if (isAtBottom && !isProgrammaticScroll.value)
+        activateLastHeading()
+    },
+    { debounce: DEBOUNCE_DELAY },
+  )
+
+  onMounted(() => {
+    refreshHeadings()
+
+    useMutationObserver(
+      document.body,
+      () => {
+        refreshHeadings()
       },
-      { debounce: DEBOUNCE_DELAY },
+      {
+        attributes: false,
+        characterData: false,
+        childList: true,
+        subtree: true,
+      },
     )
+  })
 
-    onMounted(() => {
-      refreshHeadings()
-
-      useMutationObserver(
-        document.body,
-        () => {
-          refreshHeadings()
-        },
-        {
-          attributes: false,
-          characterData: false,
-          childList: true,
-          subtree: true,
-        },
-      )
-    })
-
-    onUnmounted(() => {
-      observerCleanup.value?.()
-    })
-  }
+  onUnmounted(() => {
+    observerCleanup.value?.()
+  })
 
   return {
     activeId: readonly(activeId),
