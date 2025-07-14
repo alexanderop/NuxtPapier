@@ -29,8 +29,8 @@ pnpm typecheck   # TypeScript type checking
 
 ## Tools
 
-**Playwright MCP** enables Claude to:
-
+### Playwright MCP
+Enables Claude to:
 * Navigate/interact with pages
 * Capture screenshots
 * Inspect/manipulate DOM
@@ -38,7 +38,41 @@ pnpm typecheck   # TypeScript type checking
 * Generate tests
 * Manage multiple tabs
 
-* Use ast-grep (ast-grep) for everything related to search
+### ast-grep
+Use ast-grep for efficient code searching with structural patterns:
+
+**Common patterns:**
+```bash
+# Find all ref declarations
+ast-grep --pattern 'const $VAR = ref($$$)' --lang ts
+
+# Find defineNuxtConfig
+ast-grep --pattern 'defineNuxtConfig($_)' --lang ts
+
+# Find computed properties
+ast-grep --pattern 'const $VAR = computed(() => $$$)' --lang ts
+
+# Find composables usage
+ast-grep --pattern 'use$NAME($$$)' --lang ts
+
+# Find component imports
+ast-grep --pattern 'import { $$ } from "@/components/$$$"' --lang ts
+
+# Find specific function calls
+ast-grep --pattern '$OBJ.map($FUNC)' --lang ts
+
+# Find async/await patterns
+ast-grep --pattern 'await $PROMISE' --lang ts
+
+# Find error handling with neverthrow
+ast-grep --pattern 'fromPromise($$$)' --lang ts
+ast-grep --pattern '$RESULT.isErr()' --lang ts
+
+# Find route definitions
+ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
+```
+
+**Supported languages:** ts, js, tsx, jsx, css, html, json, yaml
 
 ---
 

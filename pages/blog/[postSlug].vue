@@ -10,7 +10,16 @@ const postResult = await fromPromise(
 )
 
 const post = postResult.match(
-  data => data,
+  data => {
+    if (!data) {
+      throw createError({
+        fatal: true,
+        statusCode: 404,
+        statusMessage: 'Blog post not found',
+      })
+    }
+    return data
+  },
   () => {
     throw createError({
       fatal: true,
@@ -19,14 +28,6 @@ const post = postResult.match(
     })
   },
 )
-
-if (!post) {
-  throw createError({
-    fatal: true,
-    statusCode: 404,
-    statusMessage: 'Blog post not found',
-  })
-}
 
 const { pageTitle, pageDescription } = usePageMeta(post, { isBlogPost: true })
 

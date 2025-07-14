@@ -7,7 +7,16 @@ const pageResult = await fromPromise(
 )
 
 const page = pageResult.match(
-  data => data,
+  data => {
+    if (!data) {
+      throw createError({
+        fatal: true,
+        statusCode: 404,
+        statusMessage: 'Home page not found',
+      })
+    }
+    return data
+  },
   () => {
     throw createError({
       fatal: true,
@@ -16,14 +25,6 @@ const page = pageResult.match(
     })
   },
 )
-
-if (!page) {
-  throw createError({
-    fatal: true,
-    statusCode: 404,
-    statusMessage: 'Home page not found',
-  })
-}
 
 const { pageTitle, pageDescription } = usePageMeta(page, {
   fallbackDescription: appConfig.site.desc,
