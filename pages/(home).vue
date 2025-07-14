@@ -7,7 +7,7 @@ const pageResult = await fromPromise(
 )
 
 const page = pageResult.match(
-  data => {
+  (data) => {
     if (!data) {
       throw createError({
         fatal: true,
