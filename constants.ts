@@ -60,7 +60,7 @@ export const SHARE_LINKS = [
     name: 'Telegram',
   },
   {
-    getUrl: (url: string, title: string, description?: string) => `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description || title)}`,
+    getUrl: (url: string, title: string, description?: string) => `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description ?? title)}`,
     icon: 'mdi:pinterest',
     name: 'Pinterest',
   },

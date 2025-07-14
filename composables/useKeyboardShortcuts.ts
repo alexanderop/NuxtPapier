@@ -12,8 +12,19 @@ export function useKeyboardShortcuts() {
   const ctrlK = keys['ctrl+k']
 
   const openCommandPalette = async () => {
-    const { default: TheCommandPalette } = await import('~/components/TheCommandPalette.vue')
-    modalStore.openModal(TheCommandPalette)
+    const importResult = await fromPromise(
+      import('~/components/TheCommandPalette.vue'),
+      error => (error instanceof Error ? error : new Error('Failed to import CommandPalette component')),
+    )
+
+    importResult.match(
+      (module: { default: Component }) => {
+        modalStore.openModal(module.default)
+      },
+      () => {
+        // Import failed, handle silently
+      },
+    )
   }
 
   whenever(cmdK, openCommandPalette)

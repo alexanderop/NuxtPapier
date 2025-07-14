@@ -56,8 +56,19 @@ async function handleSelect(index?: number) {
     // Parse path and hash from the item path
     const [path, hash] = item.path.split('#')
 
-    // Navigate to the page first
-    await navigateTo(path)
+    // Navigate to the page first using neverthrow
+    const navigationResult = await fromPromise(
+      Promise.resolve(navigateTo(path)),
+      error => (error instanceof Error ? error : new Error('Navigation failed')),
+    )
+
+    const shouldContinue = navigationResult.match(
+      () => true,
+      () => false, // Handle navigation failure silently
+    )
+
+    if (!shouldContinue)
+      return
 
     // Close the palette
     handleClose()
@@ -68,25 +79,38 @@ async function handleSelect(index?: number) {
       await nextTick()
 
       // Implement retry logic for dynamic content
-      const scrollToAnchor = async (attempts = 0) => {
-        const element = document.getElementById(hash)
+      const scrollToAnchor = async (attempts = 0): Promise<boolean> => {
+        const elementResult = fromThrowable(() => document.getElementById(hash))()
 
-        if (element) {
-          // Use the same 80px offset as the table of contents
-          const yOffset = -80
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+        return elementResult.match(
+          (element) => {
+            if (!element)
+              return false
 
-          window.scrollTo({
-            behavior: 'smooth',
-            top: y,
-          })
-          return true
-        }
+            // Use the same 80px offset as the table of contents
+            const yOffset = -80
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+
+            window.scrollTo({
+              behavior: 'smooth',
+              top: y,
+            })
+            return true
+          },
+          () => false,
+        )
 
         // Retry for lazy-loaded content
         if (attempts < 20) {
-          await new Promise(resolve => setTimeout(resolve, 100))
-          return scrollToAnchor(attempts + 1)
+          const delayResult = await fromPromise(
+            new Promise(resolve => setTimeout(resolve, 100)),
+            () => new Error('Timeout delay failed'),
+          )
+
+          return delayResult.match(
+            () => scrollToAnchor(attempts + 1),
+            () => false, // return false if delay fails
+          )
         }
 
         return false
@@ -102,9 +126,16 @@ function escapeRegExp(string: string): string {
 }
 
 function escapeHtml(text: string): string {
-  const div = document.createElement('div')
-  div.textContent = text
-  return div.innerHTML
+  const result = fromThrowable(() => {
+    const div = document.createElement('div')
+    div.textContent = text
+    return div.innerHTML
+  })()
+
+  return result.match(
+    html => html,
+    () => text, // fallback to original text if DOM operation fails
+  )
 }
 
 function highlightSearchTerm(text: string, term: string) {

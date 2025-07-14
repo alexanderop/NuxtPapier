@@ -84,7 +84,28 @@ export default defineNuxtConfig({
     // provider: 'netlify',
   },
 
+  imports: {
+    presets: [
+      {
+        from: 'neverthrow',
+        imports: [
+          'ok',
+          'err',
+          'okAsync',
+          'errAsync',
+          'fromPromise',
+          'fromThrowable',
+          { name: 'Result', type: true },
+          { name: 'ResultAsync', type: true },
+          { as: 'isOk', name: 'isOk' },
+          { as: 'isErr', name: 'isErr' },
+        ],
+      },
+    ],
+  },
+
   modules: [
+    '@nuxtjs/sitemap', // Must be before @nuxt/content for v3
     '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/icon',
@@ -92,7 +113,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/sitemap',
     '@vueuse/nuxt',
     'nuxt-jsonld',
     'nuxt-og-image',
@@ -101,7 +121,7 @@ export default defineNuxtConfig({
   nitro: {
     // Nuxt Content will automatically detect Netlify environment
     // For static generation, we don't set a preset - nuxi generate handles it
-    
+
     prerender: {
       routes: ['/rss.xml'],
     },
@@ -134,12 +154,24 @@ export default defineNuxtConfig({
   // Site configuration required for OG image generation
   site: {
     name: 'NuxtPapier',
-    url: import.meta.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    url: String(import.meta.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   },
 
+  // Sitemap configuration
   sitemap: {
-    sources: [
-      '/api/__sitemap__/urls',
+
+    // Cache time in seconds (1 hour)
+    cacheMaxAgeSeconds: 3600,
+
+    // Exclude specific routes
+    exclude: [
+      '/404',
+      '/admin/**',
+      '/private/**',
     ],
+
+    // Automatically discover all content
+    strictNuxtContentPaths: true,
   },
+
 })

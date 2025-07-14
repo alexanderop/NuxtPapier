@@ -1,13 +1,23 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const { data: page } = await useAsyncData(
-  `page-${route.path}`,
-  () => queryCollection('pages').path(route.path).first(),
-  { watch: [() => route.path] },
+const pageResult = await fromPromise(
+  queryCollection('pages').path(route.path).first(),
+  error => new Error(`Failed to fetch page: ${error}`),
 )
 
-if (!page.value) {
+const page = pageResult.match(
+  data => data,
+  () => {
+    throw createError({
+      fatal: true,
+      statusCode: 404,
+      statusMessage: 'Page not found',
+    })
+  },
+)
+
+if (!page) {
   throw createError({
     fatal: true,
     statusCode: 404,
@@ -15,11 +25,11 @@ if (!page.value) {
   })
 }
 
-const { pageTitle, pageDescription } = usePageMeta(page.value)
+const { pageTitle, pageDescription } = usePageMeta(page)
 
 // Generate simple OG image for dynamic pages
 defineOgImageComponent('Simple', {
-  title: pageTitle || page.value.title,
+  title: pageTitle ?? page.title,
 })
 
 useEnhancedSeoMeta({
@@ -33,7 +43,7 @@ useWebsiteStructuredData()
 if (route.path !== '/') {
   const breadcrumbItems = [
     { name: 'Home', url: '/' },
-    { name: page.value.title },
+    { name: page.title },
   ]
   useBreadcrumbStructuredData(breadcrumbItems)
 }

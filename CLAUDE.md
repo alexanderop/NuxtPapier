@@ -1,4 +1,4 @@
-Here’s a more concise and structured rewrite of your `CLAUDE.md`:
+Here's a more concise and structured rewrite of your `CLAUDE.md`:
 
 ---
 
@@ -29,14 +29,50 @@ pnpm typecheck   # TypeScript type checking
 
 ## Tools
 
-**Playwright MCP** enables Claude to:
-
+### Playwright MCP
+Enables Claude to:
 * Navigate/interact with pages
 * Capture screenshots
 * Inspect/manipulate DOM
 * Monitor network
 * Generate tests
 * Manage multiple tabs
+
+### ast-grep
+Use ast-grep for efficient code searching with structural patterns:
+
+**Common patterns:**
+```bash
+# Find all ref declarations
+ast-grep --pattern 'const $VAR = ref($$$)' --lang ts
+
+# Find defineNuxtConfig
+ast-grep --pattern 'defineNuxtConfig($_)' --lang ts
+
+# Find computed properties
+ast-grep --pattern 'const $VAR = computed(() => $$$)' --lang ts
+
+# Find composables usage
+ast-grep --pattern 'use$NAME($$$)' --lang ts
+
+# Find component imports
+ast-grep --pattern 'import { $$ } from "@/components/$$$"' --lang ts
+
+# Find specific function calls
+ast-grep --pattern '$OBJ.map($FUNC)' --lang ts
+
+# Find async/await patterns
+ast-grep --pattern 'await $PROMISE' --lang ts
+
+# Find error handling with neverthrow
+ast-grep --pattern 'fromPromise($$$)' --lang ts
+ast-grep --pattern '$RESULT.isErr()' --lang ts
+
+# Find route definitions
+ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
+```
+
+**Supported languages:** ts, js, tsx, jsx, css, html, json, yaml
 
 ---
 
@@ -50,7 +86,7 @@ pnpm typecheck   # TypeScript type checking
   * UPPER\_SNAKE\_CASE → constants
   * Booleans start with `is` / `has` / `can`
   * Functions: verbNoun (`fetchUserData`)
-* **Avoid**: `any`, `let`, `else`, `try/catch` (unless essential)
+* **Avoid**: `any`, `let`, `else`, `try/catch` (use neverthrow instead)
 * **Variables**: Use descriptive names (`searchQuery`, `userProfile`)
 * **Comments**: Only for complex logic—favor self-explanatory code
 
@@ -132,6 +168,47 @@ pnpm typecheck   # TypeScript type checking
 * `content.config.ts`: Content parsing rules
 * `constants.ts`: Constants (social links, etc.)
 * `types/index.d.ts`: Shared types
+
+---
+
+## Error Handling with Neverthrow
+
+Use `neverthrow` for functional error handling instead of `try/catch`:
+
+```typescript
+// ✅ Good - Use neverthrow
+const result = await fromPromise(
+  fetch('/api/users'),
+  (error) => new Error(`Failed to fetch users: ${error.message}`)
+)
+
+if (result.isErr()) {
+  console.error(result.error)
+  return
+}
+
+const users = result.value
+
+// ✅ Good - Chain operations
+const processedResult = result
+  .map(response => response.json())
+  .map(users => users.filter(user => user.active))
+
+// ❌ Bad - Use try/catch
+try {
+  const response = await fetch('/api/users')
+  const users = await response.json()
+} catch (error) {
+  console.error(error)
+}
+```
+
+**Auto-imported from neverthrow:**
+- `ok`, `err` - Create Results
+- `okAsync`, `errAsync` - Create ResultAsync
+- `fromPromise`, `fromThrowable` - Wrap operations
+- `Result`, `ResultAsync` - Types (type-only imports)
+- `isOk`, `isErr` - Type guards
 
 ---
 
