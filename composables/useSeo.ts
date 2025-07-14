@@ -6,9 +6,11 @@ export function useCanonicalURL(path?: string) {
   const runtimeConfig = useRuntimeConfig()
 
   const basePath = path ?? route.path
-  const baseUrl = appConfig.site.website || (runtimeConfig.public?.siteUrl as string) || ''
+  const { siteUrl } = runtimeConfig.public
+  const siteUrlValue = typeof siteUrl === 'string' ? siteUrl : undefined
+  const baseUrl = appConfig.site.website ?? siteUrlValue ?? ''
 
-  if (!baseUrl) {
+  if (baseUrl === '') {
     // Only warn in development
     if (import.meta.dev) {
       console.warn('[SEO] No website URL configured. Set app.config.site.website or NUXT_PUBLIC_SITE_URL for production')
@@ -66,7 +68,7 @@ export function useEnhancedSeoMeta(options: {
     twitterTitle: metaTitle,
   }
 
-  if (canonicalUrl != null && canonicalUrl.length > 0) {
+  if (canonicalUrl !== '' && canonicalUrl.length > 0) {
     seoMeta.canonical = canonicalUrl
   }
 
@@ -84,7 +86,7 @@ export function useEnhancedSeoMeta(options: {
 
   useSeoMeta(seoMeta)
 
-  if (canonicalUrl != null && canonicalUrl.length > 0) {
+  if (canonicalUrl !== '' && canonicalUrl.length > 0) {
     useHead({
       link: [
         { href: canonicalUrl, rel: 'canonical' },

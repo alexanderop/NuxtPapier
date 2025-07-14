@@ -8,10 +8,10 @@ export const isClient = typeof window !== 'undefined' && typeof document !== 'un
  * Safe browser globals that return undefined on server
  * These prevent "window is not defined" errors during SSR
  */
-export const defaultWindow = isClient ? window : undefined as Window | undefined
-export const defaultDocument = isClient ? window.document : undefined as Document | undefined
-export const defaultNavigator = isClient ? window.navigator : undefined as Navigator | undefined
-export const defaultLocation = isClient ? window.location : undefined as Location | undefined
+export const defaultWindow: Window | undefined = isClient ? window : undefined
+export const defaultDocument: Document | undefined = isClient ? window.document : undefined
+export const defaultNavigator: Navigator | undefined = isClient ? window.navigator : undefined
+export const defaultLocation: Location | undefined = isClient ? window.location : undefined
 
 /**
  * Create a no-op function for server-side

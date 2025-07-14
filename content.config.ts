@@ -1,32 +1,37 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
+import { asSitemapCollection } from '@nuxtjs/sitemap/content'
 
 export default defineContentConfig({
   collections: {
-    blog: defineCollection({
-      schema: z.object({
-        author: z.string().min(1).optional(),
-        date: z.string().datetime(),
-        description: z.string().min(1),
-        draft: z.boolean().default(false),
-        featured: z.boolean().default(false),
-        image: z.string().optional(),
-        ogImage: z.string().optional(),
-        readingTime: z.number().optional(),
-        tags: z.array(z.string()).default([]),
-        title: z.string().min(1),
-        updatedAt: z.string().datetime().optional(),
+    blog: defineCollection(
+      asSitemapCollection({
+        schema: z.object({
+          author: z.string().min(1).optional(),
+          date: z.string().datetime(),
+          description: z.string().min(1),
+          draft: z.boolean().default(false),
+          featured: z.boolean().default(false),
+          image: z.string().optional(),
+          ogImage: z.string().optional(),
+          readingTime: z.number().optional(),
+          tags: z.array(z.string()).default([]).optional(),
+          title: z.string().min(1),
+          updatedAt: z.string().datetime().optional(),
+        }),
+        source: 'blog/**/*.md',
+        type: 'page',
       }),
-      source: 'blog/**/*.md',
-      type: 'page',
-    }),
-    pages: defineCollection({
-      schema: z.object({
-        description: z.string().min(1),
-        ogImage: z.string().optional(),
-        title: z.string().min(1),
+    ),
+    pages: defineCollection(
+      asSitemapCollection({
+        schema: z.object({
+          description: z.string().min(1),
+          ogImage: z.string().optional(),
+          title: z.string().min(1),
+        }),
+        source: '*.md',
+        type: 'page',
       }),
-      source: '*.md',
-      type: 'page',
-    }),
+    ),
   },
 })

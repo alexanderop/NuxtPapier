@@ -1,4 +1,4 @@
-Here’s a more concise and structured rewrite of your `CLAUDE.md`:
+Here's a more concise and structured rewrite of your `CLAUDE.md`:
 
 ---
 
@@ -37,6 +37,8 @@ pnpm typecheck   # TypeScript type checking
 * Monitor network
 * Generate tests
 * Manage multiple tabs
+
+* Use ast-grep (ast-grep) for everything related to search
 
 ---
 

@@ -1,9 +1,18 @@
-// @ts-nocheck
 export default defineEventHandler((event) => {
   const appConfig = useAppConfig()
-  const runtimeConfig = useRuntimeConfig()
+  const runtimeConfig = useRuntimeConfig(event)
 
-  const siteUrl = appConfig.site.website ?? (runtimeConfig.public?.siteUrl as string) ?? 'https://example.com'
+  let siteUrl = 'https://example.com'
+
+  const { website } = appConfig.site
+  const { siteUrl: publicSiteUrl } = runtimeConfig.public
+
+  if (typeof website === 'string' && website.length > 0) {
+    siteUrl = website
+  }
+  else if (typeof publicSiteUrl === 'string' && publicSiteUrl.length > 0) {
+    siteUrl = publicSiteUrl
+  }
 
   const robotsTxt = `# Robots.txt for ${appConfig.site.title}
 # Allow all crawlers access to all content

@@ -110,6 +110,9 @@ export default antfu(
       'require-await': 'error',
       'sort-keys-fix/sort-keys-fix': 'error',
       'template-curly-spacing': 'error',
+      'ts/consistent-type-assertions': ['error', {
+        assertionStyle: 'never',
+      }],
       'vue/block-lang': ['error', {
         script: {
           lang: 'ts',

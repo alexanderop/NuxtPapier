@@ -105,6 +105,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    '@nuxtjs/sitemap', // Must be before @nuxt/content for v3
     '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/icon',
@@ -112,7 +113,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/sitemap',
     '@vueuse/nuxt',
     'nuxt-jsonld',
     'nuxt-og-image',
@@ -154,12 +154,24 @@ export default defineNuxtConfig({
   // Site configuration required for OG image generation
   site: {
     name: 'NuxtPapier',
-    url: (import.meta.env.NUXT_PUBLIC_SITE_URL as string) ?? 'http://localhost:3000',
+    url: String(import.meta.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   },
 
+  // Sitemap configuration
   sitemap: {
-    sources: [
-      '/api/__sitemap__/urls',
+
+    // Cache time in seconds (1 hour)
+    cacheMaxAgeSeconds: 3600,
+
+    // Exclude specific routes
+    exclude: [
+      '/404',
+      '/admin/**',
+      '/private/**',
     ],
+
+    // Automatically discover all content
+    strictNuxtContentPaths: true,
   },
+
 })

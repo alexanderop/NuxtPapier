@@ -18,8 +18,8 @@ export function useKeyboardShortcuts() {
     )
 
     importResult.match(
-      (module) => {
-        modalStore.openModal((module).default as Component)
+      (module: { default: Component }) => {
+        modalStore.openModal(module.default)
       },
       () => {
         // Import failed, handle silently

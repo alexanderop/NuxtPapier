@@ -62,9 +62,16 @@ async function openModal() {
   if (!dialogRef.value)
     return
 
-  const activeElementResult = fromThrowable(() => document.activeElement as HTMLElement)()
+  const activeElementResult = fromThrowable(() => {
+    const element = document.activeElement
+    return element instanceof HTMLElement ? element : null
+  })()
   activeElementResult.match(
-    (element) => { previouslyFocusedElement.value = element },
+    (element) => {
+      if (element) {
+        previouslyFocusedElement.value = element
+      }
+    },
     () => { /* handle error silently */ },
   )
 

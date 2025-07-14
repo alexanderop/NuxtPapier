@@ -1,5 +1,10 @@
 {
   "mcpServers": {
+    "ast-grep": {
+      "command": "uv",
+      "args": ["--directory", "/Users/jason/Documents/ast-grep-mcp", "run", "main.py"],
+      "env": {}
+    },
     "playwright": {
       "command": "npx",
       "args": [
