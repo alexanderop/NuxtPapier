@@ -77,6 +77,24 @@ Composables follow specific patterns (see composables/CLAUDE.md):
 - Return readonly state when appropriate
 - TypeScript-first approach with comprehensive typing
 
+### VueUse-Style Guidelines
+- Import all Vue APIs from "vue"
+- Use `ref` over `reactive`, prefer `shallowRef` for large data
+- Use options object as arguments for flexibility
+- Support `configurableWindow`/`configurableDocument` for globals
+- Make `watch`/`watchEffect` options configurable (`immediate`, `flush`)
+- Use `tryOnUnmounted` for cleanup
+- Expose `isSupported` flag for Web APIs
+- Return PromiseLike for async composables
+- Provide `controls` option for common single-ref usage
+- Use render functions for renderless components
+
+### VueUse Best Practices
+- **Destructuring**: Return object of refs for ES6 destructuring or use `reactive()` to unwrap
+- **Side-effect cleanup**: Functions auto-cleanup on unmount (like `useEventListener`)
+- **Manual cleanup**: Some return stop handlers, or use `effectScope` for grouped disposal
+- **Reactive arguments**: Accept refs, computed refs, or getter functions as arguments for flexibility
+
 ### Routing & Pages
 - File-based routing with dynamic catch-all route at `pages/[...path].vue`
 - Blog posts at `/blog/[postSlug]`
