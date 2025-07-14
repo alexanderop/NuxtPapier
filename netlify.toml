@@ -2,10 +2,10 @@
 
 [build]
 # Build command for static generation
-command = "pnpm generate"
+command = "npx nuxi generate"
 
-# Publish directory
-publish = ".output/public"
+# Publish directory for static generation
+publish = "dist"
 
 # Headers for better caching of static assets
 [[headers]]
@@ -20,15 +20,16 @@ for = "/_nuxt/*"
 [headers.values]
 Cache-Control = "public, max-age=31536000, immutable"
 
-# Redirects for SPA fallback if needed
+# Redirects for SPA fallback (for client-side routing)
 [[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
-conditions = { Role = [ "admin" ] }
+force = false
 
-# Environment variables (if needed)
+# Environment variables
 [build.environment]
+# Node.js 20.x or higher is required for Nuxt Content
 NODE_VERSION = "20"
+# Increase memory for large builds
 NODE_OPTIONS = "--max-old-space-size=4096"
-NITRO_PRESET = "static"
