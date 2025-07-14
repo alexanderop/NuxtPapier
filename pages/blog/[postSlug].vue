@@ -10,7 +10,7 @@ const postResult = await fromPromise(
 )
 
 const post = postResult.match(
-  data => {
+  (data) => {
     if (!data) {
       throw createError({
         fatal: true,

@@ -1,24 +1,6 @@
-function isElementVisible(element: HTMLElement, viewportHeight: number) {
-  const rect = element.getBoundingClientRect()
-  return rect.top < viewportHeight && rect.bottom > 0
-}
-
-function findVisibleHeadings(headings: HTMLElement[], viewportHeight: number) {
-  return headings.filter(heading => isElementVisible(heading, viewportHeight))
-}
-
-function getLastHeadingId(headings: HTMLElement[]) {
-  return headings.length > 0 ? headings[headings.length - 1].id : null
-}
-
 function calculateScrollOffset(element: HTMLElement, scrollY: number, offset: number) {
   const elementPosition = element.getBoundingClientRect().top
   return elementPosition + scrollY - offset
-}
-
-function getFirstIntersectingHeadingId(entries: IntersectionObserverEntry[]) {
-  const visibleEntries = entries.filter(entry => entry.isIntersecting && entry.intersectionRatio > 0)
-  return visibleEntries.length > 0 ? visibleEntries[0].target.id : null
 }
 
 function getHeadingsFromDocument(selector: string): HTMLElement[] {
@@ -39,17 +21,11 @@ const SCROLL_CONFIG = {
   throttle: 10,
 }
 
-const OBSERVER_CONFIG = {
-  rootMargin: '-80px 0px -70% 0px',
-  threshold: 0,
-}
-
 const HEADING_CONFIG = {
   scrollOffset: 80,
   selector: '.prose h2[id], .prose h3[id], .prose h4[id]',
 }
 
-const DEBOUNCE_DELAY = 50
 const PROGRAMMATIC_SCROLL_TIMEOUT = 800 // Slightly longer than typical smooth scroll
 
 /**
@@ -57,6 +33,8 @@ const PROGRAMMATIC_SCROLL_TIMEOUT = 800 // Slightly longer than typical smooth s
  *
  * Tracks the active heading in a document based on scroll position and provides
  * smooth scrolling to specific headings. Automatically updates when content changes.
+ *
+ * Uses Intersection Observer API for performant scroll tracking without heavy scroll handlers.
  *
  * @example
  * ```vue
@@ -83,6 +61,7 @@ const PROGRAMMATIC_SCROLL_TIMEOUT = 800 // Slightly longer than typical smooth s
  * @returns.scrollToHeading - Function to scroll to a heading by ID
  */
 export function useTableOfContents() {
+  // Primary State
   const activeId = ref<string>('')
 
   if (!isClient) {
@@ -92,57 +71,112 @@ export function useTableOfContents() {
     }
   }
 
+  // State
   const headingElements = ref<HTMLElement[]>([])
-  const observerCleanup = ref<(() => void) | null>(null)
+  const observer = ref<IntersectionObserver | null>(null)
   const isProgrammaticScroll = ref(false)
+  const visibleHeadings = ref<Set<string>>(new Set())
 
-  const { y, arrivedState } = useScroll(
-    window,
-    SCROLL_CONFIG,
-  )
+  // VueUse scroll helper
+  const { y } = useScroll(window, SCROLL_CONFIG)
 
-  function updateActiveId(id: string | null) {
-    if (id != null && id !== activeId.value)
-      activeId.value = id
+  // Methods
+  function updateActiveHeading() {
+    if (isProgrammaticScroll.value || headingElements.value.length === 0)
+      return
+
+    // Check if we're at the bottom of the page
+    const scrollTop = window.scrollY
+    const { scrollHeight } = document.documentElement
+    const clientHeight = window.innerHeight
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10
+
+    if (isAtBottom && headingElements.value.length > 0) {
+      // At bottom - activate the last heading
+      const lastHeading = headingElements.value[headingElements.value.length - 1]
+      activeId.value = lastHeading.id
+      return
+    }
+
+    // Not at bottom - find the best heading to highlight
+    let selectedHeading: HTMLElement | null = null
+
+    // Find the heading that's most appropriate to highlight
+    for (const heading of headingElements.value) {
+      if (visibleHeadings.value.has(heading.id)) {
+        const rect = heading.getBoundingClientRect()
+        // If heading is in the top portion of the viewport, select it
+        if (rect.top < window.innerHeight * 0.3) {
+          selectedHeading = heading
+        }
+      }
+    }
+
+    // If we found a heading, activate it
+    if (selectedHeading) {
+      activeId.value = selectedHeading.id
+    }
+    else if (visibleHeadings.value.size > 0) {
+      // If no heading is in the top portion but some are visible,
+      // activate the first visible one
+      const firstVisible = headingElements.value.find(h => visibleHeadings.value.has(h.id))
+      if (firstVisible) {
+        activeId.value = firstVisible.id
+      }
+    }
   }
 
-  function activateLastHeading() {
-    const lastId = getLastHeadingId(headingElements.value)
-    if (lastId != null)
-      updateActiveId(lastId)
+  function createObserver() {
+    // Clean up existing observer
+    if (observer.value) {
+      observer.value.disconnect()
+    }
+
+    // Create observer that tracks all visible sections
+    observer.value = new IntersectionObserver(
+      (entries) => {
+        if (isProgrammaticScroll.value)
+          return
+
+        entries.forEach((entry) => {
+          const { id } = entry.target
+
+          if (entry.intersectionRatio > 0) {
+            visibleHeadings.value.add(id)
+          }
+          else {
+            visibleHeadings.value.delete(id)
+          }
+        })
+
+        // Update which heading should be active
+        updateActiveHeading()
+      },
+      {
+        // Small negative bottom margin to trigger slightly before heading is fully out of view
+        rootMargin: '0px 0px -10% 0px',
+        threshold: [0, 0.1],
+      },
+    )
+
+    // Observe all headings
+    headingElements.value.forEach((heading) => {
+      observer.value?.observe(heading)
+    })
   }
 
   function refreshHeadings() {
     const headings = getHeadingsFromDocument(HEADING_CONFIG.selector)
     headingElements.value = headings
 
-    observerCleanup.value?.()
-
     if (headings.length === 0)
       return
 
-    const { stop } = useIntersectionObserver(
-      headingElements,
-      (entries) => {
-        const shouldSkip = arrivedState.bottom || isProgrammaticScroll.value
-        if (shouldSkip) {
-          if (arrivedState.bottom)
-            activateLastHeading()
-          return
-        }
+    // Recreate observer with new headings
+    createObserver()
 
-        const activeHeadingId = getFirstIntersectingHeadingId(entries)
-        if (activeHeadingId != null)
-          updateActiveId(activeHeadingId)
-      },
-      OBSERVER_CONFIG,
-    )
-
-    observerCleanup.value = stop
-
-    const visibleHeadings = findVisibleHeadings(headings, window.innerHeight)
-    if (visibleHeadings.length > 0)
-      updateActiveId(visibleHeadings[0].id)
+    // Initial check
+    updateActiveHeading()
   }
 
   function scrollToHeading(id: string) {
@@ -154,7 +188,14 @@ export function useTableOfContents() {
           return
 
         isProgrammaticScroll.value = true
-        const offsetPosition = calculateScrollOffset(element, window.scrollY, HEADING_CONFIG.scrollOffset)
+        activeId.value = id // Immediately update the active ID
+
+        const offsetPosition = calculateScrollOffset(
+          element,
+          window.scrollY,
+          HEADING_CONFIG.scrollOffset,
+        )
+
         y.value = offsetPosition
 
         setTimeout(() => {
@@ -167,20 +208,20 @@ export function useTableOfContents() {
     )
   }
 
-  // Set up lifecycle hooks
-  // Watch for bottom arrival state changes
-  watchDebounced(
-    () => arrivedState.bottom,
-    (isAtBottom) => {
-      if (isAtBottom && !isProgrammaticScroll.value)
-        activateLastHeading()
+  // Watch for scroll to update active heading (for bottom detection)
+  watchThrottled(
+    y,
+    () => {
+      updateActiveHeading()
     },
-    { debounce: DEBOUNCE_DELAY },
+    { throttle: 50 },
   )
 
+  // Lifecycle Hooks
   onMounted(() => {
     refreshHeadings()
 
+    // Watch for DOM changes
     useMutationObserver(
       document.body,
       () => {
@@ -196,9 +237,10 @@ export function useTableOfContents() {
   })
 
   onUnmounted(() => {
-    observerCleanup.value?.()
+    observer.value?.disconnect()
   })
 
+  // Return public API
   return {
     activeId: readonly(activeId),
     scrollToHeading,

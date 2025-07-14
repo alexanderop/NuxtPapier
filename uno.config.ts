@@ -124,6 +124,10 @@ export default defineConfig({
       provider: 'google',
     }),
   ],
+  safelist: [
+    // Dynamic margin-left classes for TableOfContentsNode indentation
+    ...Array.from({ length: 10 }, (_, i) => `ml-${i * 3}`),
+  ],
   shortcuts: {
     'container-app': 'mx-auto max-w-3xl px-4',
     'max-w-app': 'max-w-3xl',
