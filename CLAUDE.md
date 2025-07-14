@@ -1,7 +1,5 @@
 # CLAUDE.md
-
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Overview
 
 NuxtPapier is a minimal, responsive, and SEO-friendly Nuxt 3 blog theme built with modern web technologies. It's a content-driven blog platform with a focus on performance, accessibility, and developer experience.
@@ -33,11 +31,6 @@ Claude has access to Playwright MCP (Model Context Protocol) for browser automat
 - Automated testing generation
 - Multi-tab management
 
-Use Playwright MCP tools when you need to:
-- Test the application in a real browser environment
-- Debug visual or interaction issues
-- Always use localhost:3000 for Playwright MCP testing. Never start the development server yourself - assume it's already running on localhost:3000.
-
 ## Architecture & Key Patterns
 
 ## Code Style
@@ -67,11 +60,6 @@ Use Playwright MCP tools when you need to:
 - Draft post support via `published` field in frontmatter
 - The collection definition for nuxt content is under @content.config.ts 
 
-### SEO & Performance
-- SEO meta tags managed via `useEnhancedSeoMeta` composable (composables/useSeo.ts)
-- Structured data (JSON-LD) via `useStructuredData` composable (composables/useStructuredData.ts)
-- Dynamic sitemap, RSS feed, and robots.txt generation in `/server` directory
-- Image optimization with @nuxt/image
 
 ### Component Development Rules
 Components follow strict conventions (see components/CLAUDE.md):
@@ -137,10 +125,3 @@ Composables follow specific patterns (see composables/CLAUDE.md):
 1. Edit CSS variables in `uno.config.ts`
 2. Use UnoCSS utilities in components
 3. Dark mode automatically handled via color-mode module
-
-## Quality Assurance
-
-- After completing a task, test the new feature like a QA engineer
-- Use Playwright MCP for comprehensive testing
-- Always run the server at localhost:3000 during testing
-- Verify functionality, performance, and user experience thoroughly
