@@ -1,35 +1,6 @@
-# Netlify configuration for NuxtPapier
-
 [build]
-# Build command for static generation
-command = "npx nuxi generate"
-
-# Publish directory for static generation
+command = "npm run generate"
 publish = "dist"
 
-# Headers for better caching of static assets
-[[headers]]
-for = "/images/*"
-
-[headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-for = "/_nuxt/*"
-
-[headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-
-# Redirects for SPA fallback (for client-side routing)
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
-force = false
-
-# Environment variables
 [build.environment]
-# Node.js 20.x or higher is required for Nuxt Content
 NODE_VERSION = "20"
-# Increase memory for large builds
-NODE_OPTIONS = "--max-old-space-size=4096"
