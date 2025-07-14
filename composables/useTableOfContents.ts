@@ -44,6 +44,7 @@ const HEADING_CONFIG = {
 }
 
 const DEBOUNCE_DELAY = 50
+const PROGRAMMATIC_SCROLL_TIMEOUT = 800 // Slightly longer than typical smooth scroll
 
 /**
  * Composable for managing table of contents functionality
@@ -151,7 +152,7 @@ export function useTableOfContents() {
 
     setTimeout(() => {
       isProgrammaticScroll.value = false
-    }, 500)
+    }, PROGRAMMATIC_SCROLL_TIMEOUT)
   }
 
   // Set up lifecycle hooks

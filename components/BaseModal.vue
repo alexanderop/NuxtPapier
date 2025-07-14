@@ -54,7 +54,7 @@ const positionClasses = computed(() => {
   }
 })
 
-const { focused } = useFocus(firstFocusableElement, {
+useFocus(firstFocusableElement, {
   initialValue: false,
 })
 
@@ -72,7 +72,7 @@ async function openModal() {
     )
     if (focusable) {
       firstFocusableElement.value = focusable
-      focused.value = true
+      focusable.focus() // useFocus will automatically update focused.value
     }
   }
 }

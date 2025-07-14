@@ -100,9 +100,13 @@ Let's test table rendering:
 
 ## Images
 
-Here's how images look in prose (using a placeholder):
+Here's how images look in prose:
 
-![A beautiful landscape](https://picsum.photos/800/400)
+<!-- For external images (works everywhere): -->
+![A beautiful landscape from Picsum](https://picsum.photos/800/400)
+
+<!-- For local images (place your image in /public/images/blog/): -->
+<!-- ![Your local image description](/images/blog/your-image-name.jpg) -->
 
 ## Mixed Content
 

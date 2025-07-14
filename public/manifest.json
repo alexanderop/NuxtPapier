@@ -1,0 +1,16 @@
+{
+  "name": "NuxtPapier",
+  "short_name": "NuxtPapier",
+  "description": "A minimal, responsive Nuxt 3 blog theme",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

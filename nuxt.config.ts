@@ -78,6 +78,9 @@ export default defineNuxtConfig({
     loading: 'lazy',
 
     quality: 80,
+
+    // For better Netlify compatibility, you can optionally use Netlify's provider
+    // provider: 'netlify',
   },
 
   modules: [
@@ -95,9 +98,22 @@ export default defineNuxtConfig({
   ],
 
   nitro: {
+
     prerender: {
       routes: ['/rss.xml'],
     },
+
+    // For better Netlify deployment, use 'static' preset for full static generation
+    // This avoids potential edge function issues with images
+    // preset: 'static',
+    // Ensure public assets are copied to output
+    publicAssets: [
+      {
+        baseURL: 'images',
+        dir: 'public/images',
+        maxAge: 31536000, // 1 year cache
+      },
+    ],
   },
 
   // OG Image configuration

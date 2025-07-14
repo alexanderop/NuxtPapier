@@ -1,4 +1,5 @@
-import type { RouterConfig } from '@nuxt/schema'
+const SCROLL_OFFSET_FOR_FIXED_HEADER = -80
+const ELEMENT_VISIBILITY_TIMEOUT = 5000
 
 // Helper functions using Result pattern
 function findElement(selector: string): Result<Element> {
@@ -11,13 +12,19 @@ function getVisibleElement(selector: string): Result<Element> {
   if (!isOk(elementResult))
     return elementResult
 
-  const rect = elementResult.value.getBoundingClientRect()
-  return rect.height > 0
-    ? ok(elementResult.value)
+  const element = elementResult.value
+  const rect = element.getBoundingClientRect()
+  const style = window.getComputedStyle(element)
+  const isVisible = rect.height > 0
+    && rect.width > 0
+    && style.opacity !== '0'
+    && style.visibility !== 'hidden'
+  return isVisible
+    ? ok(element)
     : err(new Error(`Element not visible: ${selector}`))
 }
 
-function scrollToElement(element: Element, offset: number = -80): Result<void> {
+function scrollToElement(element: Element, offset: number = SCROLL_OFFSET_FOR_FIXED_HEADER): Result<void> {
   const rect = element.getBoundingClientRect()
   const y = rect.top + window.pageYOffset + offset
 
@@ -64,7 +71,7 @@ export default <RouterConfig>{
             return isOk(result)
           })
 
-          const waitResult = await until(isVisible).toBe(true, { timeout: 5000 }).then(() => ok(undefined)).catch(() => err(new Error('Timeout waiting for element')))
+          const waitResult = await until(isVisible).toBe(true, { timeout: ELEMENT_VISIBILITY_TIMEOUT }).then(() => ok(undefined)).catch(() => err(new Error('Timeout waiting for element')))
 
           if (isOk(waitResult)) {
             const elementResult = unref(elementRef)

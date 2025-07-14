@@ -11,15 +11,13 @@ export function useKeyboardShortcuts() {
   const cmdK = keys['cmd+k']
   const ctrlK = keys['ctrl+k']
 
-  whenever(cmdK, async () => {
+  const openCommandPalette = async () => {
     const { default: TheCommandPalette } = await import('~/components/TheCommandPalette.vue')
     modalStore.openModal(TheCommandPalette)
-  })
+  }
 
-  whenever(ctrlK, async () => {
-    const { default: TheCommandPalette } = await import('~/components/TheCommandPalette.vue')
-    modalStore.openModal(TheCommandPalette)
-  })
+  whenever(cmdK, openCommandPalette)
+  whenever(ctrlK, openCommandPalette)
 
   return {
     keys,

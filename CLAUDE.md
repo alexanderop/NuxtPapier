@@ -38,6 +38,8 @@ Claude has access to Playwright MCP (Model Context Protocol) for browser automat
 - **Imports**: Use relative imports for local modules, named imports preferred
 - **Naming**: camelCase for variables/functions, PascalCase for classes/namespaces
 - **Error handling**: Use Result patterns, avoid throwing exceptions in tools
+- **Error Handling Best Practices**:
+  - For every operation that could result in an error, use `@utils/result.ts` so that the error is part of the type system
 
 ## IMPORTANT
 
@@ -148,3 +150,5 @@ Composables follow specific patterns (see composables/CLAUDE.md):
 1. Edit CSS variables in `uno.config.ts`
 2. Use UnoCSS utilities in components
 3. Dark mode automatically handled via color-mode module
+
+```

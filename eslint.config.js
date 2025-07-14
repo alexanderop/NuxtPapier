@@ -48,6 +48,10 @@ export default antfu(
             message: 'Use auto-imports instead of importing from @vueuse/core. VueUse composables are automatically available via @vueuse/nuxt.',
             name: '@vueuse/core',
           },
+          {
+            message: 'Use auto-imports instead of importing from @nuxt/schema. Nuxt types are automatically available.',
+            name: '@nuxt/schema',
+          },
         ],
         patterns: [
           {
