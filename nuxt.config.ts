@@ -101,7 +101,7 @@ export default defineNuxtConfig({
   nitro: {
     // Nuxt Content will automatically detect Netlify environment
     // For static generation, we don't set a preset - nuxi generate handles it
-    
+
     prerender: {
       routes: ['/rss.xml'],
     },
