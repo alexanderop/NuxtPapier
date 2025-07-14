@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TocLink } from '~/composables/useTableOfContents'
+import type { TocLink } from '@nuxt/content'
 
 const { links = [] } = defineProps<{
   /** Array of table of contents links with hierarchy */

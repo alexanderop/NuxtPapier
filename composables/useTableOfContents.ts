@@ -1,107 +1,78 @@
-export interface TocLink {
-  id: string
-  text: string
-  depth?: number
-  children?: TocLink[]
-}
+import { useEventListener, useIntersectionObserver, useTimeout, whenever } from '@vueuse/core'
 
 export function useTableOfContents() {
   const activeId = ref<string>('')
-  const observer = shallowRef<IntersectionObserver | null>(null)
-  const checkScroll = ref<(() => void) | null>(null)
+  const headingElements = ref<HTMLElement[]>([])
 
-  function observeHeadings() {
-    if (import.meta.client) {
-      // Track all headings and their positions
-      const headingElements: Element[] = []
+  function checkIfAtBottom() {
+    const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10
+    if (isAtBottom && headingElements.value.length > 0) {
+      const lastHeading = headingElements.value[headingElements.value.length - 1]
+      activeId.value = lastHeading.id
+    }
+  }
 
-      const callback: IntersectionObserverCallback = (entries) => {
-        // Check if we're at the bottom of the page
+  function setupObserver() {
+    const headings = document.querySelectorAll<HTMLElement>('.prose h2[id], .prose h3[id], .prose h4[id]')
+    headingElements.value = Array.from(headings)
+
+    // Use a single observer for all headings
+    useIntersectionObserver(
+      headingElements,
+      (entries) => {
+        // Skip if we're at the bottom of the page
         const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10
-
-        if (isAtBottom && headingElements.length > 0) {
-          // If at bottom, highlight the last heading
-          const lastHeading = headingElements[headingElements.length - 1]
-          activeId.value = lastHeading.id
+        if (isAtBottom)
           return
-        }
 
-        // Otherwise, find the first visible heading or the one closest to the top
+        // Find the first intersecting heading
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0)
             activeId.value = entry.target.id
-          }
         })
-      }
-
-      // Create scroll handler
-      checkScroll.value = () => {
-        const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10
-
-        if (isAtBottom && headingElements.length > 0) {
-          const lastHeading = headingElements[headingElements.length - 1]
-          activeId.value = lastHeading.id
-        }
-      }
-
-      observer.value = new IntersectionObserver(callback, {
+      },
+      {
         rootMargin: '-80px 0px -70% 0px',
-        threshold: [0],
+        threshold: 0,
+      },
+    )
+
+    // Set initial active heading
+    if (headings.length > 0) {
+      const visibleHeadings = Array.from(headings).filter((heading) => {
+        const rect = heading.getBoundingClientRect()
+        return rect.top < window.innerHeight && rect.bottom > 0
       })
-
-      // Wait for content to render with a small delay
-      setTimeout(() => {
-        const headings = document.querySelectorAll('.prose h2[id], .prose h3[id], .prose h4[id]')
-        headings.forEach((heading) => {
-          headingElements.push(heading)
-          observer.value?.observe(heading)
-        })
-
-        // Add scroll listener for bottom detection
-        if (checkScroll.value) {
-          window.addEventListener('scroll', checkScroll.value, { passive: true })
-        }
-
-        // Set initial active heading
-        if (headings.length > 0) {
-          const visibleHeadings = Array.from(headings).filter((heading) => {
-            const rect = heading.getBoundingClientRect()
-            return rect.top < window.innerHeight && rect.bottom > 0
-          })
-          if (visibleHeadings.length > 0) {
-            activeId.value = visibleHeadings[0].id
-          }
-        }
-      }, 100)
+      if (visibleHeadings.length > 0)
+        activeId.value = visibleHeadings[0].id
     }
   }
 
   function scrollToHeading(id: string) {
-    if (import.meta.client) {
-      const element = document.getElementById(id)
-      if (element) {
-        const offset = 80
-        const elementPosition = element.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.scrollY - offset
+    if (!import.meta.client)
+      return
 
-        window.scrollTo({
-          behavior: 'smooth',
-          top: offsetPosition,
-        })
-      }
+    const element = document.getElementById(id)
+    if (element) {
+      const offset = 80
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.scrollY - offset
+
+      window.scrollTo({
+        behavior: 'smooth',
+        top: offsetPosition,
+      })
     }
   }
 
-  onMounted(() => {
-    observeHeadings()
-  })
+  // Add scroll listener for bottom detection
+  if (import.meta.client) {
+    useEventListener('scroll', checkIfAtBottom, { passive: true })
 
-  onUnmounted(() => {
-    observer.value?.disconnect()
-    if (checkScroll.value) {
-      window.removeEventListener('scroll', checkScroll.value)
-    }
-  })
+    // Use timeout to wait for content to render
+    const ready = useTimeout(100)
+    whenever(ready, setupObserver)
+  }
 
   return {
     activeId: readonly(activeId),
