@@ -9,16 +9,7 @@ const { code = '', language = '', filename = '' } = defineProps<{
 }>()
 
 // Copy functionality
-const copied = ref(false)
-async function copyCode() {
-  if (import.meta.client && code) {
-    await navigator.clipboard.writeText(code)
-    copied.value = true
-    setTimeout(() => {
-      copied.value = false
-    }, 2000)
-  }
-}
+const { copy, copied, isSupported } = useClipboard({ source: code })
 
 // Get language display name
 const languageDisplay = computed(() => {
@@ -59,10 +50,11 @@ const languageDisplay = computed(() => {
 
       <!-- Copy button -->
       <button
+        v-if="isSupported"
         type="button"
         class="text-xs px-2 py-1 rounded flex gap-1 transition-all items-center focus:outline-none hover:bg-surface-subtle focus:ring-2 focus:ring-primary/50"
         :class="copied ? 'text-green-600 dark:text-green-400' : 'text-text-muted hover:text-text-base'"
-        @click="copyCode"
+        @click="copy()"
       >
         <Icon
           :name="copied ? 'mdi:check' : 'mdi:content-copy'"

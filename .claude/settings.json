@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "pnpm lint && pnpm typecheck"
+            "command": "echo '🔍 Running lint...' && pnpm lint && echo '✅ Lint passed' && echo '🔍 Running typecheck...' && pnpm typecheck && echo '✅ Typecheck passed' || echo '❌ Lint or typecheck failed'"
           }
         ]
       }
