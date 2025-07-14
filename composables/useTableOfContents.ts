@@ -1,4 +1,3 @@
-import { useIntersectionObserver, useMutationObserver, useScroll, watchDebounced } from '@vueuse/core'
 import { isClient } from '~/utils/browser'
 import { trySafe, unwrapOr } from '~/utils/result'
 

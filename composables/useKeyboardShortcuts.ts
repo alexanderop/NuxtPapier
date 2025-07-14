@@ -1,5 +1,3 @@
-import { useMagicKeys, whenever } from '@vueuse/core'
-
 export function useKeyboardShortcuts() {
   const modalStore = useModalStore()
   const keys = useMagicKeys({

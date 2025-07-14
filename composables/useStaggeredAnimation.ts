@@ -1,6 +1,3 @@
-import { useRoute } from '#app'
-import { computed, onMounted, ref, watch } from 'vue'
-
 interface StaggeredAnimationOptions {
   /** CSS selector for elements to animate */
   selector?: string

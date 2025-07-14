@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useFocus } from '@vueuse/core'
-
 const {
   overlayClass = '',
   contentClass = '',
@@ -39,9 +37,10 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const dialogRef = ref<HTMLDialogElement>()
+const dialogRef = useTemplateRef<HTMLDialogElement>('dialogRef')
+const contentRef = useTemplateRef<HTMLDivElement>('contentRef')
+const firstFocusableElement = ref<HTMLElement>()
 const previouslyFocusedElement = ref<HTMLElement>()
-const firstFocusableElementRef = ref<HTMLElement>()
 
 const positionClasses = computed(() => {
   switch (position) {
@@ -55,27 +54,26 @@ const positionClasses = computed(() => {
   }
 })
 
-// Use VueUse's useFocus for the first focusable element
-const { focused } = useFocus(firstFocusableElementRef, {
+const { focused } = useFocus(firstFocusableElement, {
   initialValue: false,
 })
 
-function openModal() {
+async function openModal() {
   if (!dialogRef.value)
     return
 
   previouslyFocusedElement.value = document.activeElement as HTMLElement
   dialogRef.value.showModal()
 
-  // Focus the first focusable element in the modal if autoFocus is enabled
   if (autoFocus) {
-    nextTick(() => {
-      const firstFocusable = dialogRef.value?.querySelector<HTMLElement>('input, textarea, select, button:not([disabled]), [tabindex]:not([tabindex="-1"])')
-      if (firstFocusable) {
-        firstFocusableElementRef.value = firstFocusable
-        focused.value = true
-      }
-    })
+    await nextTick()
+    const focusable = contentRef.value?.querySelector<HTMLElement>(
+      'input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    )
+    if (focusable) {
+      firstFocusableElement.value = focusable
+      focused.value = true
+    }
   }
 }
 
@@ -134,6 +132,7 @@ defineExpose({
       @click="handleBackdropClick"
     >
       <div
+        ref="contentRef"
         class="animate-in focus-within:ring-primary-500/50 rounded-lg transform transition-all duration-300 ease-out relative focus-within:ring-2"
         :class="contentClass"
         @click.stop

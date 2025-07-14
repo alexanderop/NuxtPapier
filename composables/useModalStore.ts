@@ -1,6 +1,3 @@
-import type { Component } from 'vue'
-import { computed, reactive, readonly, toRefs } from 'vue'
-
 export interface Modal {
   id: number
   component: Component
