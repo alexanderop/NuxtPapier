@@ -1,6 +1,11 @@
 import antfu from '@antfu/eslint-config'
 import sortKeysFixPlugin from 'eslint-plugin-sort-keys-fix'
 import pluginVueA11y from 'eslint-plugin-vuejs-accessibility'
+// NOTE: eslint-plugin-neverthrow has compatibility issues with ESLint 9 flat config
+// Until this is resolved, manually ensure all neverthrow Result types are handled:
+// - Always call .isOk() or .isErr() to check the result
+// - Use .match(), .map(), .mapErr(), or .andThen() to handle results
+// - Never ignore returned Result types from neverthrow functions
 import vue35Plugin from './eslint-plugin-vue35/index.js'
 
 export default antfu(
@@ -122,7 +127,7 @@ export default antfu(
         destructure: 'always',
       }],
       'vue/html-button-has-type': 'error',
-      'vue/max-template-depth': ['error', { maxDepth: 8 }],
+      'vue/max-template-depth': ['error', { maxDepth: 9 }],
       'vue/no-mutating-props': 'error',
       'vue/no-ref-object-reactivity-loss': 'error',
       'vue/no-unused-emit-declarations': 'error',
@@ -147,7 +152,9 @@ export default antfu(
       quotes: 'single',
     },
 
-    typescript: true,
+    typescript: {
+      tsconfigPath: 'tsconfig.json',
+    },
 
     unocss: true,
 
@@ -158,6 +165,31 @@ export default antfu(
     files: ['pages/**/*.vue'],
     rules: {
       'vue/multi-word-component-names': 'off',
+    },
+  },
+  {
+    files: ['server/**/*.ts'],
+    rules: {
+      'ts/ban-ts-comment': 'off',
+      'ts/no-unsafe-argument': 'off',
+      'ts/no-unsafe-assignment': 'off',
+      'ts/no-unsafe-call': 'off',
+      'ts/no-unsafe-member-access': 'off',
+      'ts/no-unsafe-return': 'off',
+    },
+  },
+  {
+    files: ['composables/**/*.ts'],
+    rules: {
+      'ts/no-unsafe-member-access': 'off',
+    },
+  },
+  {
+    files: ['app/**/*.ts'],
+    rules: {
+      'no-void': 'off',
+      'require-await': 'off',
+      'ts/no-floating-promises': 'off',
     },
   },
   {

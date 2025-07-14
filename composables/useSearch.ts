@@ -25,20 +25,20 @@ export function useSearch() {
     loading.value = true
     error.value = null
 
-    // Query search sections from blog collection
-    const result = await queryCollectionSearchSections('blog')
-      .then(data => ({ data, success: true as const }))
-      .catch(err => ({
-        error: err instanceof Error ? err : new Error('Failed to load search data'),
-        success: false as const,
-      }))
+    // Query search sections from blog collection using neverthrow
+    const result = await fromPromise(
+      queryCollectionSearchSections('blog'),
+      error => (error instanceof Error ? error : new Error('Failed to load search data')),
+    )
 
-    if (!result.success) {
-      error.value = result.error
-    }
-    if (result.success) {
-      sections.value = result.data
-    }
+    result.match(
+      (data) => {
+        sections.value = data
+      },
+      (err) => {
+        error.value = err
+      },
+    )
 
     loading.value = false
   })

@@ -37,13 +37,13 @@ export function useArticleStructuredData(article: {
     '@type': 'Article',
     'author': {
       '@type': 'Person',
-      'name': article.author || appConfig.site.author,
+      'name': article.author ?? appConfig.site.author,
     },
-    'dateModified': article.updatedAt || article.date,
+    'dateModified': article.updatedAt ?? article.date,
     'datePublished': article.date,
     'description': article.description,
     'headline': article.title,
-    'image': article.image ? [article.image] : undefined,
+    'image': article.image != null ? [article.image] : undefined,
     'inLanguage': appConfig.site.lang,
     'keywords': article.tags?.join(', '),
     'mainEntityOfPage': {
@@ -69,7 +69,7 @@ export function useBreadcrumbStructuredData(items: Array<{ name: string, url?: s
 
   const itemListElement = items.map((item, index) => ({
     '@type': 'ListItem' as const,
-    'item': item.url ? `${baseUrl}${item.url}` : undefined,
+    'item': item.url != null ? `${baseUrl}${item.url}` : undefined,
     'name': item.name,
     'position': index + 1,
   }))

@@ -84,6 +84,26 @@ export default defineNuxtConfig({
     // provider: 'netlify',
   },
 
+  imports: {
+    presets: [
+      {
+        from: 'neverthrow',
+        imports: [
+          'ok',
+          'err',
+          'okAsync',
+          'errAsync',
+          'fromPromise',
+          'fromThrowable',
+          { name: 'Result', type: true },
+          { name: 'ResultAsync', type: true },
+          { as: 'isOk', name: 'isOk' },
+          { as: 'isErr', name: 'isErr' },
+        ],
+      },
+    ],
+  },
+
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',
@@ -101,7 +121,7 @@ export default defineNuxtConfig({
   nitro: {
     // Nuxt Content will automatically detect Netlify environment
     // For static generation, we don't set a preset - nuxi generate handles it
-    
+
     prerender: {
       routes: ['/rss.xml'],
     },
@@ -134,7 +154,7 @@ export default defineNuxtConfig({
   // Site configuration required for OG image generation
   site: {
     name: 'NuxtPapier',
-    url: import.meta.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    url: (import.meta.env.NUXT_PUBLIC_SITE_URL as string) ?? 'http://localhost:3000',
   },
 
   sitemap: {

@@ -22,8 +22,14 @@ function getFirstIntersectingHeadingId(entries: IntersectionObserverEntry[]) {
 }
 
 function getHeadingsFromDocument(selector: string): HTMLElement[] {
-  const result = trySafe(() => Array.from(document.querySelectorAll<HTMLElement>(selector)))
-  return unwrapOr(result, [])
+  const result = fromThrowable(() =>
+    Array.from(document.querySelectorAll<HTMLElement>(selector)),
+  )()
+
+  return result.match(
+    elements => elements,
+    () => [],
+  )
 }
 
 // Constants
@@ -96,13 +102,13 @@ export function useTableOfContents() {
   )
 
   function updateActiveId(id: string | null) {
-    if (id && id !== activeId.value)
+    if (id != null && id !== activeId.value)
       activeId.value = id
   }
 
   function activateLastHeading() {
     const lastId = getLastHeadingId(headingElements.value)
-    if (lastId)
+    if (lastId != null)
       updateActiveId(lastId)
   }
 
@@ -126,7 +132,7 @@ export function useTableOfContents() {
         }
 
         const activeHeadingId = getFirstIntersectingHeadingId(entries)
-        if (activeHeadingId)
+        if (activeHeadingId != null)
           updateActiveId(activeHeadingId)
       },
       OBSERVER_CONFIG,
@@ -140,19 +146,25 @@ export function useTableOfContents() {
   }
 
   function scrollToHeading(id: string) {
-    const elementResult = trySafe(() => document.getElementById(id))
-    const element = unwrapOr(elementResult, null)
+    const elementResult = fromThrowable(() => document.getElementById(id))()
 
-    if (!element)
-      return
+    elementResult.match(
+      (element) => {
+        if (!element)
+          return
 
-    isProgrammaticScroll.value = true
-    const offsetPosition = calculateScrollOffset(element, window.scrollY, HEADING_CONFIG.scrollOffset)
-    y.value = offsetPosition
+        isProgrammaticScroll.value = true
+        const offsetPosition = calculateScrollOffset(element, window.scrollY, HEADING_CONFIG.scrollOffset)
+        y.value = offsetPosition
 
-    setTimeout(() => {
-      isProgrammaticScroll.value = false
-    }, PROGRAMMATIC_SCROLL_TIMEOUT)
+        setTimeout(() => {
+          isProgrammaticScroll.value = false
+        }, PROGRAMMATIC_SCROLL_TIMEOUT)
+      },
+      () => {
+        // Element not found or error occurred
+      },
+    )
   }
 
   // Set up lifecycle hooks

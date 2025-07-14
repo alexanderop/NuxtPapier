@@ -23,15 +23,15 @@ export function usePageMeta(content: PageContent, options: PageMetaOptions = {})
 
   const pageTitle = isHomePage
     ? appConfig.site.title
-    : `${content.title} - ${customSuffix || appConfig.site.title}`
+    : `${content.title} - ${customSuffix ?? appConfig.site.title}`
 
   const pageDescription = content.description
-    || fallbackDescription
-    || (isBlogPost
+    ?? fallbackDescription
+    ?? (isBlogPost
       ? `Read "${content.title}" on ${appConfig.site.title}`
       : `${content.title} page on ${appConfig.site.title}`)
 
-  const pageOgImage = content.ogImage || appConfig.site.ogImage
+  const pageOgImage = content.ogImage ?? appConfig.site.ogImage
 
   return {
     pageDescription,

@@ -62,18 +62,33 @@ async function openModal() {
   if (!dialogRef.value)
     return
 
-  previouslyFocusedElement.value = document.activeElement as HTMLElement
-  dialogRef.value.showModal()
+  const activeElementResult = fromThrowable(() => document.activeElement as HTMLElement)()
+  activeElementResult.match(
+    (element) => { previouslyFocusedElement.value = element },
+    () => { /* handle error silently */ },
+  )
+
+  const showModalResult = fromThrowable(() => dialogRef.value?.showModal())()
+  showModalResult.match(
+    () => { /* modal opened successfully */ },
+    () => { /* handle modal opening error silently */ },
+  )
 
   if (autoFocus) {
     await nextTick()
-    const focusable = contentRef.value?.querySelector<HTMLElement>(
+    const focusableResult = fromThrowable(() => contentRef.value?.querySelector<HTMLElement>(
       'input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ))()
+
+    focusableResult.match(
+      (focusable) => {
+        if (focusable) {
+          firstFocusableElement.value = focusable
+          focusable.focus() // useFocus will automatically update focused.value
+        }
+      },
+      () => { /* handle error silently */ },
     )
-    if (focusable) {
-      firstFocusableElement.value = focusable
-      focusable.focus() // useFocus will automatically update focused.value
-    }
   }
 }
 

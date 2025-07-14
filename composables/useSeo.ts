@@ -5,7 +5,7 @@ export function useCanonicalURL(path?: string) {
   const appConfig = useAppConfig()
   const runtimeConfig = useRuntimeConfig()
 
-  const basePath = path || route.path
+  const basePath = path ?? route.path
   const baseUrl = appConfig.site.website || (runtimeConfig.public?.siteUrl as string) || ''
 
   if (!baseUrl) {
@@ -36,16 +36,16 @@ export function useEnhancedSeoMeta(options: {
   const appConfig = useAppConfig()
   const canonicalUrl = useCanonicalURL(options.path)
 
-  const metaTitle = options.title || appConfig.site.title
-  const metaDescription = options.description || appConfig.site.desc
-  const metaImage = options.image || `/${appConfig.site.ogImage}`
+  const metaTitle = options.title ?? appConfig.site.title
+  const metaDescription = options.description ?? appConfig.site.desc
+  const metaImage = options.image ?? `/${appConfig.site.ogImage}`
 
   // Default image dimensions for better social media preview
-  const imageWidth = options.imageWidth || 1200
-  const imageHeight = options.imageHeight || 630
+  const imageWidth = options.imageWidth ?? 1200
+  const imageHeight = options.imageHeight ?? 630
 
   const seoMeta: SeoMetaData = {
-    author: options.author || appConfig.site.author,
+    author: options.author ?? appConfig.site.author,
     description: metaDescription,
     ogDescription: metaDescription,
     ogImage: metaImage,
@@ -55,7 +55,7 @@ export function useEnhancedSeoMeta(options: {
     ogLocale: appConfig.site.lang === 'en' ? 'en_US' : appConfig.site.lang,
     ogSiteName: appConfig.site.title,
     ogTitle: metaTitle,
-    ogType: options.type || 'website',
+    ogType: options.type ?? 'website',
     ogUrl: canonicalUrl,
     title: metaTitle,
     twitterCard: 'summary_large_image',
@@ -66,25 +66,25 @@ export function useEnhancedSeoMeta(options: {
     twitterTitle: metaTitle,
   }
 
-  if (canonicalUrl && canonicalUrl.length > 0) {
+  if (canonicalUrl != null && canonicalUrl.length > 0) {
     seoMeta.canonical = canonicalUrl
   }
 
   if (options.type === 'article') {
-    if (options.author)
+    if (options.author != null)
       seoMeta.articleAuthor = [options.author]
-    if (options.publishedTime)
+    if (options.publishedTime != null)
       seoMeta.articlePublishedTime = options.publishedTime
-    if (options.modifiedTime)
+    if (options.modifiedTime != null)
       seoMeta.articleModifiedTime = options.modifiedTime
-    if (options.tags && options.tags.length > 0)
+    if (options.tags != null && options.tags.length > 0)
       seoMeta.articleTag = options.tags
     seoMeta.articleSection = 'Technology'
   }
 
   useSeoMeta(seoMeta)
 
-  if (canonicalUrl && canonicalUrl.length > 0) {
+  if (canonicalUrl != null && canonicalUrl.length > 0) {
     useHead({
       link: [
         { href: canonicalUrl, rel: 'canonical' },

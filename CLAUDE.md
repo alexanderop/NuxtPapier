@@ -50,7 +50,7 @@ pnpm typecheck   # TypeScript type checking
   * UPPER\_SNAKE\_CASE → constants
   * Booleans start with `is` / `has` / `can`
   * Functions: verbNoun (`fetchUserData`)
-* **Avoid**: `any`, `let`, `else`, `try/catch` (unless essential)
+* **Avoid**: `any`, `let`, `else`, `try/catch` (use neverthrow instead)
 * **Variables**: Use descriptive names (`searchQuery`, `userProfile`)
 * **Comments**: Only for complex logic—favor self-explanatory code
 
@@ -132,6 +132,47 @@ pnpm typecheck   # TypeScript type checking
 * `content.config.ts`: Content parsing rules
 * `constants.ts`: Constants (social links, etc.)
 * `types/index.d.ts`: Shared types
+
+---
+
+## Error Handling with Neverthrow
+
+Use `neverthrow` for functional error handling instead of `try/catch`:
+
+```typescript
+// ✅ Good - Use neverthrow
+const result = await fromPromise(
+  fetch('/api/users'),
+  (error) => new Error(`Failed to fetch users: ${error.message}`)
+)
+
+if (result.isErr()) {
+  console.error(result.error)
+  return
+}
+
+const users = result.value
+
+// ✅ Good - Chain operations
+const processedResult = result
+  .map(response => response.json())
+  .map(users => users.filter(user => user.active))
+
+// ❌ Bad - Use try/catch
+try {
+  const response = await fetch('/api/users')
+  const users = await response.json()
+} catch (error) {
+  console.error(error)
+}
+```
+
+**Auto-imported from neverthrow:**
+- `ok`, `err` - Create Results
+- `okAsync`, `errAsync` - Create ResultAsync
+- `fromPromise`, `fromThrowable` - Wrap operations
+- `Result`, `ResultAsync` - Types (type-only imports)
+- `isOk`, `isErr` - Type guards
 
 ---
 

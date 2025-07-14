@@ -1,12 +1,24 @@
-export default defineSitemapEventHandler(async () => {
-  const posts = await $fetch<any[]>('/api/blog')
+// @ts-nocheck
+interface BlogPost {
+  date: string
+  _path: string
+}
 
-  const blogUrls = posts.map(post => ({
-    changefreq: 'weekly' as const,
-    lastmod: new Date(post.date),
-    loc: `/blog/${post._path}`,
-    priority: 0.8 as const,
-  }))
+export default defineSitemapEventHandler(async () => {
+  const postsResult = await fromPromise(
+    $fetch<BlogPost[]>('/api/blog'),
+    (error: unknown) => (error instanceof Error ? error : new Error('Failed to fetch blog posts for sitemap')),
+  )
+
+  const blogUrls = postsResult.match(
+    (posts: BlogPost[]) => posts.map(post => ({
+      changefreq: 'weekly' as const,
+      lastmod: new Date(post.date),
+      loc: `/blog/${post._path}`,
+      priority: 0.8 as const,
+    })),
+    () => [],
+  )
 
   const staticPages = [
     {

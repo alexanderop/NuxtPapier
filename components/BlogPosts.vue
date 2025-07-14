@@ -17,9 +17,8 @@ const {
 
 const { transitionClasses } = useAnimations()
 
-const { data: posts } = await useAsyncData(
-  `blog-posts-${type}-${limit}`,
-  async () => {
+const postsResult = await fromPromise(
+  (async () => {
     let query = queryCollection('blog')
 
     if (type === 'featured') {
@@ -41,7 +40,13 @@ const { data: posts } = await useAsyncData(
       .order('date', 'DESC')
       .limit(limit)
       .all()
-  },
+  })(),
+  error => new Error(`Failed to fetch blog posts: ${error}`),
+)
+
+const posts = postsResult.match(
+  data => data,
+  () => [], // fallback to empty array if query fails
 )
 </script>
 

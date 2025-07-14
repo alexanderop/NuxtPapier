@@ -1,12 +1,23 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 
-const { data: page } = await useAsyncData(
-  'home-page',
-  () => queryCollection('pages').path('/').first(),
+const pageResult = await fromPromise(
+  queryCollection('pages').path('/').first(),
+  error => new Error(`Failed to fetch home page: ${error}`),
 )
 
-if (!page.value) {
+const page = pageResult.match(
+  data => data,
+  () => {
+    throw createError({
+      fatal: true,
+      statusCode: 404,
+      statusMessage: 'Home page not found',
+    })
+  },
+)
+
+if (!page) {
   throw createError({
     fatal: true,
     statusCode: 404,
@@ -14,14 +25,14 @@ if (!page.value) {
   })
 }
 
-const { pageTitle, pageDescription } = usePageMeta(page.value, {
+const { pageTitle, pageDescription } = usePageMeta(page, {
   fallbackDescription: appConfig.site.desc,
   isHomePage: true,
 })
 
 // Generate simple OG image for home page
 defineOgImageComponent('Simple', {
-  title: pageTitle || appConfig.site.title,
+  title: pageTitle ?? appConfig.site.title,
 })
 
 useEnhancedSeoMeta({

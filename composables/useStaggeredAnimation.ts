@@ -32,7 +32,7 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
 
   // Methods
   const animateElements = () => {
-    try {
+    const result = fromThrowable(() => {
       error.value = null
       isAnimating.value = true
       animatedCount.value = 0
@@ -55,24 +55,36 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
           }
         }, index * staggerDelay)
       })
-    }
-    catch (err) {
-      error.value = err instanceof Error ? err : new Error('Animation failed')
-      isAnimating.value = false
-    }
+    })()
+
+    result.match(
+      () => {
+        // Animation succeeded
+      },
+      (err) => {
+        error.value = err instanceof Error ? err : new Error('Animation failed')
+        isAnimating.value = false
+      },
+    )
   }
 
   const resetAnimations = () => {
-    try {
+    const result = fromThrowable(() => {
       const elements = document.querySelectorAll(selector)
       elements.forEach((element) => {
         element.classList.remove(animationClass)
       })
       animatedCount.value = 0
-    }
-    catch (err) {
-      error.value = err instanceof Error ? err : new Error('Reset failed')
-    }
+    })()
+
+    result.match(
+      () => {
+        // Reset succeeded
+      },
+      (err) => {
+        error.value = err instanceof Error ? err : new Error('Reset failed')
+      },
+    )
   }
 
   const replay = () => {
