@@ -45,7 +45,6 @@ export default defineAppConfig({
     // Pagination settings
     pagination: {
       postsPerPage: 5,
-      showPageNumbers: false, // MVP uses Previous/Next only
     },
 
     // Posts per index page

@@ -18,7 +18,6 @@ export interface Site {
   animations: boolean
   pagination: {
     postsPerPage: number
-    showPageNumbers: boolean
   }
 }
 

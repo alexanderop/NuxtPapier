@@ -25,19 +25,14 @@ const {
 <template>
   <div class="flex items-center justify-between">
     <!-- Previous Button -->
-    <button
-      type="button"
+    <BaseButton
+      variant="ghost"
       :disabled="!hasPrevious"
-      class="px-4 py-2 border rounded-md transition-colors duration-200"
-      :class="[
-        hasPrevious
-          ? 'border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white'
-          : 'border-[var(--color-border)] text-[var(--color-text-muted)] cursor-not-allowed',
-      ]"
+      icon="i-heroicons-arrow-left-20-solid"
       @click="goToPrevious"
     >
-      ← Previous
-    </button>
+      Previous
+    </BaseButton>
 
     <!-- Page Info -->
     <span class="text-sm text-[var(--color-text-muted)]">
@@ -45,18 +40,14 @@ const {
     </span>
 
     <!-- Next Button -->
-    <button
-      type="button"
+    <BaseButton
+      variant="ghost"
       :disabled="!hasNext"
-      class="px-4 py-2 border rounded-md transition-colors duration-200"
-      :class="[
-        hasNext
-          ? 'border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white'
-          : 'border-[var(--color-border)] text-[var(--color-text-muted)] cursor-not-allowed',
-      ]"
+      icon="i-heroicons-arrow-right-20-solid"
+      icon-position="right"
       @click="goToNext"
     >
-      Next →
-    </button>
+      Next
+    </BaseButton>
   </div>
 </template>

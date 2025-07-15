@@ -1,77 +1,16 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
-const route = useRoute()
 
-// Get page size from config
-const pageSize = appConfig.site.pagination.postsPerPage ?? 10
-
-// Fetch total count of posts
-const { data: totalCount } = await useAsyncData(
-  'posts-total-count',
-  async () => {
-    const result = await fromPromise(
-      queryCollection('posts')
-        .where('draft', '<>', true)
-        .count(),
-      error => new Error(`Failed to count posts: ${String(error)}`),
-    )
-    return result.match(
-      count => count,
-      () => 0,
-    )
-  },
-)
-
-// Setup pagination
-const initialPage = Number.parseInt(String(route.query.page ?? '1')) || 1
+// Use pagination composable
 const {
+  posts,
   currentPage,
-  pageCount: totalPages,
-  isFirstPage,
-  isLastPage,
-  prev: goToPrevious,
-  next: goToNext,
-} = useOffsetPagination({
-  onPageChange({ currentPage }) {
-    navigateTo({
-      query: {
-        ...route.query,
-        page: currentPage > 1 ? currentPage : undefined,
-      },
-    })
-  },
-  page: initialPage,
-  pageSize,
-  total: totalCount.value ?? 0,
-})
-
-// Computed values for pagination state
-const hasPrevious = computed(() => !isFirstPage.value)
-const hasNext = computed(() => !isLastPage.value)
-const offset = computed(() => (currentPage.value - 1) * pageSize)
-
-// Fetch paginated posts
-const { data: posts } = await useAsyncData(
-  () => `posts-page-${currentPage.value}`,
-  async () => {
-    const result = await fromPromise(
-      queryCollection('posts')
-        .where('draft', '<>', true)
-        .order('date', 'DESC')
-        .skip(offset.value)
-        .limit(pageSize)
-        .all(),
-      error => new Error(`Failed to fetch posts: ${String(error)}`),
-    )
-    return result.match(
-      data => data,
-      () => [],
-    )
-  },
-  {
-    watch: [currentPage],
-  },
-)
+  totalPages,
+  hasPrevious,
+  hasNext,
+  goToPrevious,
+  goToNext,
+} = await usePaginatedPosts()
 
 // SEO meta tags
 const { pageTitle, pageDescription } = usePageMeta(
