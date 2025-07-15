@@ -248,7 +248,11 @@ try {
 
 ---
 
-```
+## Additional Development Notes
+
+* Don't run `pnpm run dev` to test something yourself only do it if I will tell you to do it
+
+---
 
 # Nuxt Content 3 — Cheat Sheet
 
@@ -406,5 +410,3 @@ You can also send a `GET` request with query‑string helpers but POST gives a c
 ### Version
 
 Applies to **Nuxt Content 3.x** (released 2025‑01‑08). Earlier versions differ dramatically.
-
-```
