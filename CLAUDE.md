@@ -236,3 +236,7 @@ try {
 2. Use UnoCSS in components
 
 ---
+
+## Development Notes
+
+* Don't run `pnpm run dev` to test something yourself only do it if I will tell you to do it
