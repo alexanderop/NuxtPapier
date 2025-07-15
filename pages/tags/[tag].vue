@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 const route = useRoute('/tags/[tag]')
-const tagParam = Array.isArray(route.params.tag) ? route.params.tag[0] : route.params.tag
-const tag = decodeURIComponent(tagParam)
+const tag = Array.isArray(route.params.tag) ? route.params.tag[0] : route.params.tag
 
 const { data: postsResult } = await useAsyncData(
   `tag-posts-${tag}`,

@@ -104,7 +104,7 @@ useStaggeredAnimation()
         <NuxtLink
           v-for="{ tag, count } in tagCounts"
           :key="tag"
-          :to="`/tags/${encodeURIComponent(tag)}`"
+          :to="`/tags/${tag}`"
           class="text-base text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-primary)]"
         >
           #{{ tag }} ({{ count }})

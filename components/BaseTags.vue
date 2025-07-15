@@ -10,7 +10,7 @@ const { tags } = defineProps<{
     <NuxtLink
       v-for="tag in tags"
       :key="tag"
-      :to="`/tags/${encodeURIComponent(tag)}`"
+      :to="`/tags/${tag}`"
       class="text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-primary)]"
     >
       #{{ tag }}
