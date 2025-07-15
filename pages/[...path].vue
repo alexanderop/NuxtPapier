@@ -1,6 +1,16 @@
 <script setup lang="ts">
 const route = useRoute()
 
+// Skip catch-all for specific routes that have their own pages
+const skipPaths = ['/tags', '/posts']
+if (skipPaths.some(path => route.path.startsWith(path))) {
+  throw createError({
+    fatal: true,
+    statusCode: 404,
+    statusMessage: 'Page not found',
+  })
+}
+
 const pageResult = await fromPromise(
   queryCollection('pages').path(route.path).first(),
   error => new Error(`Failed to fetch page: ${error}`),

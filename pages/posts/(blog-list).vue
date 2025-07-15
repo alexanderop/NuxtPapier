@@ -70,6 +70,7 @@ useStaggeredAnimation()
         :posts="[...posts]"
         type="custom"
         show-date
+        show-tags
         :show-excerpt="false"
       />
       <div v-else class="text-[var(--color-text-muted)] py-8 text-center">

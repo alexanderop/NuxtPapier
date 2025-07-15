@@ -100,10 +100,14 @@ useBreadcrumbStructuredData([
       </div>
 
       <div class="animate prose-lg max-w-none prose dark:prose-invert">
-        <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
+        <div class="not-prose text-sm text-[var(--color-text-muted)] mb-4 flex flex-wrap gap-4 items-center">
           <span v-if="post.author">{{ post.author }}</span>
           <span v-if="post.date">{{ new Date(post.date).toLocaleDateString() }}</span>
           <span>{{ readingTimeText }}</span>
+        </div>
+
+        <div v-if="post.tags && post.tags.length > 0" class="not-prose mb-8">
+          <BaseTags :tags="post.tags" />
         </div>
 
         <ContentRenderer :value="post" />

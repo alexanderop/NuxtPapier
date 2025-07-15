@@ -4,6 +4,7 @@ const {
   limit = 3,
   showExcerpt = true,
   showDate = false,
+  showTags = false,
   posts,
 } = defineProps<{
   /** Type of posts to display: featured, latest, all, or custom posts */
@@ -14,6 +15,8 @@ const {
   showExcerpt?: boolean
   /** Whether to show the post date */
   showDate?: boolean
+  /** Whether to show the post tags */
+  showTags?: boolean
   /** Custom posts array when type is 'custom' */
   posts?: any[]
 }>()
@@ -94,6 +97,11 @@ if (type !== 'custom') {
         <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed mt-2">
           {{ post.description }}
         </p>
+
+        <!-- Tags -->
+        <div v-if="showTags && post.tags && post.tags.length > 0" class="mt-3">
+          <BaseTags :tags="post.tags" />
+        </div>
       </article>
     </div>
   </div>

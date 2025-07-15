@@ -25,6 +25,12 @@
   --color-warning: #f59e0b; /* Amber 500 */
   --color-info: var(--color-primary); /* Using primary as info */
 
+  /* Tag colors for light mode */
+  --color-tag-bg: #e0e7ff; /* Indigo 100 */
+  --color-tag-text: #4338ca; /* Indigo 700 */
+  --color-tag-hover-bg: #c7d2fe; /* Indigo 200 */
+  --color-tag-hover-text: #3730a3; /* Indigo 800 */
+
   /* Shiki theme colors for light mode */
   --shiki-default-bg: #ffffff;
   --shiki-default: #24292e;
@@ -68,6 +74,12 @@ html[data-theme='dark'] {
   --color-error: #f87171; /* Red 400 - lighter for dark mode */
   --color-warning: #fbbf24; /* Amber 400 - lighter for dark mode */
   --color-info: var(--color-primary); /* Using primary as info */
+
+  /* Tag colors for dark mode */
+  --color-tag-bg: rgba(134, 67, 107, 0.3); /* Semi-transparent surface */
+  --color-tag-text: var(--color-primary); /* Using primary color */
+  --color-tag-hover-bg: rgba(134, 67, 107, 0.5); /* More opaque on hover */
+  --color-tag-hover-text: var(--color-primary-hover); /* Using primary hover */
 
   /* Shiki theme colors for dark mode */
   --shiki-dark-bg: #1e1e1e;

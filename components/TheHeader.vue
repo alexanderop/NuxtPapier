@@ -10,6 +10,7 @@ const modalStore = useModalStore()
 
 const navItems = [
   { label: 'Posts', to: '/posts' },
+  { label: 'Tags', to: '/tags' },
   { label: 'About', to: '/about' },
 ]
 
