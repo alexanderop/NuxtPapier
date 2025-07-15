@@ -42,10 +42,16 @@ export default defineAppConfig({
     // OG image filename
     ogImage: 'nuxtpapier-og.jpg',
 
+    // Pagination settings
+    pagination: {
+      postsPerPage: 5,
+      showPageNumbers: false, // MVP uses Previous/Next only
+    },
+
     // Posts per index page
     postPerIndex: 4,
 
-    // Posts per page
+    // Posts per page (deprecated - use pagination.postsPerPage)
     postPerPage: 4,
 
     // Show archives page
