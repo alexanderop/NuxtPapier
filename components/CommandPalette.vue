@@ -13,7 +13,7 @@ const {
   searchResults?: readonly {
     id: string
     title: string
-    blogTitle?: string
+    postTitle?: string
     heading?: string
     content?: string
     path: string
@@ -68,7 +68,7 @@ const localQuery = computed({
       <!-- Results -->
       <template v-if="searchResults.length > 0">
         <div class="text-xs text-[var(--color-text-muted)] tracking-wider px-4 py-2 bg-[var(--color-background)] uppercase top-0 sticky">
-          Blog
+          Posts
         </div>
         <CommandPaletteResults
           :results="searchResults"

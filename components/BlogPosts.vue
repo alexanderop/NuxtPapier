@@ -41,7 +41,7 @@ const postsResult = await fromPromise(
       .limit(limit)
       .all()
   })(),
-  error => new Error(`Failed to fetch blog posts: ${error}`),
+  error => new Error(`Failed to fetch posts: ${error}`),
 )
 
 const posts = postsResult.match(

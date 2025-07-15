@@ -8,7 +8,7 @@ const {
   result: {
     id: string
     title: string
-    blogTitle?: string
+    postTitle?: string
     heading?: string
     content?: string
     path: string
@@ -21,9 +21,9 @@ const {
 </script>
 
 <template>
-  <!-- Blog Title -->
+  <!-- Post Title -->
   <span class="text-[var(--color-text)] font-medium shrink-0">
-    {{ result.blogTitle || result.title }}
+    {{ result.postTitle || result.title }}
   </span>
 
   <!-- Separator -->
