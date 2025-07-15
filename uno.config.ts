@@ -10,47 +10,21 @@ export default defineConfig({
 
         // Prose Pre Component styles
         '.prose-pre': {
-          'border-radius': '0.5rem',
           'background-color': 'var(--shiki-default-bg)',
-          'overflow-x': 'hidden',
+          'border-radius': '0.5rem',
           'margin': '1.5rem 0',
+          'overflow-x': 'hidden',
         },
 
-        
-        '.prose-pre-head': {
-          'align-items': 'center',
-          'display': 'flex',
-          'justify-content': 'space-between',
-          'padding': '0.75rem 1rem',
-        },
-
-        
-        // Shiki code blocks styling
-'.shiki': {
-          'background-color': 'transparent !important',
-          'margin': '0',
-          'padding': '1rem',
-        },
-
-        
-'.prose-pre-body': {
-          'border-bottom-left-radius': '0.5rem',
-          'margin': '0',
-          'border-bottom-right-radius': '0.5rem',
-          'padding': '1rem 0',
-          'font-size': '0.875rem',
+        '.prose-pre-body': {
           'background-color': 'transparent',
-          'overflow-x': 'auto',
+          'border-bottom-left-radius': '0.5rem',
+          'border-bottom-right-radius': '0.5rem',
+          'font-size': '0.875rem',
           'line-height': '1.6',
-        },
-
-        // Line highlighting
-'.shiki .highlighted': {
-          'background-color': 'var(--color-primary)',
-          'display': 'block',
-          'margin': '0 -1rem',
-          'opacity': '0.1',
-          'padding': '0 1rem',
+          'margin': '0',
+          'overflow-x': 'auto',
+          'padding': '1rem 0',
         },
 
         '.prose-pre-body .line': {
@@ -59,103 +33,17 @@ export default defineConfig({
           'padding': '0 1rem',
         },
 
-        '.shiki .line': {
-          'display': 'block',
-          'min-height': '1rem',
-        },
-
         '.prose-pre-body .line span': {
           'background-color': 'transparent !important',
         },
 
-        '.shiki code': {
-          'background-color': 'transparent',
-          'font-family': 'var(--font-mono)',
-          'padding': '0',
-        },
-
-        // Line highlighting
-'.prose-pre-body .line.highlight, .prose-pre-body .line.highlighted': {
-          'background-color': 'rgba(139, 92, 246, 0.1)', // Subtle purple background
-          'position': 'relative',
-        },
-
-        
-'a': {
-          'border-bottom': '1px solid transparent',
-          'color': 'var(--color-primary)',
-          'text-decoration': 'none',
-          'transition': 'border-color 0.2s',
-        },
-        
-        'a:hover': {
-          'border-bottom-color': 'var(--color-primary)',
-        },
-
-        '.prose-pre-body .line.highlight::before, .prose-pre-body .line.highlighted::before': {
-          content: '""',
-          left: '0',
-          bottom: '0',
-          position: 'absolute',
-          background: 'var(--color-primary)',
-          top: '0',
-          width: '3px',
-        },
-
-        'blockquote': {
-          'border-left': '4px solid var(--color-primary)',
-          'color': 'var(--color-text-muted)',
-          'font-style': 'italic',
-          'padding-left': '1rem',
-        },
-
         // Diff highlighting
-'.prose-pre-body .line.diff': {
+        '.prose-pre-body .line.diff': {
           position: 'relative',
-        },
-
-        
-'code': {
-          'background-color': 'var(--color-surface)',
-          'border-radius': '0.25rem',
-          'color': 'var(--color-primary)',
-          'font-size': '0.875em',
-          'padding': '0.125rem 0.375rem',
-        },
-        
-        'h1, h2, h3, h4, h5, h6': {
-          'color': 'var(--color-text)',
-          'font-weight': '700',
-        },
-
-        '.prose-pre-body .line.diff.remove': {
-          'background-color': 'rgba(244, 63, 94, 0.05)',
-        },
-
-        'hr': {
-          'border-color': 'var(--color-border)',
         },
 
         '.prose-pre-body .line.diff.add': {
           'background-color': 'rgba(34, 197, 94, 0.05)',
-        },
-
-        'img': {
-          'border-radius': '0.5rem',
-          'margin': '0 auto',
-        },
-
-        '.prose-pre-body .line.diff.remove::after': {
-          'background': 'linear-gradient(to right, rgba(244, 63, 94, 0.1) 0%, transparent 30%)',
-          'content': '""',
-          'inset': '0',
-          'pointer-events': 'none',
-          'position': 'absolute',
-          'z-index': '0',
-        },
-
-        'li': {
-          margin: '0.25rem 0',
         },
 
         '.prose-pre-body .line.diff.add::after': {
@@ -165,14 +53,6 @@ export default defineConfig({
           'pointer-events': 'none',
           'position': 'absolute',
           'z-index': '0',
-        },
-
-        'pre': {
-          'background-color': 'var(--color-surface)',
-          'border-radius': '0.5rem',
-          'margin': '1.5rem 0',
-          'overflow-x': 'auto',
-          'padding': '0',
         },
 
         '.prose-pre-body .line.diff.add::before': {
@@ -185,13 +65,17 @@ export default defineConfig({
           'z-index': '1',
         },
 
-        'pre code': {
-          'background-color': 'transparent',
-          'color': 'inherit',
-          'display': 'block',
-          'font-size': '0.875rem',
-          'line-height': '1.7',
-          'padding': '1rem',
+        '.prose-pre-body .line.diff.remove': {
+          'background-color': 'rgba(244, 63, 94, 0.05)',
+        },
+
+        '.prose-pre-body .line.diff.remove::after': {
+          'background': 'linear-gradient(to right, rgba(244, 63, 94, 0.1) 0%, transparent 30%)',
+          'content': '""',
+          'inset': '0',
+          'pointer-events': 'none',
+          'position': 'absolute',
+          'z-index': '0',
         },
 
         '.prose-pre-body .line.diff.remove::before': {
@@ -204,9 +88,20 @@ export default defineConfig({
           'z-index': '1',
         },
 
-        'table': {
-          'border-collapse': 'collapse',
-          'width': '100%',
+        // Line highlighting
+        '.prose-pre-body .line.highlight, .prose-pre-body .line.highlighted': {
+          'background-color': 'rgba(139, 92, 246, 0.1)', // Subtle purple background
+          'position': 'relative',
+        },
+
+        '.prose-pre-body .line.highlight::before, .prose-pre-body .line.highlighted::before': {
+          background: 'var(--color-primary)',
+          bottom: '0',
+          content: '""',
+          left: '0',
+          position: 'absolute',
+          top: '0',
+          width: '3px',
         },
 
         '.prose-pre-body code': {
@@ -217,23 +112,10 @@ export default defineConfig({
           'width': '100%',
         },
 
-        'table td': {
-          border: '1px solid var(--color-border)',
-          padding: '0.5rem 1rem',
-        },
-
         // Line numbers
         '.prose-pre-body.line-numbers .line': {
           'padding-left': '3.5rem',
           'position': 'relative',
-        },
-        
-        'table th': {
-          'background-color': 'var(--color-surface)',
-          'border': '1px solid var(--color-border)',
-          'font-weight': '600',
-          'padding': '0.5rem 1rem',
-          'text-align': 'left',
         },
 
         '.prose-pre-body.line-numbers .line::before': {
@@ -248,13 +130,8 @@ export default defineConfig({
         },
 
         // Scrollbar
-'.prose-pre-body::-webkit-scrollbar': {
+        '.prose-pre-body::-webkit-scrollbar': {
           height: '6px',
-        },
-
-        
-        'ul, ol': {
-          'padding-left': '1.5rem',
         },
 
         '.prose-pre-body::-webkit-scrollbar-thumb': {
@@ -270,33 +147,148 @@ export default defineConfig({
           background: 'var(--color-surface)',
         },
 
+        '.prose-pre-head': {
+          'align-items': 'center',
+          'display': 'flex',
+          'justify-content': 'space-between',
+          'padding': '0.75rem 1rem',
+        },
+
+        // Shiki code blocks styling
+        '.shiki': {
+          'background-color': 'transparent !important',
+          'margin': '0',
+          'padding': '1rem',
+        },
+
+        '.shiki .highlighted': {
+          'background-color': 'var(--color-primary)',
+          'display': 'block',
+          'margin': '0 -1rem',
+          'opacity': '0.1',
+          'padding': '0 1rem',
+        },
+
+        '.shiki .line': {
+          'display': 'block',
+          'min-height': '1rem',
+        },
+
+        '.shiki code': {
+          'background-color': 'transparent',
+          'font-family': 'var(--font-mono)',
+          'padding': '0',
+        },
+
         // Dark mode specific
         ':root.dark .prose-pre': {
           'background-color': 'var(--shiki-dark-bg, #1e1e1e)',
         },
-        
+
         ':root.dark .prose-pre-body .line.diff.add': {
           'background-color': 'rgba(34, 197, 94, 0.08)',
-        },
-
-        ':root.dark .prose-pre-body .line.highlight, :root.dark .prose-pre-body .line.highlighted': {
-          'background-color': 'rgba(139, 92, 246, 0.2)', // Purple highlight in dark mode
         },
 
         ':root.dark .prose-pre-body .line.diff.remove': {
           'background-color': 'rgba(244, 63, 94, 0.08)',
         },
 
+        ':root.dark .prose-pre-body .line.highlight, :root.dark .prose-pre-body .line.highlighted': {
+          'background-color': 'rgba(139, 92, 246, 0.2)', // Purple highlight in dark mode
+        },
+
         ':root:not(.dark) .prose-pre-body .line.diff.add': {
           'background-color': 'rgba(34, 197, 94, 0.06)',
+        },
+
+        ':root:not(.dark) .prose-pre-body .line.diff.remove': {
+          'background-color': 'rgba(244, 63, 94, 0.06)',
         },
 
         ':root:not(.dark) .prose-pre-body .line.highlight, :root:not(.dark) .prose-pre-body .line.highlighted': {
           'background-color': 'rgba(139, 92, 246, 0.08)',
         },
 
-        ':root:not(.dark) .prose-pre-body .line.diff.remove': {
-          'background-color': 'rgba(244, 63, 94, 0.06)',
+        'a': {
+          'border-bottom': '1px solid transparent',
+          'color': 'var(--color-primary)',
+          'text-decoration': 'none',
+          'transition': 'border-color 0.2s',
+        },
+
+        'a:hover': {
+          'border-bottom-color': 'var(--color-primary)',
+        },
+
+        'blockquote': {
+          'border-left': '4px solid var(--color-primary)',
+          'color': 'var(--color-text-muted)',
+          'font-style': 'italic',
+          'padding-left': '1rem',
+        },
+        'code': {
+          'background-color': 'var(--color-surface)',
+          'border-radius': '0.25rem',
+          'color': 'var(--color-primary)',
+          'font-size': '0.875em',
+          'padding': '0.125rem 0.375rem',
+        },
+
+        'h1, h2, h3, h4, h5, h6': {
+          'color': 'var(--color-text)',
+          'font-weight': '700',
+        },
+
+        'hr': {
+          'border-color': 'var(--color-border)',
+        },
+
+        'img': {
+          'border-radius': '0.5rem',
+          'margin': '0 auto',
+        },
+
+        'li': {
+          margin: '0.25rem 0',
+        },
+
+        'pre': {
+          'background-color': 'var(--color-surface)',
+          'border-radius': '0.5rem',
+          'margin': '1.5rem 0',
+          'overflow-x': 'auto',
+          'padding': '0',
+        },
+
+        'pre code': {
+          'background-color': 'transparent',
+          'color': 'inherit',
+          'display': 'block',
+          'font-size': '0.875rem',
+          'line-height': '1.7',
+          'padding': '1rem',
+        },
+
+        'table': {
+          'border-collapse': 'collapse',
+          'width': '100%',
+        },
+
+        'table td': {
+          border: '1px solid var(--color-border)',
+          padding: '0.5rem 1rem',
+        },
+
+        'table th': {
+          'background-color': 'var(--color-surface)',
+          'border': '1px solid var(--color-border)',
+          'font-weight': '600',
+          'padding': '0.5rem 1rem',
+          'text-align': 'left',
+        },
+
+        'ul, ol': {
+          'padding-left': '1.5rem',
         },
       },
       selectorName: 'prose',
