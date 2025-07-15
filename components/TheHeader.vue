@@ -9,7 +9,7 @@ const [menuOpen, toggleMenu] = useToggle(false)
 const modalStore = useModalStore()
 
 const navItems = [
-  { label: 'Blog', to: '/blog' },
+  { label: 'Posts', to: '/posts' },
   { label: 'About', to: '/about' },
 ]
 

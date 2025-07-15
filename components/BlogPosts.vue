@@ -4,57 +4,71 @@ const {
   limit = 3,
   showExcerpt = true,
   showDate = false,
+  posts,
 } = defineProps<{
-  /** Type of posts to display: featured, latest, or all posts */
-  type?: 'featured' | 'latest' | 'all'
+  /** Type of posts to display: featured, latest, all, or custom posts */
+  type?: 'featured' | 'latest' | 'all' | 'custom'
   /** Maximum number of posts to display */
   limit?: number
   /** Whether to show the post excerpt/description */
   showExcerpt?: boolean
   /** Whether to show the post date */
   showDate?: boolean
+  /** Custom posts array when type is 'custom' */
+  posts?: any[]
 }>()
 
 const { transitionClasses } = useAnimations()
 
-const postsResult = await fromPromise(
-  (async () => {
-    let query = queryCollection('blog')
+const postsData = ref<any[]>([])
 
-    if (type === 'featured') {
-      // For featured posts, only show posts marked as featured
-      query = query.where('featured', '=', true)
-    }
-    else if (type === 'latest') {
-      // For latest posts, exclude drafts and featured posts
-      query = query
-        .where('draft', '<>', true)
-        .where('featured', '<>', true)
-    }
-    else if (type === 'all') {
-      // For all posts, only exclude drafts
-      query = query.where('draft', '<>', true)
-    }
+const displayPosts = computed(() => {
+  if (type === 'custom' && posts) {
+    return posts
+  }
+  return postsData.value
+})
 
-    return await query
-      .order('date', 'DESC')
-      .limit(limit)
-      .all()
-  })(),
-  error => new Error(`Failed to fetch blog posts: ${error}`),
-)
+if (type !== 'custom') {
+  const postsResult = await fromPromise(
+    (async () => {
+      let query = queryCollection('posts')
 
-const posts = postsResult.match(
-  data => data,
-  () => [], // fallback to empty array if query fails
-)
+      if (type === 'featured') {
+        // For featured posts, only show posts marked as featured
+        query = query.where('featured', '=', true)
+      }
+      else if (type === 'latest') {
+        // For latest posts, exclude drafts and featured posts
+        query = query
+          .where('draft', '<>', true)
+          .where('featured', '<>', true)
+      }
+      else if (type === 'all') {
+        // For all posts, only exclude drafts
+        query = query.where('draft', '<>', true)
+      }
+
+      return await query
+        .order('date', 'DESC')
+        .limit(limit)
+        .all()
+    })(),
+    error => new Error(`Failed to fetch posts: ${error}`),
+  )
+
+  postsData.value = postsResult.match(
+    data => data,
+    () => [], // fallback to empty array if query fails
+  )
+}
 </script>
 
 <template>
-  <div v-if="posts && posts.length > 0" class="my-8">
+  <div v-if="displayPosts && displayPosts.length > 0" class="my-8">
     <div class="space-y-4">
       <article
-        v-for="(post, index) in posts"
+        v-for="(post, index) in displayPosts"
         :key="`post-${index}`"
         class="group animate"
       >

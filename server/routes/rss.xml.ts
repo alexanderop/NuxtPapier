@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
   // Query blog posts - use queryCollection with event
   // @ts-expect-error - Nuxt Content v3 requires event parameter in server context
-  const posts = await queryCollection(event, 'blog')
+  const posts = await queryCollection(event, 'posts')
     .where('draft', '=', false)
     .limit(20)
     .all()
