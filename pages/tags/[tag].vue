@@ -14,15 +14,19 @@ const { data: postsResult } = await useAsyncData(
       error => new Error(`Failed to fetch posts: ${error}`),
     )
 
-    return result
+    // Serialize the result for SSR
+    if (result.isOk()) {
+      return { isOk: true, value: result.value }
+    }
+    return { error: result.error.message, isOk: false }
   },
 )
 
-const isPostsError = computed(() => postsResult.value?.isErr() ?? false)
-const postsError = computed(() => (postsResult.value?.isErr() ? postsResult.value.error : null))
+const isPostsError = computed(() => postsResult.value?.isOk === false ?? false)
+const postsError = computed(() => (postsResult.value?.isOk === false ? postsResult.value.error : null))
 
 const filteredPosts = computed(() => {
-  if (!postsResult.value || postsResult.value.isErr()) {
+  if (!postsResult.value || !postsResult.value.isOk) {
     return []
   }
 

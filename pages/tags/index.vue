@@ -13,17 +13,21 @@ const { data: postsResult } = await useAsyncData(
       error => new Error(`Failed to fetch tags: ${error}`),
     )
 
-    return result
+    // Serialize the result for SSR
+    if (result.isOk()) {
+      return { isOk: true, value: result.value }
+    }
+    return { error: result.error.message, isOk: false }
   },
 )
 
 // Handle error state
-const isTagsError = computed(() => postsResult.value?.isErr() ?? false)
-const tagsError = computed(() => (postsResult.value?.isErr() ? postsResult.value.error : null))
+const isTagsError = computed(() => postsResult.value?.isOk === false ?? false)
+const tagsError = computed(() => (postsResult.value?.isOk === false ? postsResult.value.error : null))
 
 // Count posts per tag
 const tagCounts = computed(() => {
-  if (!postsResult.value || postsResult.value.isErr()) {
+  if (!postsResult.value || !postsResult.value.isOk) {
     return []
   }
 
