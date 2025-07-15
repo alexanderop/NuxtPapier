@@ -8,13 +8,13 @@ export default defineAppConfig({
       description: 'Learn more about the person behind this blog.',
       title: 'About',
     } satisfies Metadata,
-    blog: {
-      description: 'A collection of articles on web development, design, and technology.',
-      title: 'Blog',
-    } satisfies Metadata,
     home: {
       description: 'Welcome to NuxtPapier - A minimal, responsive and SEO-friendly Nuxt blog theme.',
       title: 'Home',
+    } satisfies Metadata,
+    posts: {
+      description: 'A collection of articles on web development, design, and technology.',
+      title: 'Posts',
     } satisfies Metadata,
   },
   site: {

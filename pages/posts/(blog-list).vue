@@ -3,16 +3,16 @@ const appConfig = useAppConfig()
 
 // SEO meta tags
 const { pageTitle, pageDescription } = usePageMeta(
-  { title: 'Blog' },
+  { title: 'Posts' },
   {
     customSuffix: appConfig.site.title,
-    fallbackDescription: appConfig.pages.blog?.description || `Latest blog posts from ${appConfig.site.title}`,
+    fallbackDescription: appConfig.pages.posts?.description || `Latest posts from ${appConfig.site.title}`,
   },
 )
 
 // Generate simple OG image for blog list
 defineOgImageComponent('Simple', {
-  title: pageTitle || 'Blog',
+  title: pageTitle || 'Posts',
 })
 
 useEnhancedSeoMeta({
@@ -24,7 +24,7 @@ useEnhancedSeoMeta({
 // Add breadcrumb structured data
 useBreadcrumbStructuredData([
   { name: 'Home', url: '/' },
-  { name: 'Blog' },
+  { name: 'Posts' },
 ])
 
 // Enable staggered animations
@@ -38,14 +38,14 @@ useStaggeredAnimation()
       <Breadcrumbs
         :items="[
           { name: 'Home', url: '/' },
-          { name: 'Blog' },
+          { name: 'Posts' },
         ]"
       />
     </div>
 
     <div class="mb-12">
       <h1 class="animate text-4xl font-bold mb-4">
-        Blog
+        Posts
       </h1>
       <p class="animate text-lg text-[var(--color-text-muted)]">
         {{ pageDescription }}

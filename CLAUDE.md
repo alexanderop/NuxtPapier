@@ -37,6 +37,7 @@ Enables Claude to:
 * Monitor network
 * Generate tests
 * Manage multiple tabs
+* **IMPORTANT**: Never execute the Playwright MCP server yourself, only do it when specifically asked
 
 ### ast-grep
 Use ast-grep for efficient code searching with structural patterns:
@@ -89,6 +90,9 @@ ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
 * **Avoid**: `any`, `let`, `else`, `try/catch` (use neverthrow instead)
 * **Variables**: Use descriptive names (`searchQuery`, `userProfile`)
 * **Comments**: Only for complex logic—favor self-explanatory code
+* **Conditional Logic**: Always extract complex conditions to descriptive variables for readability
+  * Avoid: `if (a == b && c === z)`
+  * Prefer: `const isValidCondition = a == b && c === z; if (isValidCondition) { ... }`
 
 ---
 
@@ -98,7 +102,7 @@ ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
 
 * Uses `@nuxt/content v3`
 * Markdown files in `/content`
-* Collections: `pages`, `blog`
+* Collections: `pages`, `posts`
 * Reading time auto-calculated
 * Drafts via `published: false`
 * Config: `content.config.ts`
@@ -137,7 +141,7 @@ ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
 * File-based routing
 * Catch-all: `pages/[...path].vue`
 * Homepage: `pages/(home).vue`
-* Blog posts: `/blog/[postSlug]`
+* Blog posts: `/posts/[postSlug]`
 * Custom 404 supported
 
 ---
@@ -212,11 +216,17 @@ try {
 
 ---
 
+## Development Notes
+
+* Always when something can fail, use patterns from neverthrow package
+
+---
+
 ## Common Tasks
 
 ### Add Blog Post
 
-1. Add `.md` file to `/content/blog/`
+1. Add `.md` file to `/content/posts/`
 2. Include frontmatter: `title`, `description`, `date`, `published`
 3. Optional: `tags`, `image`
 
@@ -236,3 +246,5 @@ try {
 2. Use UnoCSS in components
 
 ---
+
+```

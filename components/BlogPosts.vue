@@ -19,7 +19,7 @@ const { transitionClasses } = useAnimations()
 
 const postsResult = await fromPromise(
   (async () => {
-    let query = queryCollection('blog')
+    let query = queryCollection('posts')
 
     if (type === 'featured') {
       // For featured posts, only show posts marked as featured
