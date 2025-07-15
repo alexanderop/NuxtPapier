@@ -16,6 +16,10 @@ export interface Site {
   lang: string
   timezone: string
   animations: boolean
+  pagination: {
+    postsPerPage: number
+    showPageNumbers: boolean
+  }
 }
 
 export interface Metadata {

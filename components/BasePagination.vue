@@ -7,22 +7,26 @@ const {
   goToPrevious,
   goToNext,
 } = defineProps<{
+  /** Current page number */
   currentPage: number
+  /** Total number of pages */
   totalPages: number
+  /** Whether there is a previous page */
   hasPrevious: boolean
+  /** Whether there is a next page */
   hasNext: boolean
+  /** Function to navigate to previous page */
   goToPrevious: () => void
+  /** Function to navigate to next page */
   goToNext: () => void
 }>()
-
-const appConfig = useAppConfig()
-const { showPageNumbers } = appConfig.site.pagination
 </script>
 
 <template>
   <div class="flex items-center justify-between">
     <!-- Previous Button -->
     <button
+      type="button"
       :disabled="!hasPrevious"
       class="px-4 py-2 border rounded-md transition-colors duration-200"
       :class="[
@@ -42,6 +46,7 @@ const { showPageNumbers } = appConfig.site.pagination
 
     <!-- Next Button -->
     <button
+      type="button"
       :disabled="!hasNext"
       class="px-4 py-2 border rounded-md transition-colors duration-200"
       :class="[

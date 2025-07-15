@@ -20,14 +20,14 @@ const {
 
 const { transitionClasses } = useAnimations()
 
+const postsData = ref<any[]>([])
+
 const displayPosts = computed(() => {
   if (type === 'custom' && posts) {
     return posts
   }
   return postsData.value
 })
-
-const postsData = ref<any[]>([])
 
 if (type !== 'custom') {
   const postsResult = await fromPromise(

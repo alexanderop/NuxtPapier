@@ -219,6 +219,7 @@ try {
 ## Development Notes
 
 * Always when something can fail, use patterns from neverthrow package
+* Never sue any if you have to use unknown instead
 
 ---
 
@@ -249,7 +250,7 @@ try {
 
 ```
 
-# Nuxt Content 3 — Cheat Sheet
+# Nuxt Content 3 — Cheat Sheet
 
 *A developer‑focused quick reference covering composables, filters, and the REST `_content` endpoint.*
 
@@ -269,7 +270,7 @@ try {
 
 ## 🔍 Query Utilities
 
-### 1 · `queryCollection()`
+### 1 · `queryCollection()`
 
 ```ts
 const posts = await queryCollection('blog')
@@ -298,7 +299,7 @@ Supported comparison strings for `where()`:
 'IS NULL'  'IS NOT NULL'  'LIKE'  'NOT LIKE'
 ```
 
-Example — *draft filtering & “starts‑with” search using `LIKE`*
+Example — *draft filtering & "starts‑with" search using `LIKE`*
 
 ```ts
 queryCollection('docs')
@@ -307,7 +308,7 @@ queryCollection('docs')
   .all()
 ```
 
-### 2 · `queryCollectionNavigation()`
+### 2 · `queryCollectionNavigation()`
 
 ```ts
 const nav = await queryCollectionNavigation('docs', ['badge'])
@@ -317,13 +318,13 @@ const nav = await queryCollectionNavigation('docs', ['badge'])
 
 Returns a tree of `ContentNavigationItem` objects (reads `.navigation.yml`).
 
-### 3 · `queryCollectionItemSurroundings()`
+### 3 · `queryCollectionItemSurroundings()`
 
 ```ts
 const [prev, next] = await queryCollectionItemSurroundings('docs', '/guide/setup')
 ```
 
-### 4 · `queryCollectionSearchSections()`
+### 4 · `queryCollectionSearchSections()`
 
 ```ts
 const sections = await queryCollectionSearchSections('docs', {
@@ -362,7 +363,7 @@ export default eventHandler(async (event) => {
 
 Nuxt exposes the same query engine via an HTTP API (handy for CLI tests or external integrations).
 
-**Route** `POST /api/_content/query`
+**Route** `POST /api/_content/query`
 
 **Request body (JSON)**
 
@@ -404,4 +405,6 @@ You can also send a `GET` request with query‑string helpers but POST gives a c
 
 ### Version
 
-Applies to **Nuxt Content 3.x** (released 2025‑01‑08). Earlier versions differ dramatically.
+Applies to **Nuxt Content 3.x** (released 2025‑01‑08). Earlier versions differ dramatically.
+
+```
