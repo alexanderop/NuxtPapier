@@ -62,7 +62,7 @@ export default defineNuxtConfig({
     'content:file:afterParse': function (ctx) {
       const { file, content } = ctx
 
-      if (!file.path.includes('/blog/'))
+      if (!file.path.includes('/posts/'))
         return
 
       const wordsPerMinute = 180

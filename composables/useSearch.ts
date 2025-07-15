@@ -25,9 +25,9 @@ export function useSearch() {
     loading.value = true
     error.value = null
 
-    // Query search sections from blog collection using neverthrow
+    // Query search sections from posts collection using neverthrow
     const result = await fromPromise(
-      queryCollectionSearchSections('blog'),
+      queryCollectionSearchSections('posts'),
       error => (error instanceof Error ? error : new Error('Failed to load search data')),
     )
 
@@ -79,7 +79,7 @@ export function useSearch() {
         || section.content.toLowerCase().includes(q),
       )
       .map((section) => {
-        // Section IDs are already in the format: /blog/slug or /blog/slug#anchor
+        // Section IDs are already in the format: /posts/slug or /posts/slug#anchor
         // Just use them directly as the path
         const path = section.id
 
@@ -91,7 +91,7 @@ export function useSearch() {
         return {
           blogTitle,
           breadcrumb: section.titles.length > 0 ? section.titles : [section.title],
-          category: 'Blog',
+          category: 'Posts',
           content: getContentSnippet(section.content, query.value),
           heading,
           id: section.id,

@@ -3,7 +3,18 @@ import { asSitemapCollection } from '@nuxtjs/sitemap/content'
 
 export default defineContentConfig({
   collections: {
-    blog: defineCollection(
+    pages: defineCollection(
+      asSitemapCollection({
+        schema: z.object({
+          description: z.string().min(1),
+          ogImage: z.string().optional(),
+          title: z.string().min(1),
+        }),
+        source: '*.md',
+        type: 'page',
+      }),
+    ),
+    posts: defineCollection(
       asSitemapCollection({
         schema: z.object({
           author: z.string().min(1).optional(),
@@ -18,18 +29,7 @@ export default defineContentConfig({
           title: z.string().min(1),
           updatedAt: z.string().datetime().optional(),
         }),
-        source: 'blog/**/*.md',
-        type: 'page',
-      }),
-    ),
-    pages: defineCollection(
-      asSitemapCollection({
-        schema: z.object({
-          description: z.string().min(1),
-          ogImage: z.string().optional(),
-          title: z.string().min(1),
-        }),
-        source: '*.md',
+        source: 'posts/**/*.md',
         type: 'page',
       }),
     ),

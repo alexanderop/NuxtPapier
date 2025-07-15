@@ -5,8 +5,8 @@ const appConfig = useAppConfig()
 const { postSlug } = route.params
 
 const postResult = await fromPromise(
-  queryCollection('blog').path(`/blog/${postSlug}`).first(),
-  error => new Error(`Failed to fetch blog post: ${error}`),
+  queryCollection('posts').path(`/posts/${postSlug}`).first(),
+  error => new Error(`Failed to fetch Post: ${error}`),
 )
 
 const post = postResult.match(
@@ -15,7 +15,7 @@ const post = postResult.match(
       throw createError({
         fatal: true,
         statusCode: 404,
-        statusMessage: 'Blog post not found',
+        statusMessage: 'Post not found',
       })
     }
     return data
@@ -24,7 +24,7 @@ const post = postResult.match(
     throw createError({
       fatal: true,
       statusCode: 404,
-      statusMessage: 'Blog post not found',
+      statusMessage: 'Post not found',
     })
   },
 )
@@ -77,7 +77,7 @@ useArticleStructuredData({
 
 useBreadcrumbStructuredData([
   { name: 'Home', url: '/' },
-  { name: 'Blog', url: '/blog' },
+  { name: 'Posts', url: '/posts' },
   { name: post.title },
 ])
 </script>
@@ -93,7 +93,7 @@ useBreadcrumbStructuredData([
         <Breadcrumbs
           :items="[
             { name: 'Home', url: '/' },
-            { name: 'Blog', url: '/blog' },
+            { name: 'Posts', url: '/posts' },
             { name: post.title },
           ]"
         />

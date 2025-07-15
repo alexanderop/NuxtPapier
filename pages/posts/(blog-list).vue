@@ -1,18 +1,29 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 
+// Use pagination composable
+const {
+  posts,
+  currentPage,
+  totalPages,
+  hasPrevious,
+  hasNext,
+  goToPrevious,
+  goToNext,
+} = await usePaginatedPosts()
+
 // SEO meta tags
 const { pageTitle, pageDescription } = usePageMeta(
-  { title: 'Blog' },
+  { title: 'Posts' },
   {
     customSuffix: appConfig.site.title,
-    fallbackDescription: appConfig.pages.blog?.description || `Latest blog posts from ${appConfig.site.title}`,
+    fallbackDescription: appConfig.pages.posts?.description || `Latest posts from ${appConfig.site.title}`,
   },
 )
 
 // Generate simple OG image for blog list
 defineOgImageComponent('Simple', {
-  title: pageTitle || 'Blog',
+  title: pageTitle || 'Posts',
 })
 
 useEnhancedSeoMeta({
@@ -24,7 +35,7 @@ useEnhancedSeoMeta({
 // Add breadcrumb structured data
 useBreadcrumbStructuredData([
   { name: 'Home', url: '/' },
-  { name: 'Blog' },
+  { name: 'Posts' },
 ])
 
 // Enable staggered animations
@@ -38,27 +49,43 @@ useStaggeredAnimation()
       <Breadcrumbs
         :items="[
           { name: 'Home', url: '/' },
-          { name: 'Blog' },
+          { name: 'Posts' },
         ]"
       />
     </div>
 
     <div class="mb-12">
       <h1 class="animate text-4xl font-bold mb-4">
-        Blog
+        Posts
       </h1>
       <p class="animate text-lg text-[var(--color-text-muted)]">
         {{ pageDescription }}
       </p>
     </div>
 
-    <!-- Use BaseBlogPosts component to display all posts -->
+    <!-- Display paginated posts -->
     <div class="animate">
       <BlogPosts
-        type="all"
-        :limit="100"
+        v-if="posts && posts.length > 0"
+        :posts="[...posts]"
+        type="custom"
         show-date
         :show-excerpt="false"
+      />
+      <div v-else class="text-[var(--color-text-muted)] py-8 text-center">
+        No posts found.
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div v-if="totalPages > 1" class="animate mt-12">
+      <BasePagination
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        :has-previous="hasPrevious"
+        :has-next="hasNext"
+        :go-to-previous="goToPrevious"
+        :go-to-next="goToNext"
       />
     </div>
   </div>

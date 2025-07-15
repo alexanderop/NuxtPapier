@@ -12,7 +12,7 @@ const {
   searchResults?: readonly {
     id: string
     title: string
-    blogTitle?: string
+    postTitle?: string
     heading?: string
     content?: string
     path: string
