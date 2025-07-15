@@ -6,7 +6,7 @@ const { postSlug } = route.params
 
 const postResult = await fromPromise(
   queryCollection('posts').path(`/posts/${postSlug}`).first(),
-  error => new Error(`Failed to fetch blog post: ${error}`),
+  error => new Error(`Failed to fetch Post: ${error}`),
 )
 
 const post = postResult.match(
@@ -24,7 +24,7 @@ const post = postResult.match(
     throw createError({
       fatal: true,
       statusCode: 404,
-      statusMessage: 'Blog post not found',
+      statusMessage: 'Post not found',
     })
   },
 )
