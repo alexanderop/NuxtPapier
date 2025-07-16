@@ -12,7 +12,12 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "clean": "rm -rf .nuxt .data .output node_modules/.cache",
-    "clean:content": "rm -f .data/content/contents.sqlite"
+    "clean:content": "rm -f .data/content/contents.sqlite",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:server": "./scripts/test-e2e-with-server.sh"
   },
   "dependencies": {
     "@nuxt/content": "3.6.1",
@@ -37,6 +42,8 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",
+    "@nuxt/test-utils": "^3.19.2",
+    "@playwright/test": "^1.54.1",
     "@types/rss": "^0.0.32",
     "@types/unist": "^3.0.3",
     "@typescript-eslint/parser": "^8.36.0",
@@ -50,6 +57,7 @@
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "eslint-utils": "^3.0.0",
+    "playwright-core": "^1.54.1",
     "sass": "^1.89.2",
     "unist-util-visit": "^5.0.0",
     "unocss": "^66.3.2"
