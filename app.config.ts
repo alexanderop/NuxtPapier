@@ -68,6 +68,7 @@ export default defineAppConfig({
     // IMPORTANT: Set your production URL here or via NUXT_PUBLIC_SITE_URL environment variable
     // This is required for proper canonical URLs and social media sharing
     // Example: 'https://yourdomain.com' (without trailing slash)
+    // This will be populated from runtime config in plugins/site-url.client.ts
     website: '',
   } satisfies Site,
   socials: SOCIALS,

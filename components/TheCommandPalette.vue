@@ -20,28 +20,6 @@ watchEffect(() => {
   }
 })
 
-// Handle keyboard navigation
-function handleKeyDown(e: KeyboardEvent) {
-  switch (e.key) {
-    case 'ArrowDown':
-      e.preventDefault()
-      palette.next(search.results.value.length)
-      break
-    case 'ArrowUp':
-      e.preventDefault()
-      palette.prev()
-      break
-    case 'Enter':
-      e.preventDefault()
-      handleSelect()
-      break
-    case 'Escape':
-      e.preventDefault()
-      handleClose()
-      break
-  }
-}
-
 function handleClose() {
   palette.close()
   search.clear()
@@ -156,6 +134,15 @@ onMounted(() => {
   palette.open()
 })
 
+// Handle navigation
+function handleNext() {
+  palette.next(search.results.value.length)
+}
+
+function handlePrev() {
+  palette.prev(search.results.value.length)
+}
+
 // Clean up the command palette state
 onUnmounted(() => {
   palette.close()
@@ -164,7 +151,7 @@ onUnmounted(() => {
 
 <template>
   <CommandPalette
-    :query="query"
+    v-model:query="query"
     :search-results="search.results.value"
     :search-loading="search.loading.value"
     :selected-index="palette.selected.value"
@@ -172,7 +159,7 @@ onUnmounted(() => {
     @close="handleClose"
     @select="handleSelect"
     @hover="palette.select"
-    @keydown="handleKeyDown"
-    @update:query="(value: string) => query = value"
+    @next="handleNext"
+    @prev="handlePrev"
   />
 </template>

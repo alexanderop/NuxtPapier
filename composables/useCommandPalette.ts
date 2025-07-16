@@ -14,11 +14,11 @@ export function useCommandPalette() {
   }
 
   function next(max: number) {
-    selected.value = Math.min(selected.value + 1, max - 1)
+    selected.value = (selected.value + 1) % max
   }
 
-  function prev() {
-    selected.value = Math.max(selected.value - 1, 0)
+  function prev(max: number) {
+    selected.value = selected.value === 0 ? max - 1 : selected.value - 1
   }
 
   function reset() {
