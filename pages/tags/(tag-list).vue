@@ -3,6 +3,14 @@ const appConfig = useAppConfig()
 
 const { tagInfos, loading, error } = useTags()
 
+// Create tag URLs for all tags
+const tagUrls = computed(() =>
+  tagInfos.value.map(tagInfo => ({
+    ...tagInfo,
+    url: useTagUrl(tagInfo.tag).value,
+  })),
+)
+
 const { pageTitle, pageDescription } = usePageMeta(
   { title: 'Tags' },
   {
@@ -57,11 +65,11 @@ useStaggeredAnimation()
       Loading tags...
     </div>
 
-    <div v-else-if="tagInfos.length > 0" class="animate">
+    <div v-else-if="tagUrls.length > 0" class="animate">
       <ul class="gap-4 grid lg:grid-cols-3 sm:grid-cols-2">
-        <li v-for="tagInfo in tagInfos" :key="tagInfo.tag">
+        <li v-for="tagInfo in tagUrls" :key="tagInfo.tag">
           <NuxtLink
-            :to="`/tags/${tagInfo.tag}`"
+            :to="tagInfo.url"
             class="group p-4 rounded-lg bg-[var(--color-surface-elevated)] flex transition-colors items-center justify-between hover:bg-[var(--color-surface-hover)]"
           >
             <span class="text-lg font-medium group-hover:text-[var(--color-primary)]">

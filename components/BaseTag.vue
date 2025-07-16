@@ -1,14 +1,14 @@
 <script setup lang="ts">
-interface Props {
+const { tag, variant = 'default', clickable = true } = defineProps<{
   /** The tag text to display */
   tag: string
   /** The size variant of the tag */
   variant?: 'default' | 'small'
   /** Whether the tag should be clickable and link to the tag page */
   clickable?: boolean
-}
+}>()
 
-const { tag, variant = 'default', clickable = true } = defineProps<Props>()
+const tagUrl = useTagUrl(tag)
 
 const tagClasses = computed(() => {
   const baseClasses = 'inline-flex items-center rounded-full transition-colors'
@@ -27,7 +27,7 @@ const tagClasses = computed(() => {
 <template>
   <component
     :is="clickable ? 'NuxtLink' : 'span'"
-    :to="clickable ? `/tags/${tag}` : undefined"
+    :to="clickable ? tagUrl : undefined"
     :class="tagClasses"
   >
     {{ tag }}

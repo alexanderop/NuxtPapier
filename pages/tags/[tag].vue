@@ -2,7 +2,8 @@
 const route = useRoute('/tags/[tag]')
 const appConfig = useAppConfig()
 
-const tag = String(route.params.tag)
+const encodedTag = String(route.params.tag)
+const tag = useTagFromRoute(encodedTag)
 
 const {
   posts,
