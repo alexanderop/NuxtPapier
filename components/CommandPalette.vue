@@ -32,18 +32,47 @@ const emit = defineEmits<{
   'close': []
   'select': [index: number]
   'hover': [index: number]
-  'keydown': [event: KeyboardEvent]
   'update:query': [value: string]
+  'next': []
+  'prev': []
 }>()
 
 const localQuery = computed({
   get: () => query,
   set: value => emit('update:query', value),
 })
+
+const containerRef = useTemplateRef<HTMLDivElement>('containerRef')
+
+// Focus the container when component mounts
+onMounted(() => {
+  containerRef.value?.focus()
+})
+
+// Use VueUse's onKeyStroke for keyboard navigation
+onKeyStroke(['ArrowDown', 'ArrowUp', 'Enter', 'Escape'], (e) => {
+  e.preventDefault()
+
+  switch (e.key) {
+    case 'ArrowDown':
+      emit('next')
+      break
+    case 'ArrowUp':
+      emit('prev')
+      break
+    case 'Enter':
+      emit('select', selectedIndex)
+      break
+    case 'Escape':
+      emit('close')
+      break
+  }
+})
 </script>
 
 <template>
   <div
+    ref="containerRef"
     class="border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] flex flex-col h-[500px] max-h-[70vh] shadow-2xl relative" :class="[
       containerClass,
     ]"
@@ -53,7 +82,6 @@ const localQuery = computed({
     aria-controls="command-results"
     aria-haspopup="listbox"
     tabindex="-1"
-    @keydown="emit('keydown', $event)"
   >
     <!-- Search Input - Fixed at top -->
     <div class="flex-shrink-0">

@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import process from 'node:process'
+
 export default defineNuxtConfig({
   colorMode: {
     classSuffix: '',
@@ -6,9 +8,7 @@ export default defineNuxtConfig({
     fallback: 'light',
     preference: 'system',
   },
-
   compatibilityDate: '2025-05-15',
-
   content: {
 
     build: {
@@ -151,10 +151,17 @@ export default defineNuxtConfig({
     },
   },
 
+  // Runtime configuration
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+    },
+  },
+
   // Site configuration required for OG image generation
   site: {
     name: 'NuxtPapier',
-    url: String(import.meta.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
+    url: process.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
   },
 
   // Sitemap configuration
@@ -169,9 +176,6 @@ export default defineNuxtConfig({
       '/admin/**',
       '/private/**',
     ],
-
-    // Automatically discover all content
-    strictNuxtContentPaths: true,
   },
 
 })

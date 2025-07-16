@@ -11,6 +11,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "clean": "rm -rf .nuxt .data .output node_modules/.cache",
     "clean:content": "rm -f .data/content/contents.sqlite"
   },
   "dependencies": {

@@ -8,6 +8,9 @@ tags:
   - vue3
   - tutorial
   - web-development
+  - Vue.js & Nuxt
+  - C++ Integration
+  - Web Dev Tips & Tricks
 draft: false
 featured: true
 image: /images/blog/nuxt3-guide.jpg

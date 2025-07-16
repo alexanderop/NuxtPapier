@@ -25,7 +25,7 @@ export default defineContentConfig({
           image: z.string().optional(),
           ogImage: z.string().optional(),
           readingTime: z.number().optional(),
-          tags: z.array(z.string()).default([]).optional(),
+          tags: z.array(z.string()).default(['others']),
           title: z.string().min(1),
           updatedAt: z.string().datetime().optional(),
         }),

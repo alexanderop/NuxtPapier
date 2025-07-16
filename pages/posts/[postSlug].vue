@@ -109,6 +109,13 @@ useBreadcrumbStructuredData([
         <ContentRenderer :value="post" />
       </div>
 
+      <div v-if="post.tags && post.tags.length > 0" class="animate my-8">
+        <div class="flex gap-2 items-center">
+          <span class="text-sm text-[var(--color-text-muted)]">Tags:</span>
+          <BaseTags :tags="post.tags" />
+        </div>
+      </div>
+
       <div class="animate">
         <ShareLinks
           :title="post.title"

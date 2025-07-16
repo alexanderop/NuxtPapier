@@ -219,3 +219,53 @@ body.no-animations .animate {
 .prose h6 > a:hover {
   color: var(--color-primary);
 }
+
+/* Global Scrollbar Styles */
+/* Webkit browsers (Chrome, Safari, Edge) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-muted);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-secondary);
+}
+
+/* Horizontal scrollbar specific */
+*::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+/* Corner where horizontal and vertical scrollbars meet */
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+}
