@@ -15,19 +15,19 @@ export function usePageMeta(content: PageContent, options: PageMetaOptions = {})
   const appConfig = useAppConfig()
 
   const {
-    isHomePage = false,
-    isBlogPost = false,
+    isHomePage: isUserOnHomePage = false,
+    isBlogPost: isContentBlogPost = false,
     customSuffix,
     fallbackDescription,
   } = options
 
-  const pageTitle = isHomePage
+  const pageTitle = isUserOnHomePage
     ? appConfig.site.title
     : `${content.title} - ${customSuffix ?? appConfig.site.title}`
 
   const pageDescription = content.description
     ?? fallbackDescription
-    ?? (isBlogPost
+    ?? (isContentBlogPost
       ? `Read "${content.title}" on ${appConfig.site.title}`
       : `${content.title} page on ${appConfig.site.title}`)
 

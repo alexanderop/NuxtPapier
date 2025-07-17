@@ -79,13 +79,31 @@ ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
 ## Code Style
 
 * **Imports**: Relative for locals, named preferred
-* **Naming**:
+* **Naming** (strictly enforced by ESLint `@typescript-eslint/naming-convention`):
 
-  * camelCase → vars/functions
-  * PascalCase → classes/components
-  * UPPER\_SNAKE\_CASE → constants
-  * Booleans start with `is` / `has` / `can`
-  * Functions: verbNoun (`fetchUserData`)
+  * **Variables**: 
+    * camelCase by default
+    * UPPER_SNAKE_CASE for exported/global constants
+    * Boolean-named variables must start with `is`, `has`, `can`, `should`, `will`, `did`, `was`, `are`, `were`
+      * Exceptions: `loading`, `enabled`, `disabled`, `open`, `closed`, `visible`, `hidden`, `active`, `menuOpen`
+  * **Functions**: 
+    * strictCamelCase enforced
+    * Should start with verbs: `get`, `set`, `fetch`, `load`, `save`, `delete`, `update`, `create`, `handle`, `process`, `validate`, etc.
+    * Event handlers must start with `on` or `handle`
+    * Composables must start with `use`
+  * **Types**: 
+    * StrictPascalCase for all type-like constructs (classes, interfaces, types, enums)
+    * Interfaces can optionally start with `I`
+    * Type parameters: PascalCase with optional `T` prefix (single letters allowed)
+    * Enum members: UPPER_CASE
+  * **Parameters**: 
+    * strictCamelCase required
+    * Unused parameters must have underscore prefix `_`
+  * **Properties**: 
+    * strictCamelCase for object properties and methods
+    * Private/protected class members must have underscore prefix `_`
+    * Properties with special characters (CSS properties, @context, baseURL, etc.): no restrictions
+  * **Imports**: camelCase or PascalCase allowed
 * **Avoid**: `any`, `let`, `else`
 * **Variables**: Use descriptive names (`searchQuery`, `userProfile`)
 * **Comments**: Only for complex logic—favor self-explanatory code

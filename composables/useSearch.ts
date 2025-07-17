@@ -78,8 +78,8 @@ export function useSearch() {
 
         // Extract blog title and heading
         const postTitle = section.titles.length > 0 ? section.titles[0] : section.title
-        const isHeading = section.title !== postTitle
-        const heading = isHeading ? section.title : undefined
+        const isSectionHeading = section.title !== postTitle
+        const heading = isSectionHeading ? section.title : undefined
 
         return {
           breadcrumb: section.titles.length > 0 ? section.titles : [section.title],

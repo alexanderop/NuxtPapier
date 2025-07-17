@@ -16,6 +16,8 @@ export default antfu(
     },
     rules: {
       'arrow-spacing': 'error',
+      'dot-notation': 'off',
+      'max-params': 'off',
       'no-array-constructor': 'error',
       'no-confusing-arrow': 'error',
       'no-console': 'warn',
@@ -161,6 +163,227 @@ export default antfu(
   },
   ...pluginVueA11y.configs['flat/recommended'],
   {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      'ts/dot-notation': ['error', {
+        allowIndexSignaturePropertyAccess: false,
+        allowPrivateClassPropertyAccess: false,
+        allowProtectedClassPropertyAccess: false,
+      }],
+      'ts/max-params': ['error', { max: 3 }],
+      'ts/naming-convention': [
+        'error',
+        // Default: strictCamelCase for everything unless specified otherwise
+        {
+          format: ['strictCamelCase'],
+          leadingUnderscore: 'forbid',
+          selector: 'default',
+          trailingUnderscore: 'forbid',
+        },
+        // Imports: Allow PascalCase for components/types, camelCase for everything else
+        {
+          format: ['camelCase', 'PascalCase'],
+          selector: 'import',
+        },
+        // Variables: camelCase (less strict to allow for prefixes)
+        {
+          format: ['camelCase'],
+          leadingUnderscore: 'forbid',
+          selector: 'variable',
+          trailingUnderscore: 'forbid',
+        },
+        // Const variables at module level (global) that look like constants must be UPPER_CASE
+        {
+          filter: {
+            match: true,
+            regex: '^[A-Z][A-Z0-9_]*$',
+          },
+          format: ['UPPER_CASE'],
+          modifiers: ['const', 'global'],
+          selector: 'variable',
+        },
+        // Exported const variables that look like constants must be UPPER_CASE
+        {
+          filter: {
+            match: true,
+            regex: '^[A-Z][A-Z0-9_]*$',
+          },
+          format: ['UPPER_CASE'],
+          modifiers: ['const', 'exported'],
+          selector: 'variable',
+        },
+        // Variables that start with boolean prefixes should follow proper format
+        {
+          filter: {
+            match: true,
+            regex: '^(is|has|can|should|will|did|was|are|were)[A-Z]',
+          },
+          format: ['camelCase'],
+          selector: 'variable',
+        },
+        // Functions: Strict camelCase
+        {
+          format: ['strictCamelCase'],
+          selector: 'function',
+        },
+        // Vue/Nuxt specific: Composables must start with 'use'
+        {
+          filter: {
+            match: true,
+            regex: '^use',
+          },
+          format: ['camelCase'],
+          selector: 'function',
+        },
+        // Function/method names should start with a verb (but not enforced)
+        {
+          custom: {
+            match: true,
+            regex: '^(get|set|is|has|can|should|will|did|was|are|were|fetch|load|save|delete|remove|add|update|create|build|make|generate|render|handle|process|validate|check|verify|calculate|compute|transform|convert|parse|format|init|setup|cleanup|destroy|toggle|show|hide|open|close|start|stop|begin|end|enable|disable|connect|disconnect|send|receive|emit|trigger|fire|dispatch|execute|run|call|invoke|use|scroll|go|navigate|debounce|throttle|clear|reset|restore|apply|mount|unmount|subscribe|unsubscribe|observe|watch|test|query|find|filter|map|reduce|sort|push|pop|shift|unshift|splice|slice|join|split|replace|match|search|write|read|list|count|sum|average|min|max|group|merge|combine|extract|inject|wrap|unwrap|bind|unbind|attach|detach|focus|blur|hover|click|submit|abort|cancel|retry|wait|delay|pause|resume|play|skip|seek).*',
+          },
+          format: ['strictCamelCase'],
+          selector: ['function', 'method'],
+        },
+        // Event handlers must start with 'on' or 'handle'
+        {
+          filter: {
+            match: true,
+            regex: '^(on|handle)[A-Z]',
+          },
+          format: ['strictCamelCase'],
+          selector: ['function', 'method'],
+        },
+        // Classes, Interfaces, Types, Enums: Strict PascalCase
+        {
+          format: ['StrictPascalCase'],
+          selector: 'typeLike',
+        },
+        // Interfaces can optionally start with 'I'
+        {
+          format: ['StrictPascalCase'],
+          selector: 'interface',
+        },
+        // Type aliases should be descriptive
+        {
+          format: ['StrictPascalCase'],
+          selector: 'typeAlias',
+        },
+        // Type parameters must be descriptive or prefixed with T
+        {
+          filter: {
+            match: false,
+            regex: '^[A-Z]$',
+          },
+          format: ['PascalCase'],
+          prefix: ['T'],
+          selector: 'typeParameter',
+        },
+        // Single letter type parameters are allowed
+        {
+          filter: {
+            match: true,
+            regex: '^[A-Z]$',
+          },
+          format: null,
+          selector: 'typeParameter',
+        },
+        // Enum members: UPPER_CASE only
+        {
+          format: ['UPPER_CASE'],
+          selector: 'enumMember',
+        },
+        // Parameters: strictCamelCase, underscore only for unused
+        {
+          format: ['strictCamelCase'],
+          leadingUnderscore: 'allow',
+          selector: 'parameter',
+        },
+        // Unused parameters MUST have underscore
+        {
+          format: ['strictCamelCase'],
+          leadingUnderscore: 'require',
+          modifiers: ['unused'],
+          selector: 'parameter',
+        },
+        // Private properties/methods must have underscore prefix
+        {
+          format: ['strictCamelCase'],
+          leadingUnderscore: 'require',
+          modifiers: ['private'],
+          selector: ['property', 'method', 'accessor'],
+        },
+        // Protected properties/methods must have underscore prefix
+        {
+          format: ['strictCamelCase'],
+          leadingUnderscore: 'require',
+          modifiers: ['protected'],
+          selector: ['property', 'method', 'accessor'],
+        },
+        // Object literal properties: strictCamelCase
+        {
+          format: ['strictCamelCase'],
+          selector: ['objectLiteralProperty', 'objectLiteralMethod'],
+        },
+        // Properties that require quotes: no format enforcement
+        {
+          format: null,
+          modifiers: ['requiresQuotes'],
+          selector: ['property', 'method'],
+        },
+        // Properties with special characters: no format enforcement
+        {
+          filter: {
+            match: true,
+            regex: '[-_.,:/ @]|[A-Z]{2,}',
+          },
+          format: null,
+          selector: ['objectLiteralProperty', 'objectLiteralMethod', 'typeProperty'],
+        },
+        // Destructured variables: keep original names
+        {
+          format: null,
+          modifiers: ['destructured'],
+          selector: 'variable',
+        },
+        // Allow baseURL specifically (common in configs)
+        {
+          filter: {
+            match: true,
+            regex: '^(baseURL|baseUrl)$',
+          },
+          format: null,
+          selector: ['objectLiteralProperty', 'typeProperty'],
+        },
+        // Readonly/const object properties can be UPPER_CASE
+        {
+          format: ['UPPER_CASE', 'strictCamelCase'],
+          modifiers: ['readonly'],
+          selector: 'typeProperty',
+        },
+        // Static readonly class properties should be UPPER_CASE
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['static', 'readonly'],
+          selector: 'property',
+        },
+        // Allow leading underscore for private-like module variables
+        {
+          format: ['strictCamelCase'],
+          leadingUnderscore: 'allow',
+          modifiers: ['const'],
+          selector: 'variable',
+        },
+      ],
+      'ts/no-floating-promises': 'error',
+    },
+  },
+  {
     files: ['pages/**/*.vue'],
     rules: {
       'vue/multi-word-component-names': 'off',
@@ -188,7 +411,6 @@ export default antfu(
     rules: {
       'no-void': 'off',
       'require-await': 'off',
-      'ts/no-floating-promises': 'off',
     },
   },
   {

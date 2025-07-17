@@ -62,7 +62,7 @@ export function useTableOfContents() {
   // Primary State
   const activeId = ref<string>('')
 
-  if (!isClient) {
+  if (isClientEnvironment === false) {
     return {
       activeId: readonly(activeId),
       scrollToHeading: () => {},
@@ -87,9 +87,9 @@ export function useTableOfContents() {
     const scrollTop = window.scrollY
     const { scrollHeight } = document.documentElement
     const clientHeight = window.innerHeight
-    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10
+    const isPageAtBottom = scrollTop + clientHeight >= scrollHeight - 10
 
-    if (isAtBottom && headingElements.value.length > 0) {
+    if (isPageAtBottom && headingElements.value.length > 0) {
       // At bottom - activate the last heading
       const lastHeading = headingElements.value[headingElements.value.length - 1]
       activeId.value = lastHeading.id
