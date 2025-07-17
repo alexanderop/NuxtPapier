@@ -1,5 +1,3 @@
-import type { Component } from 'vue'
-
 export interface Modal {
   id: number
   component: Component

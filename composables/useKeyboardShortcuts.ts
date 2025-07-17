@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line no-restricted-imports
 import TheCommandPalette from '~/components/TheCommandPalette.vue'
 
