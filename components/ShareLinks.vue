@@ -42,12 +42,16 @@ const { copy, copied, isSupported } = useClipboard({
         : 'flex items-center gap-4 flex-wrap py-6 border-t border-border mt-12 <md:flex-col <md:items-start <md:gap-3',
     ]"
   >
-    <div v-if="variant === 'inline'" class="text-sm text-text-muted font-medium">
+    <div
+      v-if="variant === 'inline'"
+      class="text-sm text-text-muted font-medium"
+    >
       Share this post:
     </div>
 
     <div
-      class="flex gap-2 items-center" :class="[
+      class="flex gap-2 items-center"
+      :class="[
         variant === 'floating' && 'flex-col gap-3',
       ]"
     >
@@ -78,7 +82,8 @@ const { copy, copied, isSupported } = useClipboard({
       >
         <!-- Tooltip for copied state -->
         <span
-          class="text-xs text-background mb-2 px-2 py-1 rounded bg-text pointer-events-none whitespace-nowrap transition-all duration-200 bottom-full left-1/2 absolute -translate-x-1/2" :class="[
+          class="text-xs text-background mb-2 px-2 py-1 rounded bg-text pointer-events-none whitespace-nowrap transition-all duration-200 bottom-full left-1/2 absolute -translate-x-1/2"
+          :class="[
             copied ? 'scale-100 opacity-100' : 'scale-0 opacity-0',
           ]"
         >

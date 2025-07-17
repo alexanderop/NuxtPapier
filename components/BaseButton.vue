@@ -108,6 +108,7 @@ function handleClick(event: MouseEvent) {
         $slots.default && 'mr-2',
       ]"
     />
+
     <Icon
       v-else-if="icon && iconPosition === 'left'"
       :name="icon"
@@ -116,7 +117,9 @@ function handleClick(event: MouseEvent) {
         $slots.default && 'mr-2',
       ]"
     />
+
     <slot />
+
     <Icon
       v-if="!loading && icon && iconPosition === 'right'"
       :name="icon"

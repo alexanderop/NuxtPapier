@@ -115,6 +115,9 @@ export default antfu(
           lang: 'ts',
         },
       }],
+      'vue/block-order': ['error', {
+        order: ['script', 'template', 'style'],
+      }],
       'vue/component-api-style': ['error', ['script-setup']],
       'vue/component-name-in-template-casing': ['error', 'PascalCase'],
       'vue/define-emits-declaration': ['error', 'type-based'],
@@ -126,10 +129,25 @@ export default antfu(
       'vue/define-props-destructuring': ['error', {
         destructure: 'always',
       }],
+      'vue/first-attribute-linebreak': ['error', {
+        multiline: 'below',
+        singleline: 'beside',
+      }],
       'vue/html-button-has-type': 'error',
+      'vue/html-comment-content-spacing': ['error', 'always'],
+      'vue/max-attributes-per-line': ['error', {
+        multiline: { max: 1 },
+        singleline: { max: 1 },
+      }],
       'vue/max-template-depth': ['error', { maxDepth: 7 }],
+      'vue/new-line-between-multi-line-property': ['error', {
+        minLineOfMultilineProperty: 2,
+      }],
       'vue/no-mutating-props': 'error',
       'vue/no-ref-object-reactivity-loss': 'error',
+      'vue/no-required-prop-with-default': ['error', {
+        autofix: false,
+      }],
       'vue/no-unused-emit-declarations': 'error',
       'vue/no-unused-properties': ['error', {
         deepData: true,
@@ -137,10 +155,20 @@ export default antfu(
       }],
       'vue/no-unused-vars': 'error',
       'vue/no-use-v-else-with-v-for': 'error',
+      'vue/padding-line-between-tags': ['error', [{
+        blankLine: 'always',
+        next: '*',
+        prev: '*',
+      }]],
+      'vue/prefer-define-options': 'error',
       'vue/prefer-true-attribute-shorthand': 'error',
       'vue/prefer-use-template-ref': 'error',
       'vue/require-prop-comment': 'error',
       'vue/require-typed-ref': 'error',
+      'vue/singleline-html-element-content-newline': ['error', {
+        ignoreWhenEmpty: true,
+        ignoreWhenNoAttributes: true,
+      }],
       'vue/sort-keys': 'off',
       'vue/v-for-delimiter-style': ['error', 'in'],
       'vue35/no-with-defaults': 'error',

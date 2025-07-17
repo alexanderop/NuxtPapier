@@ -43,6 +43,7 @@ useHead({
 <template>
   <div>
     <NuxtRouteAnnouncer />
+
     <NuxtLayout>
       <NuxtPage :transition="transition" />
     </NuxtLayout>

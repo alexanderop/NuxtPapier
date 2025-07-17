@@ -40,13 +40,24 @@ const displayTitle = computed(() => title || type.charAt(0).toUpperCase() + type
 </script>
 
 <template>
-  <div class="my-4 p-4 border-l-4" :class="[colorClass]">
-    <div class="mb-2 flex gap-2 items-center" :class="[textColorClass]">
-      <Icon :name="icon" class="h-4 w-4" />
+  <div
+    class="my-4 p-4 border-l-4"
+    :class="[colorClass]"
+  >
+    <div
+      class="mb-2 flex gap-2 items-center"
+      :class="[textColorClass]"
+    >
+      <Icon
+        :name="icon"
+        class="h-4 w-4"
+      />
+
       <p class="text-sm font-medium">
         {{ displayTitle }}
       </p>
     </div>
+
     <div class="text-sm text-gray-700 dark:text-gray-300">
       <slot />
     </div>

@@ -33,6 +33,7 @@ watch(
 <template>
   <header>
     <BaseSkipLink />
+
     <div class="bg-[var(--color-header-bg)] w-full">
       <div
         id="nav-container"
@@ -44,6 +45,7 @@ watch(
         >
           {{ appConfig.site.title }}
         </NuxtLink>
+
         <nav
           id="nav-menu"
           class="flex flex-col w-full items-center sm:ms-2 sm:py-0 sm:flex-row sm:justify-end sm:space-x-4"
@@ -54,9 +56,11 @@ watch(
             aria-controls="menu-items"
             @toggle="toggleMenu"
           />
+
           <ul
             id="menu-items"
-            class="sm:mt-0 sm:flex sm:gap-x-5 sm:w-auto sm:items-center" :class="[
+            class="sm:mt-0 sm:flex sm:gap-x-5 sm:w-auto sm:items-center"
+            :class="[
               menuItemStyles,
               // Mobile styles: toggle between 'grid' and 'hidden'
               menuOpen
@@ -64,15 +68,24 @@ watch(
                 : 'hidden',
             ]"
           >
-            <li v-for="item in navItems" :key="item.to" class="flex col-span-2 items-center justify-center">
+            <li
+              v-for="item in navItems"
+              :key="item.to"
+              class="flex col-span-2 items-center justify-center"
+            >
               <BaseNavLink :to="item.to">
                 {{ item.label }}
               </BaseNavLink>
             </li>
+
             <li class="flex col-span-2 items-center justify-center sm:col-span-1">
               <SearchButton @click="modalStore.openModal(TheCommandPalette)" />
             </li>
-            <li v-if="appConfig.site.lightAndDarkMode" class="flex col-span-2 items-center justify-center sm:col-span-1">
+
+            <li
+              v-if="appConfig.site.lightAndDarkMode"
+              class="flex col-span-2 items-center justify-center sm:col-span-1"
+            >
               <BaseToggle />
             </li>
           </ul>

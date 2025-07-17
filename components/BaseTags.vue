@@ -32,6 +32,7 @@ const moreCount = computed(() => tags.length - (limit || 0))
       :variant="variant"
       :clickable="clickable"
     />
+
     <span
       v-if="hasMore"
       class="text-sm text-[var(--color-text-muted)]"

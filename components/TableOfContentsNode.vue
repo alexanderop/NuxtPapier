@@ -44,6 +44,7 @@ const indentClass = computed(() => (currentDepth.value > 0 ? `ml-${currentDepth.
     >
       {{ link.text }}
     </a>
+
     <ul
       v-if="link.children && link.children.length > 0"
       class="mt-0.5 space-y-0.5"

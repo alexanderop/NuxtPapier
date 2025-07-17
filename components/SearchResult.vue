@@ -34,9 +34,13 @@ const {
     <span class="text-[var(--color-text)] shrink-0">
       {{ result.heading }}
     </span>
+
     <span class="text-[var(--color-text-muted)]">&gt;</span>
   </template>
 
   <!-- Content preview -->
-  <span class="text-[var(--color-text-muted)] truncate" v-html="highlightFn(result.content || '', query)" />
+  <span
+    class="text-[var(--color-text-muted)] truncate"
+    v-html="highlightFn(result.content || '', query)"
+  />
 </template>
