@@ -3,7 +3,12 @@ import TheCommandPalette from './TheCommandPalette.vue'
 
 const appConfig = useAppConfig()
 const route = useRoute()
-const [menuOpen, toggleMenu] = useToggle(false)
+
+// Use a standard ref instead of useToggle
+const menuOpen = ref(false)
+function toggleMenu() {
+  menuOpen.value = !menuOpen.value
+}
 
 // Use modal store for opening command palette
 const modalStore = useModalStore()
@@ -14,15 +19,15 @@ const navItems = [
   { label: 'About', to: '/about' },
 ]
 
-const menuListBaseClasses = 'mt-4 grid w-44 grid-cols-2 place-content-center gap-2'
-const menuListDesktopClasses = 'sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:items-center'
 const menuItemStyles = '[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1 [&>li>button]:font-medium'
 
-watchEffect(() => {
-  if (route.path) {
-    toggleMenu(false)
-  }
-})
+watch(
+  () => route.path,
+  () => {
+    // Close menu on route change
+    menuOpen.value = false
+  },
+)
 </script>
 
 <template>
@@ -47,15 +52,16 @@ watchEffect(() => {
             id="menu-btn"
             :open="menuOpen"
             aria-controls="menu-items"
-            @toggle="toggleMenu()"
+            @toggle="toggleMenu"
           />
           <ul
             id="menu-items"
-            :class="[
-              menuListBaseClasses,
+            class="sm:mt-0 sm:flex sm:gap-x-5 sm:w-auto sm:items-center" :class="[
               menuItemStyles,
-              menuListDesktopClasses,
-              { hidden: !menuOpen },
+              // Mobile styles: toggle between 'grid' and 'hidden'
+              menuOpen
+                ? 'grid mt-4 w-44 grid-cols-2 place-content-center gap-2'
+                : 'hidden',
             ]"
           >
             <li v-for="item in navItems" :key="item.to" class="flex col-span-2 items-center justify-center">
