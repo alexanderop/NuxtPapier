@@ -5,7 +5,7 @@ export interface SearchResult {
   category: string
   content?: string
   breadcrumb?: string[]
-  blogTitle?: string
+  postTitle?: string
   heading?: string
 }
 
@@ -77,18 +77,18 @@ export function useSearch() {
         const path = section.id
 
         // Extract blog title and heading
-        const blogTitle = section.titles.length > 0 ? section.titles[0] : section.title
-        const isHeading = section.title !== blogTitle
+        const postTitle = section.titles.length > 0 ? section.titles[0] : section.title
+        const isHeading = section.title !== postTitle
         const heading = isHeading ? section.title : undefined
 
         return {
-          blogTitle,
           breadcrumb: section.titles.length > 0 ? section.titles : [section.title],
           category: 'Posts',
           content: getContentSnippet(section.content, query.value),
           heading,
           id: section.id,
           path,
+          postTitle,
           title: section.title,
         }
       })
