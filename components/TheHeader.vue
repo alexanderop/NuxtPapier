@@ -4,13 +4,11 @@ import TheCommandPalette from './TheCommandPalette.vue'
 const appConfig = useAppConfig()
 const route = useRoute()
 
-// Use a standard ref instead of useToggle
 const menuOpen = ref(false)
 function toggleMenu() {
   menuOpen.value = !menuOpen.value
 }
 
-// Use modal store for opening command palette
 const modalStore = useModalStore()
 
 const navItems = [
