@@ -25,20 +25,13 @@ export function useSearch() {
     loading.value = true
     error.value = null
 
-    // Query search sections from posts collection using neverthrow
-    const result = await fromPromise(
-      queryCollectionSearchSections('posts'),
-      error => (error instanceof Error ? error : new Error('Failed to load search data')),
-    )
-
-    result.match(
-      (data) => {
-        sections.value = data
-      },
-      (err) => {
-        error.value = err
-      },
-    )
+    try {
+      const data = await queryCollectionSearchSections('posts')
+      sections.value = data
+    }
+    catch (err) {
+      error.value = err instanceof Error ? err : new Error('Failed to load search data')
+    }
 
     loading.value = false
   })

@@ -4,30 +4,24 @@ const appConfig = useAppConfig()
 
 const { postSlug } = route.params
 
-const postResult = await fromPromise(
-  queryCollection('posts').path(`/posts/${postSlug}`).first(),
-  error => new Error(`Failed to fetch Post: ${error}`),
-)
-
-const post = postResult.match(
-  (data) => {
-    if (!data) {
-      throw createError({
-        fatal: true,
-        statusCode: 404,
-        statusMessage: 'Post not found',
-      })
-    }
-    return data
-  },
-  () => {
+let post
+try {
+  post = await queryCollection('posts').path(`/posts/${postSlug}`).first()
+  if (!post) {
     throw createError({
       fatal: true,
       statusCode: 404,
       statusMessage: 'Post not found',
     })
-  },
-)
+  }
+}
+catch {
+  throw createError({
+    fatal: true,
+    statusCode: 404,
+    statusMessage: 'Post not found',
+  })
+}
 
 const { pageTitle, pageDescription } = usePageMeta(post, { isBlogPost: true })
 

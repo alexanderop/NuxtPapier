@@ -1,3 +1,7 @@
+
+// eslint-disable-next-line no-restricted-imports
+import TheCommandPalette from '~/components/TheCommandPalette.vue'
+
 export function useKeyboardShortcuts() {
   const modalStore = useModalStore()
   const keys = useMagicKeys({
@@ -11,20 +15,9 @@ export function useKeyboardShortcuts() {
   const cmdK = keys['cmd+k']
   const ctrlK = keys['ctrl+k']
 
-  const openCommandPalette = async () => {
-    const importResult = await fromPromise(
-      import('~/components/TheCommandPalette.vue'),
-      error => (error instanceof Error ? error : new Error('Failed to import CommandPalette component')),
-    )
-
-    importResult.match(
-      (module: { default: Component }) => {
-        modalStore.openModal(module.default)
-      },
-      () => {
-        // Import failed, handle silently
-      },
-    )
+  const openCommandPalette = () => {
+    // eslint-disable-next-line ts/no-unsafe-argument
+    modalStore.openModal(TheCommandPalette)
   }
 
   whenever(cmdK, openCommandPalette)

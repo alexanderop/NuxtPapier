@@ -7,37 +7,31 @@ export function usePaginatedPosts() {
   const { data: totalCount } = useAsyncData(
     'posts-total-count',
     async () => {
-      const result = await fromPromise(
-        queryCollection('posts')
+      try {
+        const count = await queryCollection('posts')
           .where('draft', '<>', true)
-          .count(),
-        error => new Error(`Failed to count posts: ${String(error)}`),
-      )
-      return result.match(
-        count => count,
-        () => 0,
-      )
+          .count()
+        return count
+      }
+      catch {
+        return 0
+      }
     },
   )
 
   const handleNavigation = async (page: number | undefined) => {
-    const navResult = navigateTo({
-      query: {
-        ...route.query,
-        page,
-      },
-    })
-
-    const isPromise = navResult !== null && navResult !== undefined && typeof navResult === 'object' && 'then' in navResult
-    if (isPromise) {
-      const result = await fromPromise(
-        navResult,
-        error => new Error(`Navigation failed: ${String(error)}`),
-      )
-      return result
+    try {
+      const navResult = await navigateTo({
+        query: {
+          ...route.query,
+          page,
+        },
+      })
+      return navResult
     }
-
-    return ok(navResult)
+    catch (error) {
+      throw new Error(`Navigation failed: ${String(error)}`)
+    }
   }
 
   const initialPage = Number.parseInt(String(route.query.page ?? '1')) || 1
@@ -73,23 +67,19 @@ export function usePaginatedPosts() {
     () => `posts-page-${currentPage.value}-size-${pageSize.value}`,
     async () => {
       error.value = null
-      const result = await fromPromise(
-        queryCollection('posts')
+      try {
+        const data = await queryCollection('posts')
           .where('draft', '<>', true)
           .order('date', 'DESC')
           .skip(offset.value)
           .limit(pageSize.value)
-          .all(),
-        error => new Error(`Failed to fetch posts: ${String(error)}`),
-      )
-
-      return result.match(
-        data => data,
-        (err) => {
-          error.value = err
-          return []
-        },
-      )
+          .all()
+        return data
+      }
+      catch (err) {
+        error.value = err instanceof Error ? err : new Error(`Failed to fetch posts: ${String(err)}`)
+        return []
+      }
     },
     {
       watch: [currentPage, pageSize],
@@ -97,21 +87,23 @@ export function usePaginatedPosts() {
   )
 
   const goToNextWithError = async () => {
-    const result = await handleNavigation(currentPage.value + 1)
-    if (result.isErr()) {
-      error.value = result.error
-      return
+    try {
+      await handleNavigation(currentPage.value + 1)
+      goToNext()
     }
-    goToNext()
+    catch (err) {
+      error.value = err instanceof Error ? err : new Error(String(err))
+    }
   }
 
   const goToPreviousWithError = async () => {
-    const result = await handleNavigation(currentPage.value - 1)
-    if (result.isErr()) {
-      error.value = result.error
-      return
+    try {
+      await handleNavigation(currentPage.value - 1)
+      goToPrevious()
     }
-    goToPrevious()
+    catch (err) {
+      error.value = err instanceof Error ? err : new Error(String(err))
+    }
   }
 
   return {

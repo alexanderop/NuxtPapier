@@ -22,11 +22,7 @@ const shareUrl = computed(() => {
   if (url)
     return url
   if (import.meta.client) {
-    const locationResult = fromThrowable(() => window.location.href)()
-    return locationResult.match(
-      href => href,
-      () => '', // fallback to empty string if window.location fails
-    )
+    return window.location.href
   }
   return ''
 })

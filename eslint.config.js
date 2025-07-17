@@ -1,11 +1,6 @@
 import antfu from '@antfu/eslint-config'
 import sortKeysFixPlugin from 'eslint-plugin-sort-keys-fix'
 import pluginVueA11y from 'eslint-plugin-vuejs-accessibility'
-// NOTE: eslint-plugin-neverthrow has compatibility issues with ESLint 9 flat config
-// Until this is resolved, manually ensure all neverthrow Result types are handled:
-// - Always call .isOk() or .isErr() to check the result
-// - Use .match(), .map(), .mapErr(), or .andThen() to handle results
-// - Never ignore returned Result types from neverthrow functions
 import vue35Plugin from './eslint-plugin-vue35/index.js'
 
 export default antfu(

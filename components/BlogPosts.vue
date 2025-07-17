@@ -33,37 +33,33 @@ const displayPosts = computed(() => {
 })
 
 if (type !== 'custom') {
-  const postsResult = await fromPromise(
-    (async () => {
-      let query = queryCollection('posts')
+  try {
+    let query = queryCollection('posts')
 
-      if (type === 'featured') {
-        // For featured posts, only show posts marked as featured
-        query = query.where('featured', '=', true)
-      }
-      else if (type === 'latest') {
-        // For latest posts, exclude drafts and featured posts
-        query = query
-          .where('draft', '<>', true)
-          .where('featured', '<>', true)
-      }
-      else if (type === 'all') {
-        // For all posts, only exclude drafts
-        query = query.where('draft', '<>', true)
-      }
+    if (type === 'featured') {
+      // For featured posts, only show posts marked as featured
+      query = query.where('featured', '=', true)
+    }
+    else if (type === 'latest') {
+      // For latest posts, exclude drafts and featured posts
+      query = query
+        .where('draft', '<>', true)
+        .where('featured', '<>', true)
+    }
+    else if (type === 'all') {
+      // For all posts, only exclude drafts
+      query = query.where('draft', '<>', true)
+    }
 
-      return await query
-        .order('date', 'DESC')
-        .limit(limit)
-        .all()
-    })(),
-    error => new Error(`Failed to fetch posts: ${error}`),
-  )
-
-  postsData.value = postsResult.match(
-    data => data,
-    () => [], // fallback to empty array if query fails
-  )
+    postsData.value = await query
+      .order('date', 'DESC')
+      .limit(limit)
+      .all()
+  }
+  catch {
+    // fallback to empty array if query fails
+    postsData.value = []
+  }
 }
 </script>
 

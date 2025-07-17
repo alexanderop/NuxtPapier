@@ -1,21 +1,17 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const pageResult = await fromPromise(
-  queryCollection('pages').path(route.path).first(),
-  error => new Error(`Failed to fetch page: ${error}`),
-)
-
-const page = pageResult.match(
-  data => data,
-  () => {
-    throw createError({
-      fatal: true,
-      statusCode: 404,
-      statusMessage: 'Page not found',
-    })
-  },
-)
+let page
+try {
+  page = await queryCollection('pages').path(route.path).first()
+}
+catch {
+  throw createError({
+    fatal: true,
+    statusCode: 404,
+    statusMessage: 'Page not found',
+  })
+}
 
 if (!page) {
   throw createError({

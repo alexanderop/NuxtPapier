@@ -1,30 +1,24 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 
-const pageResult = await fromPromise(
-  queryCollection('pages').path('/').first(),
-  error => new Error(`Failed to fetch home page: ${error}`),
-)
-
-const page = pageResult.match(
-  (data) => {
-    if (!data) {
-      throw createError({
-        fatal: true,
-        statusCode: 404,
-        statusMessage: 'Home page not found',
-      })
-    }
-    return data
-  },
-  () => {
+let page
+try {
+  page = await queryCollection('pages').path('/').first()
+  if (!page) {
     throw createError({
       fatal: true,
       statusCode: 404,
       statusMessage: 'Home page not found',
     })
-  },
-)
+  }
+}
+catch {
+  throw createError({
+    fatal: true,
+    statusCode: 404,
+    statusMessage: 'Home page not found',
+  })
+}
 
 const { pageTitle, pageDescription } = usePageMeta(page, {
   fallbackDescription: appConfig.site.desc,

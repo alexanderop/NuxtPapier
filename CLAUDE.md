@@ -65,9 +65,8 @@ ast-grep --pattern '$OBJ.map($FUNC)' --lang ts
 # Find async/await patterns
 ast-grep --pattern 'await $PROMISE' --lang ts
 
-# Find error handling with neverthrow
-ast-grep --pattern 'fromPromise($$$)' --lang ts
-ast-grep --pattern '$RESULT.isErr()' --lang ts
+# Find error handling patterns
+ast-grep --pattern 'try { $$$ } catch' --lang ts
 
 # Find route definitions
 ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
@@ -87,7 +86,7 @@ ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
   * UPPER\_SNAKE\_CASE → constants
   * Booleans start with `is` / `has` / `can`
   * Functions: verbNoun (`fetchUserData`)
-* **Avoid**: `any`, `let`, `else`, `try/catch` (use neverthrow instead)
+* **Avoid**: `any`, `let`, `else`
 * **Variables**: Use descriptive names (`searchQuery`, `userProfile`)
 * **Comments**: Only for complex logic—favor self-explanatory code
 * **Conditional Logic**: Always extract complex conditions to descriptive variables for readability
@@ -175,51 +174,38 @@ ast-grep --pattern 'definePageMeta({ $$$ })' --lang ts
 
 ---
 
-## Error Handling with Neverthrow
+## Error Handling
 
-Use `neverthrow` for functional error handling instead of `try/catch`:
+Use standard JavaScript error handling patterns:
 
 ```typescript
-// ✅ Good - Use neverthrow
-const result = await fromPromise(
-  fetch('/api/users'),
-  (error) => new Error(`Failed to fetch users: ${error.message}`)
-)
-
-if (result.isErr()) {
-  console.error(result.error)
-  return
-}
-
-const users = result.value
-
-// ✅ Good - Chain operations
-const processedResult = result
-  .map(response => response.json())
-  .map(users => users.filter(user => user.active))
-
-// ❌ Bad - Use try/catch
+// ✅ Good - Use try/catch for async operations
 try {
   const response = await fetch('/api/users')
   const users = await response.json()
+  // Process users
 } catch (error) {
-  console.error(error)
+  console.error('Failed to fetch users:', error)
+  // Handle error appropriately
 }
-```
 
-**Auto-imported from neverthrow:**
-- `ok`, `err` - Create Results
-- `okAsync`, `errAsync` - Create ResultAsync
-- `fromPromise`, `fromThrowable` - Wrap operations
-- `Result`, `ResultAsync` - Types (type-only imports)
-- `isOk`, `isErr` - Type guards
+// ✅ Good - Check for null/undefined
+const element = document.getElementById('my-element')
+if (!element) {
+  // Handle missing element
+  return
+}
+
+// ✅ Good - Use optional chaining and nullish coalescing
+const value = data?.nested?.property ?? 'default'
+```
 
 ---
 
 ## Development Notes
 
-* Always when something can fail, use patterns from neverthrow package
-* Never sue any if you have to use unknown instead
+* Use standard try/catch for error handling
+* Never use any if you have to use unknown instead
 
 ---
 
