@@ -89,9 +89,14 @@ const displayPosts = computed(() => {
           </h3>
 
           <!-- Date -->
-          <div v-if="showDate && post.date" class="text-sm text-[var(--color-text-muted)] whitespace-nowrap">
-            {{ new Date(post.date).toLocaleDateString() }}
-          </div>
+          <NuxtTime
+            v-if="showDate && post.date"
+            :datetime="post.date"
+            month="2-digit"
+            day="2-digit"
+            year="numeric"
+            class="text-sm text-[var(--color-text-muted)] whitespace-nowrap"
+          />
         </div>
 
         <!-- Excerpt -->

@@ -62,7 +62,8 @@ export function useTableOfContents() {
   // Primary State
   const activeId = ref<string>('')
 
-  if (isClientEnvironment === false) {
+  // Return stub for SSR
+  if (typeof window === 'undefined') {
     return {
       activeId: readonly(activeId),
       scrollToHeading: () => {},

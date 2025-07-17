@@ -100,7 +100,13 @@ useBreadcrumbStructuredData([
       <div class="animate prose-lg max-w-none prose dark:prose-invert">
         <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
           <span v-if="post.author">{{ post.author }}</span>
-          <span v-if="post.date">{{ new Date(post.date).toLocaleDateString() }}</span>
+          <NuxtTime
+            v-if="post.date"
+            :datetime="post.date"
+            month="2-digit"
+            day="2-digit"
+            year="numeric"
+          />
           <span>{{ readingTimeText }}</span>
         </div>
 
