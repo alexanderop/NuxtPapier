@@ -21,7 +21,7 @@ const SCROLL_CONFIG = {
 
 const HEADING_CONFIG = {
   scrollOffset: 80,
-  selector: '.prose h2[id], .prose h3[id], .prose h4[id]',
+  selector: '.prose h1[id], .prose h2[id], .prose h3[id], .prose h4[id], .prose h5[id], .prose h6[id]',
 }
 
 const PROGRAMMATIC_SCROLL_TIMEOUT = 800 // Slightly longer than typical smooth scroll

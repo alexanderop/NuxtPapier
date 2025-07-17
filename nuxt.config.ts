@@ -10,7 +10,6 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-05-15',
   content: {
-
     build: {
       markdown: {
         highlight: {
@@ -39,6 +38,10 @@ export default defineNuxtConfig({
             dark: 'vitesse-dark',
             default: 'vitesse-light',
           },
+        },
+        toc: {
+          depth: 6, // Include all heading levels h1-h6
+          searchDepth: 6, // Search through all levels
         },
       },
     },

@@ -9,6 +9,10 @@ const { link, depth = 0 } = defineProps<{
   depth?: number
 }>()
 
+defineOptions({
+  name: 'TocNode',
+})
+
 const tocProvider = inject(tocKey, {
   activeId: readonly(ref('')),
   handleClick: (_event: Event, _id: string) => {},
