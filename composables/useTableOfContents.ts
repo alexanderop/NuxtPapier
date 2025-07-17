@@ -4,14 +4,12 @@ function calculateScrollOffset(element: HTMLElement, scrollY: number, offset: nu
 }
 
 function getHeadingsFromDocument(selector: string): HTMLElement[] {
-  const result = fromThrowable(() =>
-    Array.from(document.querySelectorAll<HTMLElement>(selector)),
-  )()
-
-  return result.match(
-    elements => elements,
-    () => [],
-  )
+  try {
+    return Array.from(document.querySelectorAll<HTMLElement>(selector))
+  }
+  catch {
+    return []
+  }
 }
 
 // Constants
@@ -180,32 +178,24 @@ export function useTableOfContents() {
   }
 
   function scrollToHeading(id: string) {
-    const elementResult = fromThrowable(() => document.getElementById(id))()
+    const element = document.getElementById(id)
+    if (!element)
+      return
 
-    elementResult.match(
-      (element) => {
-        if (!element)
-          return
+    isProgrammaticScroll.value = true
+    activeId.value = id // Immediately update the active ID
 
-        isProgrammaticScroll.value = true
-        activeId.value = id // Immediately update the active ID
-
-        const offsetPosition = calculateScrollOffset(
-          element,
-          window.scrollY,
-          HEADING_CONFIG.scrollOffset,
-        )
-
-        y.value = offsetPosition
-
-        setTimeout(() => {
-          isProgrammaticScroll.value = false
-        }, PROGRAMMATIC_SCROLL_TIMEOUT)
-      },
-      () => {
-        // Element not found or error occurred
-      },
+    const offsetPosition = calculateScrollOffset(
+      element,
+      window.scrollY,
+      HEADING_CONFIG.scrollOffset,
     )
+
+    y.value = offsetPosition
+
+    setTimeout(() => {
+      isProgrammaticScroll.value = false
+    }, PROGRAMMATIC_SCROLL_TIMEOUT)
   }
 
   // Watch for scroll to update active heading (for bottom detection)

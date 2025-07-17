@@ -84,26 +84,6 @@ export default defineNuxtConfig({
     // provider: 'netlify',
   },
 
-  imports: {
-    presets: [
-      {
-        from: 'neverthrow',
-        imports: [
-          'ok',
-          'err',
-          'okAsync',
-          'errAsync',
-          'fromPromise',
-          'fromThrowable',
-          { name: 'Result', type: true },
-          { name: 'ResultAsync', type: true },
-          { as: 'isOk', name: 'isOk' },
-          { as: 'isErr', name: 'isErr' },
-        ],
-      },
-    ],
-  },
-
   modules: [
     '@nuxtjs/sitemap', // Must be before @nuxt/content for v3
     '@nuxt/content',

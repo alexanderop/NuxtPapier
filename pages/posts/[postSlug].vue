@@ -4,40 +4,38 @@ const appConfig = useAppConfig()
 
 const { postSlug } = route.params
 
-const postResult = await fromPromise(
-  queryCollection('posts').path(`/posts/${postSlug}`).first(),
-  error => new Error(`Failed to fetch Post: ${error}`),
-)
-
-const post = postResult.match(
-  (data) => {
-    if (!data) {
+const { data: post } = await useAsyncData(
+  `post-${postSlug}`,
+  async () => {
+    const result = await queryCollection('posts').path(`/posts/${postSlug}`).first()
+    if (!result) {
       throw createError({
         fatal: true,
         statusCode: 404,
         statusMessage: 'Post not found',
       })
     }
-    return data
-  },
-  () => {
-    throw createError({
-      fatal: true,
-      statusCode: 404,
-      statusMessage: 'Post not found',
-    })
+    return result
   },
 )
 
-const { pageTitle, pageDescription } = usePageMeta(post, { isBlogPost: true })
+if (!post.value) {
+  throw createError({
+    fatal: true,
+    statusCode: 404,
+    statusMessage: 'Post not found',
+  })
+}
+
+const { pageTitle, pageDescription } = usePageMeta(post.value, { isBlogPost: true })
 
 const tocLinks = computed(() => {
-  const toc = post?.body?.toc
+  const toc = post.value?.body?.toc
   return toc?.links || []
 })
 
 const readingTimeText = computed(() => {
-  const minutes = post?.readingTime || 0
+  const minutes = post.value?.readingTime || 0
   return minutes === 1 ? '1 min read' : `${minutes} min read`
 })
 
@@ -48,37 +46,37 @@ useStaggeredAnimation()
 
 // Generate dynamic OG image for the blog post
 defineOgImageComponent('BlogPost', {
-  author: post.author ?? appConfig.site.author,
-  date: post.date,
-  description: post.description,
+  author: post.value.author ?? appConfig.site.author,
+  date: post.value.date,
+  description: post.value.description,
   siteName: appConfig.site.title,
-  title: post.title,
+  title: post.value.title,
 })
 
 useEnhancedSeoMeta({
-  author: post.author ?? appConfig.site.author,
+  author: post.value.author ?? appConfig.site.author,
   description: pageDescription,
-  modifiedTime: post.updatedAt ?? post.date,
-  publishedTime: post.date,
-  tags: post.tags ?? [],
+  modifiedTime: post.value.updatedAt ?? post.value.date,
+  publishedTime: post.value.date,
+  tags: post.value.tags ?? [],
   title: pageTitle,
   type: 'article',
 })
 
 useArticleStructuredData({
-  author: post.author,
-  date: post.date,
-  description: post.description,
-  image: post.ogImage ?? post.image,
-  tags: post.tags,
-  title: post.title,
-  updatedAt: post.updatedAt,
+  author: post.value.author,
+  date: post.value.date,
+  description: post.value.description,
+  image: post.value.ogImage ?? post.value.image,
+  tags: post.value.tags,
+  title: post.value.title,
+  updatedAt: post.value.updatedAt,
 })
 
 useBreadcrumbStructuredData([
   { name: 'Home', url: '/' },
   { name: 'Posts', url: '/posts' },
-  { name: post.title },
+  { name: post.value.title },
 ])
 </script>
 

@@ -8,21 +8,21 @@ export function usePostsByTag(tag: Ref<string> | string) {
   const { data: totalCount } = useAsyncData(
     () => `posts-tag-${tagValue.value}-count`,
     async () => {
-      const result = await fromPromise(
-        queryCollection('posts')
+      try {
+        const posts = await queryCollection('posts')
           .where('draft', '<>', true)
-          .all(),
-        error => new Error(`Failed to count posts for tag ${tagValue.value}: ${String(error)}`),
-      )
+          .all()
 
-      // Filter posts that contain the tag
-      const filteredResult = result.map(posts =>
-        posts.filter(post => post.tags && Array.isArray(post.tags) && post.tags.includes(tagValue.value)),
-      )
-      return filteredResult.match(
-        posts => posts.length,
-        () => 0,
-      )
+        // Filter posts that contain the tag
+        const filtered = posts.filter(post =>
+          post.tags && Array.isArray(post.tags) && post.tags.includes(tagValue.value),
+        )
+        return filtered.length
+      }
+      catch {
+        // Return 0 count on error
+        return 0
+      }
     },
     {
       watch: [tagValue],
@@ -30,23 +30,18 @@ export function usePostsByTag(tag: Ref<string> | string) {
   )
 
   const handleNavigation = async (page: number | undefined) => {
-    const navResult = navigateTo({
-      query: {
-        ...route.query,
-        page,
-      },
-    })
-
-    const isPromise = navResult !== null && navResult !== undefined && typeof navResult === 'object' && 'then' in navResult
-    if (isPromise) {
-      const result = await fromPromise(
-        navResult,
-        error => new Error(`Navigation failed: ${String(error)}`),
-      )
-      return result
+    try {
+      const navResult = await navigateTo({
+        query: {
+          ...route.query,
+          page,
+        },
+      })
+      return navResult
     }
-
-    return ok(navResult)
+    catch (error) {
+      throw new Error(`Navigation failed: ${String(error)}`)
+    }
   }
 
   const initialPage = Number.parseInt(String(route.query.page ?? '1')) || 1
@@ -82,30 +77,25 @@ export function usePostsByTag(tag: Ref<string> | string) {
     () => `posts-tag-${tagValue.value}-page-${currentPage.value}-size-${pageSize.value}`,
     async () => {
       error.value = null
-      const result = await fromPromise(
-        queryCollection('posts')
+      try {
+        const data = await queryCollection('posts')
           .where('draft', '<>', true)
           .order('date', 'DESC')
-          .all(),
-        error => new Error(`Failed to fetch posts for tag ${tagValue.value}: ${String(error)}`),
-      )
+          .all()
 
-      return result.match(
-        (data) => {
-          // Filter posts that contain the tag
-          const filtered = data.filter(post =>
-            post.tags && Array.isArray(post.tags) && post.tags.includes(tagValue.value),
-          )
-          // Apply pagination manually
-          const start = offset.value
-          const end = start + pageSize.value
-          return filtered.slice(start, end)
-        },
-        (err) => {
-          error.value = err
-          return []
-        },
-      )
+        // Filter posts that contain the tag
+        const filtered = data.filter(post =>
+          post.tags && Array.isArray(post.tags) && post.tags.includes(tagValue.value),
+        )
+        // Apply pagination manually
+        const start = offset.value
+        const end = start + pageSize.value
+        return filtered.slice(start, end)
+      }
+      catch (err) {
+        error.value = err instanceof Error ? err : new Error(`Failed to fetch posts for tag ${tagValue.value}: ${String(err)}`)
+        return []
+      }
     },
     {
       watch: [tagValue, currentPage, pageSize],
@@ -113,21 +103,23 @@ export function usePostsByTag(tag: Ref<string> | string) {
   )
 
   const goToNextWithError = async () => {
-    const result = await handleNavigation(currentPage.value + 1)
-    if (result.isErr()) {
-      error.value = result.error
-      return
+    try {
+      await handleNavigation(currentPage.value + 1)
+      goToNext()
     }
-    goToNext()
+    catch (err) {
+      error.value = err instanceof Error ? err : new Error(String(err))
+    }
   }
 
   const goToPreviousWithError = async () => {
-    const result = await handleNavigation(currentPage.value - 1)
-    if (result.isErr()) {
-      error.value = result.error
-      return
+    try {
+      await handleNavigation(currentPage.value - 1)
+      goToPrevious()
     }
-    goToPrevious()
+    catch (err) {
+      error.value = err instanceof Error ? err : new Error(String(err))
+    }
   }
 
   return {

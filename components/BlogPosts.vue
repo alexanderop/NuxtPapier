@@ -23,18 +23,14 @@ const {
 
 const { transitionClasses } = useAnimations()
 
-const postsData = ref<any[]>([])
+const { data: postsData } = await useAsyncData(
+  `blog-posts-${type}-${limit}`,
+  async () => {
+    if (type === 'custom') {
+      return []
+    }
 
-const displayPosts = computed(() => {
-  if (type === 'custom' && posts) {
-    return posts
-  }
-  return postsData.value
-})
-
-if (type !== 'custom') {
-  const postsResult = await fromPromise(
-    (async () => {
+    try {
       let query = queryCollection('posts')
 
       if (type === 'featured') {
@@ -56,15 +52,20 @@ if (type !== 'custom') {
         .order('date', 'DESC')
         .limit(limit)
         .all()
-    })(),
-    error => new Error(`Failed to fetch posts: ${error}`),
-  )
+    }
+    catch {
+      // fallback to empty array if query fails
+      return []
+    }
+  },
+)
 
-  postsData.value = postsResult.match(
-    data => data,
-    () => [], // fallback to empty array if query fails
-  )
-}
+const displayPosts = computed(() => {
+  if (type === 'custom' && posts) {
+    return posts
+  }
+  return postsData.value || []
+})
 </script>
 
 <template>

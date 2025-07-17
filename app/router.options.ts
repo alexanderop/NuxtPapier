@@ -3,30 +3,27 @@ import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue
 const SCROLL_OFFSET_FOR_FIXED_HEADER = -80
 const ELEMENT_VISIBILITY_TIMEOUT = 5000
 
-// Helper functions using Result pattern
-function findElement(selector: string): Result<Element, Error> {
-  const element = document.querySelector(selector)
-  return element ? ok(element) : err(new Error(`Element not found: ${selector}`))
+// Helper functions
+function findElement(selector: string): Element | null {
+  return document.querySelector(selector)
 }
 
-function getVisibleElement(selector: string): Result<Element, Error> {
-  const elementResult = findElement(selector)
-  if (elementResult.isErr())
-    return elementResult
+function getVisibleElement(selector: string): Element | null {
+  const element = findElement(selector)
+  if (!element)
+    return null
 
-  const element = elementResult.value
   const rect = element.getBoundingClientRect()
   const style = window.getComputedStyle(element)
   const isVisible = rect.height > 0
     && rect.width > 0
     && style.opacity !== '0'
     && style.visibility !== 'hidden'
-  return isVisible
-    ? ok(element)
-    : err(new Error(`Element not visible: ${selector}`))
+
+  return isVisible ? element : null
 }
 
-function scrollToElement(element: Element, offset: number = SCROLL_OFFSET_FOR_FIXED_HEADER): Result<void, Error> {
+function scrollToElement(element: Element, offset: number = SCROLL_OFFSET_FOR_FIXED_HEADER): void {
   const rect = element.getBoundingClientRect()
   const y = rect.top + window.pageYOffset + offset
 
@@ -34,8 +31,6 @@ function scrollToElement(element: Element, offset: number = SCROLL_OFFSET_FOR_FI
     behavior: 'smooth',
     top: y,
   })
-
-  return ok(undefined)
 }
 
 interface ScrollPosition {
@@ -60,18 +55,12 @@ export default {
 
         // Handle same-page anchor navigation
         if (to.path === from.path && to.hash) {
-          const elementResult = findElement(to.hash)
-          elementResult.match(
-            (element) => {
-              scrollToElement(element)
-              resolve({})
-            },
-            () => {
-              // Element not found, continue to next navigation logic
-            },
-          )
-          if (elementResult.isOk())
+          const element = findElement(to.hash)
+          if (element) {
+            scrollToElement(element)
+            resolve({})
             return
+          }
         }
 
         // Handle cross-page anchor navigation
@@ -81,19 +70,13 @@ export default {
 
           const retryElementSearch = async (): Promise<void> => {
             while (Date.now() - startTime < ELEMENT_VISIBILITY_TIMEOUT) {
-              const elementResult = getVisibleElement(to.hash)
+              const element = getVisibleElement(to.hash)
 
-              const found = elementResult.match(
-                (element) => {
-                  scrollToElement(element)
-                  resolve({})
-                  return true
-                },
-                () => false,
-              )
-
-              if (found)
+              if (element) {
+                scrollToElement(element)
+                resolve({})
                 return
+              }
 
               // Wait a bit before retrying
               await new Promise(resolve => setTimeout(resolve, 100))

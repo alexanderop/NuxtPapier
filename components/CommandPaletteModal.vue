@@ -30,7 +30,8 @@ const emit = defineEmits<{
   'close': []
   'select': [index: number]
   'hover': [index: number]
-  'keydown': [event: KeyboardEvent]
+  'next': []
+  'prev': []
 }>()
 
 const localQuery = computed({
@@ -50,12 +51,13 @@ const localQuery = computed({
       :search-loading="searchLoading"
       :selected-index="selectedIndex"
       :highlight-fn="highlightFn"
-      container-class="max-w-2xl w-full mx-auto"
+      container-class="w-[600px] max-w-[90vw] mx-auto"
       @close="$emit('close')"
       @select="$emit('select', $event)"
       @hover="$emit('hover', $event)"
       @focus="$emit('hover', $event)"
-      @keydown="$emit('keydown', $event)"
+      @next="$emit('next')"
+      @prev="$emit('prev')"
     />
   </BaseModal>
 </template>

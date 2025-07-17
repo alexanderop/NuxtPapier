@@ -10,37 +10,32 @@ export function useTags() {
     'all-tags',
     async () => {
       error.value = null
-      const result = await fromPromise(
-        queryCollection('posts')
+      try {
+        const posts = await queryCollection('posts')
           .where('draft', '<>', true)
           .select('tags')
-          .all(),
-        error => new Error(`Failed to fetch tags: ${String(error)}`),
-      )
+          .all()
 
-      return result.match(
-        (posts) => {
-          const tagCountMap = new Map<string, number>()
+        const tagCountMap = new Map<string, number>()
 
-          for (const post of posts) {
-            if (post.tags && Array.isArray(post.tags)) {
-              for (const tag of post.tags) {
-                tagCountMap.set(tag, (tagCountMap.get(tag) ?? 0) + 1)
-              }
+        for (const post of posts) {
+          if (post.tags && Array.isArray(post.tags)) {
+            for (const tag of post.tags) {
+              tagCountMap.set(tag, (tagCountMap.get(tag) ?? 0) + 1)
             }
           }
+        }
 
-          const tagInfoArray: TagInfo[] = Array.from(tagCountMap.entries())
-            .map(([tag, count]) => ({ count, tag }))
-            .sort((a, b) => b.count - a.count)
+        const tagInfoArray: TagInfo[] = Array.from(tagCountMap.entries())
+          .map(([tag, count]) => ({ count, tag }))
+          .sort((a, b) => b.count - a.count)
 
-          return tagInfoArray
-        },
-        (err) => {
-          error.value = err
-          return []
-        },
-      )
+        return tagInfoArray
+      }
+      catch (err) {
+        error.value = err instanceof Error ? err : new Error(`Failed to fetch tags: ${String(err)}`)
+        return []
+      }
     },
   )
 

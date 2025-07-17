@@ -5,7 +5,7 @@ export interface SearchResult {
   category: string
   content?: string
   breadcrumb?: string[]
-  blogTitle?: string
+  postTitle?: string
   heading?: string
 }
 
@@ -25,20 +25,13 @@ export function useSearch() {
     loading.value = true
     error.value = null
 
-    // Query search sections from posts collection using neverthrow
-    const result = await fromPromise(
-      queryCollectionSearchSections('posts'),
-      error => (error instanceof Error ? error : new Error('Failed to load search data')),
-    )
-
-    result.match(
-      (data) => {
-        sections.value = data
-      },
-      (err) => {
-        error.value = err
-      },
-    )
+    try {
+      const data = await queryCollectionSearchSections('posts')
+      sections.value = data
+    }
+    catch (err) {
+      error.value = err instanceof Error ? err : new Error('Failed to load search data')
+    }
 
     loading.value = false
   })
@@ -84,18 +77,18 @@ export function useSearch() {
         const path = section.id
 
         // Extract blog title and heading
-        const blogTitle = section.titles.length > 0 ? section.titles[0] : section.title
-        const isHeading = section.title !== blogTitle
+        const postTitle = section.titles.length > 0 ? section.titles[0] : section.title
+        const isHeading = section.title !== postTitle
         const heading = isHeading ? section.title : undefined
 
         return {
-          blogTitle,
           breadcrumb: section.titles.length > 0 ? section.titles : [section.title],
           category: 'Posts',
           content: getContentSnippet(section.content, query.value),
           heading,
           id: section.id,
           path,
+          postTitle,
           title: section.title,
         }
       })
