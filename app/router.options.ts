@@ -86,7 +86,7 @@ export default {
             resolve({ top: 0 })
           }
 
-          retryElementSearch()
+          void retryElementSearch()
           return
         }
 
