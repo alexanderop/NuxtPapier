@@ -81,7 +81,10 @@ useBreadcrumbStructuredData([
 </script>
 
 <template>
-  <div v-if="post" class="contents">
+  <div
+    v-if="post"
+    class="contents"
+  >
     <aside class="animate h-fit hidden top-24 sticky lg:block">
       <TableOfContents :links="tocLinks" />
     </aside>
@@ -100,16 +103,28 @@ useBreadcrumbStructuredData([
       <div class="animate prose-lg max-w-none prose dark:prose-invert">
         <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
           <span v-if="post.author">{{ post.author }}</span>
-          <span v-if="post.date">{{ new Date(post.date).toLocaleDateString() }}</span>
+
+          <NuxtTime
+            v-if="post.date"
+            :datetime="post.date"
+            month="2-digit"
+            day="2-digit"
+            year="numeric"
+          />
+
           <span>{{ readingTimeText }}</span>
         </div>
 
         <ContentRenderer :value="post" />
       </div>
 
-      <div v-if="post.tags && post.tags.length > 0" class="animate my-8">
+      <div
+        v-if="post.tags && post.tags.length > 0"
+        class="animate my-8"
+      >
         <div class="flex gap-2 items-center">
           <span class="text-sm text-[var(--color-text-muted)]">Tags:</span>
+
           <BaseTags :tags="post.tags" />
         </div>
       </div>

@@ -69,7 +69,10 @@ const displayPosts = computed(() => {
 </script>
 
 <template>
-  <div v-if="displayPosts && displayPosts.length > 0" class="my-8">
+  <div
+    v-if="displayPosts && displayPosts.length > 0"
+    class="my-8"
+  >
     <div class="space-y-4">
       <article
         v-for="(post, index) in displayPosts"
@@ -82,31 +85,51 @@ const displayPosts = computed(() => {
           <h3 class="text-lg leading-tight flex-1">
             <NuxtLink
               :href="`${post.path}`"
-              class="text-[var(--color-text)] dark:text-[var(--color-primary)] hover:text-[var(--color-primary)]" :class="[transitionClasses]"
+              class="text-[var(--color-text)] dark:text-[var(--color-primary)] hover:text-[var(--color-primary)]"
+              :class="[transitionClasses]"
             >
               {{ post.title }}
             </NuxtLink>
           </h3>
 
           <!-- Date -->
-          <div v-if="showDate && post.date" class="text-sm text-[var(--color-text-muted)] whitespace-nowrap">
-            {{ new Date(post.date).toLocaleDateString() }}
-          </div>
+          <NuxtTime
+            v-if="showDate && post.date"
+            :datetime="post.date"
+            month="2-digit"
+            day="2-digit"
+            year="numeric"
+            class="text-sm text-[var(--color-text-muted)] whitespace-nowrap"
+          />
         </div>
 
         <!-- Excerpt -->
-        <p v-if="showExcerpt && post.description" class="text-[var(--color-text-muted)] leading-relaxed mt-2">
+        <p
+          v-if="showExcerpt && post.description"
+          class="text-[var(--color-text-muted)] leading-relaxed mt-2"
+        >
           {{ post.description }}
         </p>
 
         <!-- Tags -->
-        <div v-if="showTags && post.tags && post.tags.length > 0" class="mt-3">
-          <BaseTags :tags="post.tags" variant="small" :limit="3" />
+        <div
+          v-if="showTags && post.tags && post.tags.length > 0"
+          class="mt-3"
+        >
+          <BaseTags
+            :tags="post.tags"
+            variant="small"
+            :limit="3"
+          />
         </div>
       </article>
     </div>
   </div>
-  <div v-else class="text-[var(--color-text-muted)] py-8 text-center">
+
+  <div
+    v-else
+    class="text-[var(--color-text-muted)] py-8 text-center"
+  >
     No {{ type }} posts found.
   </div>
 </template>

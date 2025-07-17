@@ -12,9 +12,16 @@ useBreadcrumbStructuredData(items)
 </script>
 
 <template>
-  <nav aria-label="Breadcrumb navigation" class="breadcrumbs">
+  <nav
+    aria-label="Breadcrumb navigation"
+    class="breadcrumbs"
+  >
     <ul class="text-sm flex flex-wrap gap-2 items-center">
-      <li v-for="(item, index) in items" :key="index" class="flex gap-2 items-center">
+      <li
+        v-for="(item, index) in items"
+        :key="index"
+        class="flex gap-2 items-center"
+      >
         <template v-if="item.url">
           <NuxtLink
             :to="item.url"
@@ -23,6 +30,7 @@ useBreadcrumbStructuredData(items)
             {{ item.name }}
           </NuxtLink>
         </template>
+
         <template v-else>
           <span class="text-[var(--color-text)]">
             {{ item.name }}

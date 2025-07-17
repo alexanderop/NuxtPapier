@@ -38,7 +38,10 @@ useStaggeredAnimation()
 
 <template>
   <div class="py-12">
-    <article v-if="page" class="animate prose-lg max-w-none prose dark:prose-invert">
+    <article
+      v-if="page"
+      class="animate prose-lg max-w-none prose dark:prose-invert"
+    >
       <ContentRenderer :value="page" />
     </article>
   </div>

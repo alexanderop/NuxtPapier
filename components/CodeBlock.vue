@@ -39,11 +39,17 @@ const languageDisplay = computed(() => {
     <div class="px-4 py-2 border-b border-border bg-surface-base flex items-center justify-between">
       <div class="flex gap-2 items-center">
         <!-- Language label -->
-        <span v-if="language" class="text-xs text-text-muted font-medium">
+        <span
+          v-if="language"
+          class="text-xs text-text-muted font-medium"
+        >
           {{ languageDisplay }}
         </span>
         <!-- Filename -->
-        <span v-if="filename" class="text-xs text-text-muted">
+        <span
+          v-if="filename"
+          class="text-xs text-text-muted"
+        >
           {{ filename }}
         </span>
       </div>
@@ -60,6 +66,7 @@ const languageDisplay = computed(() => {
           :name="copied ? 'mdi:check' : 'mdi:content-copy'"
           class="h-3.5 w-3.5"
         />
+
         <span>{{ copied ? 'Copied!' : 'Copy' }}</span>
       </button>
     </div>

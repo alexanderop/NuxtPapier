@@ -40,6 +40,7 @@ provide(tocKey, {
       <h2 class="text-sm text-[var(--color-text)] font-semibold mb-4">
         Table of Contents
       </h2>
+
       <ul class="text-sm space-y-1.5">
         <TocNode
           v-for="link in links"

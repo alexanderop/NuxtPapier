@@ -11,6 +11,7 @@ defineEmits<{
     @click="$emit('click')"
   >
     <span class="tracking-wider">Search</span>
+
     <BaseKbd shortcut="cmd-k" />
   </button>
 </template>

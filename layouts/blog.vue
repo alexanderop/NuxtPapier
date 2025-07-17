@@ -1,13 +1,18 @@
 <template>
   <div class="font-mono flex flex-col min-h-screen">
     <TheHeader />
-    <main id="main-content" class="flex-1">
+
+    <main
+      id="main-content"
+      class="flex-1"
+    >
       <div class="blog-grid-wrapper">
         <div class="blog-grid-container">
           <slot />
         </div>
       </div>
     </main>
+
     <TheFooter />
   </div>
 </template>

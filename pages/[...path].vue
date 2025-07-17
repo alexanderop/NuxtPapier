@@ -4,6 +4,18 @@ const route = useRoute()
 const { data: page } = await useAsyncData(
   `page-${route.path}`,
   async () => {
+    // Don't handle routes that have specific page components
+    const excludedPaths = ['/posts/', '/tags/']
+    const shouldExclude = excludedPaths.some(path => route.path.startsWith(path))
+
+    if (shouldExclude) {
+      throw createError({
+        fatal: true,
+        statusCode: 404,
+        statusMessage: 'Page not found',
+      })
+    }
+
     const result = await queryCollection('pages').path(route.path).first()
     if (!result) {
       throw createError({
@@ -41,7 +53,10 @@ if (route.path !== '/') {
 </script>
 
 <template>
-  <div v-if="page" class="py-12">
+  <div
+    v-if="page"
+    class="py-12"
+  >
     <Breadcrumbs
       v-if="route.path !== '/'"
       :items="[

@@ -58,6 +58,7 @@ useStaggeredAnimation()
       <h1 class="animate text-4xl font-bold mb-4">
         Posts
       </h1>
+
       <p class="animate text-lg text-[var(--color-text-muted)]">
         {{ pageDescription }}
       </p>
@@ -72,13 +73,20 @@ useStaggeredAnimation()
         show-date
         :show-excerpt="false"
       />
-      <div v-else class="text-[var(--color-text-muted)] py-8 text-center">
+
+      <div
+        v-else
+        class="text-[var(--color-text-muted)] py-8 text-center"
+      >
         No posts found.
       </div>
     </div>
 
     <!-- Pagination -->
-    <div v-if="totalPages > 1" class="animate mt-12">
+    <div
+      v-if="totalPages > 1"
+      class="animate mt-12"
+    >
       <BasePagination
         :current-page="currentPage"
         :total-pages="totalPages"

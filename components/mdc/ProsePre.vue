@@ -53,26 +53,53 @@ const languageDisplay = computed(() => {
     <div class="prose-pre-head">
       <!-- Filename and language -->
       <div class="flex gap-2 items-center">
-        <span v-if="filename" class="text-xs text-text-muted font-mono">
+        <span
+          v-if="filename"
+          class="text-xs text-text-muted font-mono"
+        >
           <i class="not-italic">{{ filename }}</i>
         </span>
-        <span v-else-if="languageDisplay" class="text-xs text-text-muted font-mono">
+
+        <span
+          v-else-if="languageDisplay"
+          class="text-xs text-text-muted font-mono"
+        >
           {{ languageDisplay }}
         </span>
       </div>
 
       <!-- Copy section -->
       <div class="flex gap-2 items-center">
-        <span v-if="codeCopied" class="text-xs text-green-500 font-mono px-2 py-1 rounded flex gap-1 items-center dark:text-green-400">
-          <Icon name="mdi:check-circle" class="h-3.5 w-3.5" />
+        <span
+          v-if="codeCopied"
+          class="text-xs text-green-500 font-mono px-2 py-1 rounded flex gap-1 items-center dark:text-green-400"
+        >
+          <Icon
+            name="mdi:check-circle"
+            class="h-3.5 w-3.5"
+          />
+
           <i class="not-italic">Copied!</i>
         </span>
-        <button v-if="isSupported" type="button" class="text-xs text-text-muted font-mono px-2 py-1 rounded flex gap-1 transition-all duration-200 items-center hover:text-text hover:bg-white/5 active:scale-95" @click="copy()">
-          <Icon name="mdi:content-copy" class="h-3.5 w-3.5" />
+
+        <button
+          v-if="isSupported"
+          type="button"
+          class="text-xs text-text-muted font-mono px-2 py-1 rounded flex gap-1 transition-all duration-200 items-center hover:text-text hover:bg-white/5 active:scale-95"
+          @click="copy()"
+        >
+          <Icon
+            name="mdi:content-copy"
+            class="h-3.5 w-3.5"
+          />
           Copy
         </button>
       </div>
     </div>
-    <pre class="prose-pre-body" :class="className"><slot /></pre>
+
+    <pre
+      class="prose-pre-body"
+      :class="className"
+    ><slot /></pre>
   </div>
 </template>

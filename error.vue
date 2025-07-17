@@ -96,7 +96,10 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
           class="bg-gradient-to-r text-white font-medium px-8 py-4 rounded-lg inline-flex transform transition-all duration-200 items-center from-blue-600 to-purple-600 hover:shadow-lg hover:scale-105"
           @click="handleError"
         >
-          <Icon name="i-heroicons-rocket-launch" class="mr-2 h-5 w-5" />
+          <Icon
+            name="i-heroicons-rocket-launch"
+            class="mr-2 h-5 w-5"
+          />
           Beam me home, Scotty!
         </button>
 
@@ -112,7 +115,10 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
       </div>
 
       <!-- Debug info in development -->
-      <div v-if="$config.public.nodeEnv === 'development' && error.statusMessage" class="mt-8 p-4 text-left rounded-lg bg-gray-100 dark:bg-gray-800">
+      <div
+        v-if="$config.public.nodeEnv === 'development' && error.statusMessage"
+        class="mt-8 p-4 text-left rounded-lg bg-gray-100 dark:bg-gray-800"
+      >
         <p class="text-xs text-gray-600 font-mono dark:text-gray-400">
           {{ error.statusMessage }}
         </p>
