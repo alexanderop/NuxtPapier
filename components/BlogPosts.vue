@@ -23,44 +23,49 @@ const {
 
 const { transitionClasses } = useAnimations()
 
-const postsData = ref<any[]>([])
+const { data: postsData } = await useAsyncData(
+  `blog-posts-${type}-${limit}`,
+  async () => {
+    if (type === 'custom') {
+      return []
+    }
+
+    try {
+      let query = queryCollection('posts')
+
+      if (type === 'featured') {
+        // For featured posts, only show posts marked as featured
+        query = query.where('featured', '=', true)
+      }
+      else if (type === 'latest') {
+        // For latest posts, exclude drafts and featured posts
+        query = query
+          .where('draft', '<>', true)
+          .where('featured', '<>', true)
+      }
+      else if (type === 'all') {
+        // For all posts, only exclude drafts
+        query = query.where('draft', '<>', true)
+      }
+
+      return await query
+        .order('date', 'DESC')
+        .limit(limit)
+        .all()
+    }
+    catch {
+      // fallback to empty array if query fails
+      return []
+    }
+  },
+)
 
 const displayPosts = computed(() => {
   if (type === 'custom' && posts) {
     return posts
   }
-  return postsData.value
+  return postsData.value || []
 })
-
-if (type !== 'custom') {
-  try {
-    let query = queryCollection('posts')
-
-    if (type === 'featured') {
-      // For featured posts, only show posts marked as featured
-      query = query.where('featured', '=', true)
-    }
-    else if (type === 'latest') {
-      // For latest posts, exclude drafts and featured posts
-      query = query
-        .where('draft', '<>', true)
-        .where('featured', '<>', true)
-    }
-    else if (type === 'all') {
-      // For all posts, only exclude drafts
-      query = query.where('draft', '<>', true)
-    }
-
-    postsData.value = await query
-      .order('date', 'DESC')
-      .limit(limit)
-      .all()
-  }
-  catch {
-    // fallback to empty array if query fails
-    postsData.value = []
-  }
-}
 </script>
 
 <template>

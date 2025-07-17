@@ -1,31 +1,26 @@
 <script setup lang="ts">
 const route = useRoute()
 
-let page
-try {
-  page = await queryCollection('pages').path(route.path).first()
-}
-catch {
-  throw createError({
-    fatal: true,
-    statusCode: 404,
-    statusMessage: 'Page not found',
-  })
-}
+const { data: page } = await useAsyncData(
+  `page-${route.path}`,
+  async () => {
+    const result = await queryCollection('pages').path(route.path).first()
+    if (!result) {
+      throw createError({
+        fatal: true,
+        statusCode: 404,
+        statusMessage: 'Page not found',
+      })
+    }
+    return result
+  },
+)
 
-if (!page) {
-  throw createError({
-    fatal: true,
-    statusCode: 404,
-    statusMessage: 'Page not found',
-  })
-}
-
-const { pageTitle, pageDescription } = usePageMeta(page)
+const { pageTitle, pageDescription } = usePageMeta(page.value || { title: '' })
 
 // Generate simple OG image for dynamic pages
 defineOgImageComponent('Simple', {
-  title: pageTitle ?? page.title,
+  title: pageTitle ?? page.value?.title,
 })
 
 useEnhancedSeoMeta({
@@ -39,7 +34,7 @@ useWebsiteStructuredData()
 if (route.path !== '/') {
   const breadcrumbItems = [
     { name: 'Home', url: '/' },
-    { name: page.title },
+    { name: page.value?.title || '' },
   ]
   useBreadcrumbStructuredData(breadcrumbItems)
 }
@@ -51,7 +46,7 @@ if (route.path !== '/') {
       v-if="route.path !== '/'"
       :items="[
         { name: 'Home', url: '/' },
-        { name: page.title },
+        { name: page?.title || '' },
       ]"
       class="mb-8"
     />

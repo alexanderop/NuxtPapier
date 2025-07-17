@@ -142,6 +142,7 @@ export default antfu(
       'vue/sort-keys': 'off',
       'vue/v-for-delimiter-style': ['error', 'in'],
       'vue35/no-with-defaults': 'error',
+      'vue35/query-collection-in-async-data': 'error',
       'yoda': 'error',
     },
 
