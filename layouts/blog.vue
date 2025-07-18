@@ -23,6 +23,12 @@
   overflow-x: hidden;
 }
 
+@media (min-width: 1024px) {
+  .blog-grid-wrapper {
+    overflow-x: visible;
+  }
+}
+
 .blog-grid-container {
   display: grid;
   grid-template-columns: 1fr;

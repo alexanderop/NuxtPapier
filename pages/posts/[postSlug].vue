@@ -89,7 +89,7 @@ useBreadcrumbStructuredData([
       <TableOfContents :links="tocLinks" />
     </aside>
 
-    <article class="px-6 py-12 max-w-full overflow-x-hidden lg:px-0">
+    <article class="px-6 py-12 max-w-full overflow-x-hidden lg:px-0 lg:overflow-x-visible">
       <div class="animate mb-6">
         <Breadcrumbs
           :items="[
@@ -139,3 +139,15 @@ useBreadcrumbStructuredData([
     </article>
   </div>
 </template>
+
+<style scoped>
+.grid-container {
+  display: contents;
+}
+
+@media (min-width: 1024px) {
+  .grid-container {
+    display: contents;
+  }
+}
+</style>
