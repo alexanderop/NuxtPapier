@@ -56,7 +56,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  css: ['~/assets/css/main.css', '~/app.css'],
+  css: ['~/assets/css/main.css', '~/app.css', '~/assets/css/prose-mobile.css'],
 
   devtools: { enabled: true },
 

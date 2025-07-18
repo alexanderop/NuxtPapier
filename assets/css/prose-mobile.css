@@ -1,0 +1,38 @@
+/* Mobile-specific prose styles for better code block handling */
+@media (max-width: 640px) {
+  /* Keep code blocks within container bounds */
+  .prose pre,
+  .prose .prose-pre {
+    border-radius: 0.5rem;
+    max-width: 100%;
+  }
+
+  .prose .prose-pre-body {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure code blocks are scrollable */
+  .prose pre code,
+  .prose .prose-pre-body code {
+    display: block;
+    overflow-x: auto;
+    white-space: pre;
+    word-wrap: normal;
+    word-break: normal;
+  }
+
+  /* Visual indicator for scrollable area */
+  .prose .prose-pre-body::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .prose .prose-pre-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .prose .prose-pre-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+}

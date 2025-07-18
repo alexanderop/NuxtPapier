@@ -40,8 +40,9 @@ const readingTimeText = computed(() => {
 })
 
 definePageMeta({
-  layout: 'blog',
+  layout: 'grid',
 })
+
 useStaggeredAnimation()
 
 // Generate dynamic OG image for the blog post
@@ -83,13 +84,19 @@ useBreadcrumbStructuredData([
 <template>
   <div
     v-if="post"
-    class="contents"
+    class="w-full"
   >
-    <aside class="animate h-fit hidden top-24 sticky lg:block">
-      <TableOfContents :links="tocLinks" />
-    </aside>
+    <!-- Table of Contents - teleported to left sidebar -->
+    <ClientOnly>
+      <Teleport to="#grid-left-content">
+        <div class="animate h-fit">
+          <TableOfContents :links="tocLinks" />
+        </div>
+      </Teleport>
+    </ClientOnly>
 
-    <article class="px-6 py-12 max-w-full overflow-x-hidden lg:px-0 lg:overflow-x-visible">
+    <!-- Main content -->
+    <article class="px-4 pb-12 w-full lg:px-0 lg:py-12 sm:px-6">
       <div class="animate mb-6">
         <Breadcrumbs
           :items="[
@@ -100,7 +107,7 @@ useBreadcrumbStructuredData([
         />
       </div>
 
-      <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-none prose prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
+      <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-full prose lg:max-w-none prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
         <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
           <span v-if="post.author">{{ post.author }}</span>
 
@@ -139,15 +146,3 @@ useBreadcrumbStructuredData([
     </article>
   </div>
 </template>
-
-<style scoped>
-.grid-container {
-  display: contents;
-}
-
-@media (min-width: 1024px) {
-  .grid-container {
-    display: contents;
-  }
-}
-</style>
