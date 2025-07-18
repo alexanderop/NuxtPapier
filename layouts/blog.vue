@@ -20,6 +20,7 @@
 <style scoped>
 .blog-grid-wrapper {
   width: 100%;
+  overflow-x: hidden;
 }
 
 .blog-grid-container {
@@ -29,6 +30,7 @@
   margin: 0 auto;
   padding: 0 1rem;
   max-width: 48rem;
+  overflow-wrap: break-word;
 }
 
 @media (min-width: 1024px) {

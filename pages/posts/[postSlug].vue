@@ -89,7 +89,7 @@ useBreadcrumbStructuredData([
       <TableOfContents :links="tocLinks" />
     </aside>
 
-    <article class="px-4 py-12 lg:px-0">
+    <article class="px-6 py-12 max-w-full overflow-x-hidden lg:px-0">
       <div class="animate mb-6">
         <Breadcrumbs
           :items="[
@@ -100,7 +100,7 @@ useBreadcrumbStructuredData([
         />
       </div>
 
-      <div class="animate prose-lg max-w-none prose dark:prose-invert">
+      <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-none prose prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
         <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
           <span v-if="post.author">{{ post.author }}</span>
 
