@@ -40,8 +40,8 @@ export default defineNuxtConfig({
           },
         },
         toc: {
-          depth: 6, // Include all heading levels h1-h6
-          searchDepth: 6, // Search through all levels
+          depth: 5,
+          searchDepth: 5,
         },
       },
     },
@@ -56,7 +56,6 @@ export default defineNuxtConfig({
       },
     },
   },
-
   css: ['~/assets/css/main.css', '~/app.css'],
 
   devtools: { enabled: true },
@@ -86,7 +85,6 @@ export default defineNuxtConfig({
     // For better Netlify compatibility, you can optionally use Netlify's provider
     // provider: 'netlify',
   },
-
   modules: [
     '@nuxtjs/sitemap', // Must be before @nuxt/content for v3
     '@nuxt/content',
