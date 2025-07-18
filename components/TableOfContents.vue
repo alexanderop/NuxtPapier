@@ -33,7 +33,7 @@ provide(tocKey, {
 <template>
   <nav
     v-if="hasEnoughHeadings"
-    class="w-full hidden lg:block"
+    class="w-full"
     aria-label="Table of contents"
   >
     <div class="p-6 rounded-lg bg-[var(--color-bg-secondary)]">

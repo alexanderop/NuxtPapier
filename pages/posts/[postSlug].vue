@@ -39,6 +39,17 @@ const readingTimeText = computed(() => {
   return minutes === 1 ? '1 min read' : `${minutes} min read`
 })
 
+// Use breakpoints to determine if we should show TOC
+const breakpoints = useBreakpoints({
+  '2xl': 1536,
+  'lg': 1024,
+  'md': 768,
+  'sm': 640,
+  'xl': 1280,
+})
+
+const isDesktop = breakpoints.greaterOrEqual('lg')
+
 definePageMeta({
   layout: 'grid',
 })
@@ -86,9 +97,12 @@ useBreadcrumbStructuredData([
     v-if="post"
     class="w-full"
   >
-    <!-- Table of Contents - teleported to left sidebar -->
+    <!-- Table of Contents - teleported to left sidebar on desktop only -->
     <ClientOnly>
-      <Teleport to="#grid-left-content">
+      <Teleport
+        v-if="isDesktop"
+        to="#grid-left-content"
+      >
         <div class="animate h-fit">
           <TableOfContents :links="tocLinks" />
         </div>

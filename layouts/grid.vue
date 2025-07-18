@@ -17,9 +17,11 @@
             <div id="grid-left-content" />
           </aside>
 
-          <!-- Main content area -->
-          <div class="grid-main">
-            <slot />
+          <!-- Main content area with constrained width -->
+          <div class="grid-main-wrapper">
+            <div class="grid-main">
+              <slot />
+            </div>
           </div>
 
           <!-- Right sidebar area -->
@@ -42,9 +44,8 @@
 
 .grid-layout-container {
   display: grid;
-  gap: 2rem;
   margin: 0 auto;
-  max-width: 100%;
+  width: 100%;
 }
 
 /* Mobile-first: Single column */
@@ -53,7 +54,6 @@
   grid-template-areas: 'main';
   padding: 0;
   gap: 0;
-  padding-top: 0;
 }
 
 .grid-left,
@@ -61,8 +61,12 @@
   display: none;
 }
 
-.grid-main {
+.grid-main-wrapper {
   grid-area: main;
+  width: 100%;
+}
+
+.grid-main {
   width: 100%;
   max-width: 100%;
   min-width: 0; /* Prevent grid blowout */
@@ -72,26 +76,47 @@
 /* Desktop layout with 3 columns */
 @media (min-width: 1024px) {
   .grid-layout-container {
-    grid-template-columns: minmax(280px, 300px) 1fr minmax(280px, 300px);
+    grid-template-columns: 1fr minmax(0, 48rem) 1fr;
     grid-template-areas: 'left main right';
     padding: 0 2rem;
-    gap: 3rem;
+    gap: 2rem;
     max-width: 100%;
   }
 
   .grid-left {
     grid-area: left;
-    display: block;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 0;
+  }
+
+  .grid-left > * {
+    width: 100%;
+    max-width: 250px;
   }
 
   .grid-right {
     grid-area: right;
-    display: block;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 0;
+  }
+
+  .grid-right > * {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .grid-main-wrapper {
+    grid-area: main;
+    display: flex;
+    justify-content: center;
   }
 
   .grid-main {
-    grid-area: main;
-    max-width: none;
+    width: 100%;
+    max-width: 48rem; /* max-w-3xl - matches header width */
+    padding: 0 1rem;
     overflow: visible; /* Allow overflow on desktop */
   }
 
@@ -108,12 +133,12 @@
   }
 
   .grid-layout-container:not(:has(.grid-left > *)):has(.grid-right > *) {
-    grid-template-columns: 1fr minmax(280px, 300px);
+    grid-template-columns: 1fr 1fr;
     grid-template-areas: 'main right';
   }
 
   .grid-layout-container:has(.grid-left > *):not(:has(.grid-right > *)) {
-    grid-template-columns: minmax(280px, 300px) 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas: 'left main';
   }
 
@@ -128,10 +153,15 @@
   }
 }
 
-/* Large screens */
+/* Extra large screens */
 @media (min-width: 1280px) {
   .grid-layout-container {
     padding: 0 3rem;
+  }
+
+  .grid-left > *,
+  .grid-right > * {
+    max-width: 300px;
   }
 }
 </style>
