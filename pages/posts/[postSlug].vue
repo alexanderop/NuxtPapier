@@ -101,7 +101,7 @@ useBreadcrumbStructuredData([
     <ClientOnly>
       <Teleport
         v-if="isDesktop"
-        to="#grid-left-content"
+        to="#left-sidebar"
       >
         <div class="animate h-fit">
           <TableOfContents :links="tocLinks" />
@@ -110,7 +110,7 @@ useBreadcrumbStructuredData([
     </ClientOnly>
 
     <!-- Main content -->
-    <article class="px-4 pb-12 w-full lg:px-0 lg:py-12 sm:px-6">
+    <article class="w-full">
       <div class="animate mb-6">
         <Breadcrumbs
           :items="[

@@ -38,7 +38,7 @@ useStaggeredAnimation()
 </script>
 
 <template>
-  <div class="py-12">
+  <div>
     <div class="animate mb-8">
       <Breadcrumbs
         :items="[

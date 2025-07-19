@@ -43,7 +43,7 @@ useStaggeredAnimation()
 </script>
 
 <template>
-  <div class="py-12">
+  <div>
     <!-- Breadcrumbs -->
     <div class="animate mb-8">
       <Breadcrumbs

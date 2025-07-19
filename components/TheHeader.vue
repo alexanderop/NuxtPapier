@@ -32,10 +32,10 @@ watch(
   <header>
     <BaseSkipLink />
 
-    <div class="bg-[var(--color-header-bg)] w-full">
+    <div class="bg-[var(--color-header-bg)] flex h-full w-full items-center">
       <div
         id="nav-container"
-        class="container-app py-4 flex flex-col items-center justify-between relative sm:py-6 sm:flex-row"
+        class="py-4 flex flex-col w-full items-center justify-between relative sm:py-6 sm:flex-row"
       >
         <NuxtLink
           to="/"

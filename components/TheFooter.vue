@@ -11,20 +11,18 @@ const currentYear = new Date().getFullYear()
 
 <template>
   <footer
-    class="w-full"
+    class="flex h-full w-full items-center"
     :class="[{ 'mt-auto': !noMarginTop }]"
   >
-    <div class="container-app">
-      <div class="py-6 flex flex-col items-center justify-between sm:py-4 sm:flex-row-reverse">
-        <BaseSocials centered />
+    <div class="py-6 flex flex-col w-full items-center justify-between sm:py-4 sm:flex-row-reverse">
+      <BaseSocials centered />
 
-        <div class="my-2 flex flex-col whitespace-nowrap items-center sm:flex-row">
-          <span>Copyright © {{ currentYear }}</span>
+      <div class="my-2 flex flex-col whitespace-nowrap items-center sm:flex-row">
+        <span>Copyright © {{ currentYear }}</span>
 
-          <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
+        <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
 
-          <span>All rights reserved.</span>
-        </div>
+        <span>All rights reserved.</span>
       </div>
     </div>
   </footer>

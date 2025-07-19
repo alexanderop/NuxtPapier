@@ -37,7 +37,7 @@ useStaggeredAnimation()
 </script>
 
 <template>
-  <div class="py-12">
+  <div>
     <article
       v-if="page"
       class="animate prose-lg max-w-none prose dark:prose-invert"

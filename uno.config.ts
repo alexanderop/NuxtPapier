@@ -315,8 +315,8 @@ export default defineConfig({
     ...Array.from({ length: 10 }, (_, i) => `ml-${i * 3}`),
   ],
   shortcuts: {
-    'container-app': 'mx-auto max-w-3xl px-4',
-    'max-w-app': 'max-w-3xl',
+    // Grid utilities for responsive layout
+    'grid-container': 'grid grid-cols-1 grid-rows-[auto_1fr_auto] sm:grid-cols-5 sm:grid-rows-5',
   },
   theme: {
     colors: {
