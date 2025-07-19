@@ -11,7 +11,7 @@ const currentYear = new Date().getFullYear()
 
 <template>
   <footer
-    class="flex h-full w-full items-center"
+    class="flex w-full items-center"
     :class="[{ 'mt-auto': !noMarginTop }]"
   >
     <div class="py-6 flex flex-col w-full items-center justify-between sm:py-4 sm:flex-row-reverse">
