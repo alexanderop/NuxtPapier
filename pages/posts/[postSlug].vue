@@ -51,7 +51,7 @@ const breakpoints = useBreakpoints({
 const isDesktop = breakpoints.greaterOrEqual('lg')
 
 definePageMeta({
-  layout: 'grid',
+  layout: 'default',
 })
 
 useStaggeredAnimation()
