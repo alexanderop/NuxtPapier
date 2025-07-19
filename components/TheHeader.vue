@@ -35,18 +35,18 @@ watch(
     <div class="bg-[var(--color-header-bg)] w-full">
       <div
         id="nav-container"
-        class="container-app py-4 flex flex-col items-center justify-between relative sm:py-6 sm:flex-row"
+        class="px-4 py-4 flex w-full items-center justify-between relative sm:px-6 sm:py-6"
       >
         <NuxtLink
           to="/"
-          class="text-xl leading-8 font-semibold py-1 whitespace-nowrap absolute sm:text-2xl sm:leading-none sm:static"
+          class="text-xl leading-8 font-semibold py-1 whitespace-nowrap sm:text-2xl sm:leading-none"
         >
           {{ appConfig.site.title }}
         </NuxtLink>
 
         <nav
           id="nav-menu"
-          class="flex flex-col w-full items-center sm:ms-2 sm:py-0 sm:flex-row sm:justify-end sm:space-x-4"
+          class="flex items-center sm:ms-2"
         >
           <BaseMobileMenuToggle
             id="menu-btn"
@@ -57,12 +57,12 @@ watch(
 
           <ul
             id="menu-items"
-            class="sm:mt-0 sm:flex sm:gap-x-5 sm:w-auto sm:items-center"
+            class="sm:mt-0 sm:flex sm:gap-x-5 sm:items-center"
             :class="[
               menuItemStyles,
               // Mobile styles: toggle between 'grid' and 'hidden'
               menuOpen
-                ? 'grid mt-4 w-44 grid-cols-2 place-content-center gap-2'
+                ? 'grid mt-4 w-44 grid-cols-2 place-content-center gap-2 absolute top-full left-1/2 -translate-x-1/2 bg-[var(--color-header-bg)] rounded-lg shadow-lg z-50'
                 : 'hidden',
             ]"
           >

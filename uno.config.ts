@@ -13,10 +13,12 @@ export default defineConfig({
           'background-color': 'var(--shiki-default-bg)',
           'border-radius': '0.5rem',
           'margin': '1.5rem 0',
-          'overflow-x': 'hidden',
+          'max-width': '100%',
+          'overflow': 'hidden',
         },
 
         '.prose-pre-body': {
+          '-webkit-overflow-scrolling': 'touch',
           'background-color': 'transparent',
           'border-bottom-left-radius': '0.5rem',
           'border-bottom-right-radius': '0.5rem',
@@ -25,6 +27,7 @@ export default defineConfig({
           'margin': '0',
           'overflow-x': 'auto',
           'padding': '1rem 0',
+          'scrollbar-width': 'thin',
         },
 
         '.prose-pre-body .line': {
@@ -256,6 +259,7 @@ export default defineConfig({
           'background-color': 'var(--color-surface)',
           'border-radius': '0.5rem',
           'margin': '1.5rem 0',
+          'max-width': '100%',
           'overflow-x': 'auto',
           'padding': '0',
         },
@@ -311,8 +315,8 @@ export default defineConfig({
     ...Array.from({ length: 10 }, (_, i) => `ml-${i * 3}`),
   ],
   shortcuts: {
-    'container-app': 'mx-auto max-w-3xl px-4',
-    'max-w-app': 'max-w-3xl',
+    // Grid utilities for responsive layout
+    'grid-container': 'grid grid-cols-1 grid-rows-[auto_1fr_auto] sm:grid-cols-5 sm:grid-rows-5',
   },
   theme: {
     colors: {

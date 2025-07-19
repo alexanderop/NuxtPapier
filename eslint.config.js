@@ -409,6 +409,7 @@ export default antfu(
         },
       ],
       'ts/no-floating-promises': 'error',
+      'ts/prefer-optional-chain': 'error',
     },
   },
   {

@@ -10,7 +10,17 @@ interface StaggeredAnimationOptions {
 }
 
 export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
-  // Configuration with defaults
+  if (!isClientEnvironment) {
+    return {
+      animatedCount: readonly(ref(0)),
+      error: readonly(ref<Error | null>(null)),
+      isAnimating: readonly(ref(false)),
+      isComplete: computed(() => false),
+      replay: () => {},
+      resetAnimations: () => {},
+    }
+  }
+
   const {
     selector = '.animate',
     staggerDelay = 100,
@@ -18,19 +28,15 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
     animationClass = 'show',
   } = options
 
-  // Primary State
   const isAnimating = ref(false)
   const animatedCount = ref(0)
 
-  // State Metadata
   const error = ref<Error | null>(null)
 
-  // Computed Properties
   const isComplete = computed(() =>
     animatedCount.value > 0 && !isAnimating.value,
   )
 
-  // Methods
   const animateElements = () => {
     try {
       error.value = null
@@ -80,12 +86,10 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
     setTimeout(animateElements, initialDelay)
   }
 
-  // Lifecycle Hooks
   onMounted(() => {
     setTimeout(animateElements, initialDelay)
   })
 
-  // Watchers
   const route = useRoute()
   watchEffect(() => {
     if (route.path) {
@@ -93,17 +97,11 @@ export function useStaggeredAnimation(options: StaggeredAnimationOptions = {}) {
     }
   })
 
-  // Return public API
   return {
-
     animatedCount: readonly(animatedCount),
-
     error: readonly(error),
-    // State
     isAnimating: readonly(isAnimating),
-    // Computed
     isComplete,
-    // Methods
     replay,
     resetAnimations,
   }

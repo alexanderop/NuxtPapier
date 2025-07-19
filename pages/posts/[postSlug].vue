@@ -39,9 +39,21 @@ const readingTimeText = computed(() => {
   return minutes === 1 ? '1 min read' : `${minutes} min read`
 })
 
-definePageMeta({
-  layout: 'blog',
+// Use breakpoints to determine if we should show TOC
+const breakpoints = useBreakpoints({
+  '2xl': 1536,
+  'lg': 1024,
+  'md': 768,
+  'sm': 640,
+  'xl': 1280,
 })
+
+const isDesktop = breakpoints.greaterOrEqual('lg')
+
+definePageMeta({
+  layout: 'default',
+})
+
 useStaggeredAnimation()
 
 // Generate dynamic OG image for the blog post
@@ -83,13 +95,22 @@ useBreadcrumbStructuredData([
 <template>
   <div
     v-if="post"
-    class="contents"
+    class="w-full"
   >
-    <aside class="animate h-fit hidden top-24 sticky lg:block">
-      <TableOfContents :links="tocLinks" />
-    </aside>
+    <!-- Table of Contents - teleported to left sidebar on desktop only -->
+    <ClientOnly>
+      <Teleport
+        v-if="isDesktop"
+        to="#left-sidebar-content"
+      >
+        <div class="animate pt-4">
+          <TableOfContents :links="tocLinks" />
+        </div>
+      </Teleport>
+    </ClientOnly>
 
-    <article class="px-4 py-12 lg:px-0">
+    <!-- Main content -->
+    <article class="w-full">
       <div class="animate mb-6">
         <Breadcrumbs
           :items="[
@@ -100,7 +121,7 @@ useBreadcrumbStructuredData([
         />
       </div>
 
-      <div class="animate prose-lg max-w-none prose dark:prose-invert">
+      <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-full prose lg:max-w-none prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
         <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
           <span v-if="post.author">{{ post.author }}</span>
 
