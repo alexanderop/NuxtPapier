@@ -10,11 +10,11 @@
     <!-- Left Sidebar - hidden on mobile, spans row 2-4 in column 1 on desktop -->
     <aside
       id="left-sidebar"
-      class="hidden relative sm:col-start-1 sm:row-start-2 sm:col-end-2 sm:row-end-5 sm:block"
+      class="hidden sm:col-start-1 sm:row-start-2 sm:col-end-2 sm:row-end-5 sm:block"
     >
       <div
         id="left-sidebar-content"
-        class="px-4 top-0 sticky"
+        class="px-4 top-4 sticky"
       />
     </aside>
 
