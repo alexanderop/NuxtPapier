@@ -12,7 +12,7 @@ const { variant = 'default' } = defineProps<{
   variant?: GridVariant['name']
 }>()
 
-const { $slots } = getCurrentInstance()?.proxy || {}
+const slots = useSlots()
 
 const gridVariants: Record<GridVariant['name'], Omit<GridVariant, 'name'>> = {
   'centered': {
@@ -55,13 +55,17 @@ const gridVariants: Record<GridVariant['name'], Omit<GridVariant, 'name'>> = {
 
 const currentVariant = computed(() => gridVariants[variant])
 
-const hasLeftSidebar = computed(() =>
-  currentVariant.value.showLeftSidebar && $slots?.['sidebar-left'],
-)
+const hasLeftSidebar = computed(() => {
+  const hasSlot = !!slots['sidebar-left']
+  const shouldShow = currentVariant.value.showLeftSidebar
+  return shouldShow && hasSlot
+})
 
-const hasRightSidebar = computed(() =>
-  currentVariant.value.showRightSidebar && $slots?.['sidebar-right'],
-)
+const hasRightSidebar = computed(() => {
+  const hasSlot = !!slots['sidebar-right']
+  const shouldShow = currentVariant.value.showRightSidebar
+  return shouldShow && hasSlot
+})
 </script>
 
 <template>

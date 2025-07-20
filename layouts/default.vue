@@ -1,3 +1,8 @@
+<script setup lang="ts">
+// Default layout component providing the standard page structure
+// with header, main content area, and footer
+</script>
+
 <template>
   <div class="font-mono flex flex-col min-h-screen">
     <div class="grid grid-cols-1 sm:grid-cols-5">

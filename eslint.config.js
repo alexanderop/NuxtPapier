@@ -16,6 +16,7 @@ export default antfu(
     },
     rules: {
       'arrow-spacing': 'error',
+      'complexity': ['warn', { max: 15 }],
       'dot-notation': 'off',
       'max-params': 'off',
       'no-array-constructor': 'error',
