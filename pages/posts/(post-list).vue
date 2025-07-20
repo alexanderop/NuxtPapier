@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 
-// Use pagination composable
 const {
   posts,
   currentPage,
@@ -12,7 +11,6 @@ const {
   goToNext,
 } = await usePaginatedPosts()
 
-// SEO meta tags
 const { pageTitle, pageDescription } = usePageMeta(
   { title: 'Posts' },
   {
@@ -21,7 +19,6 @@ const { pageTitle, pageDescription } = usePageMeta(
   },
 )
 
-// Generate simple OG image for blog list
 defineOgImageComponent('Simple', {
   title: pageTitle || 'Posts',
 })
@@ -32,19 +29,16 @@ useEnhancedSeoMeta({
   type: 'website',
 })
 
-// Add breadcrumb structured data
 useBreadcrumbStructuredData([
   { name: 'Home', url: '/' },
   { name: 'Posts' },
 ])
 
-// Enable staggered animations
 useStaggeredAnimation()
 </script>
 
 <template>
   <div>
-    <!-- Breadcrumbs -->
     <div class="animate mb-8">
       <Breadcrumbs
         :items="[
@@ -64,7 +58,6 @@ useStaggeredAnimation()
       </p>
     </div>
 
-    <!-- Display paginated posts -->
     <div class="animate">
       <BlogPosts
         v-if="posts && posts.length > 0"
@@ -82,7 +75,6 @@ useStaggeredAnimation()
       </div>
     </div>
 
-    <!-- Pagination -->
     <div
       v-if="totalPages > 1"
       class="animate mt-12"
