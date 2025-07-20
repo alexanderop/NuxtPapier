@@ -8,13 +8,6 @@ const { data: post } = await useAsyncData(
   `post-${postSlug}`,
   async () => {
     const result = await queryCollection('posts').path(`/posts/${postSlug}`).first()
-    if (!result) {
-      throw createError({
-        fatal: true,
-        statusCode: 404,
-        statusMessage: 'Post not found',
-      })
-    }
     return result
   },
 )
@@ -29,34 +22,20 @@ if (!post.value) {
 
 const { pageTitle, pageDescription } = usePageMeta(post.value, { isBlogPost: true })
 
-const tocLinks = computed(() => {
-  const toc = post.value?.body?.toc
-  return toc?.links || []
-})
-
 const readingTimeText = computed(() => {
   const minutes = post.value?.readingTime || 0
   return minutes === 1 ? '1 min read' : `${minutes} min read`
 })
 
-// Use breakpoints to determine if we should show TOC
-const breakpoints = useBreakpoints({
-  '2xl': 1536,
-  'lg': 1024,
-  'md': 768,
-  'sm': 640,
-  'xl': 1280,
+const tocLinks = computed(() => {
+  const toc = post.value?.body?.toc
+  return toc?.links || []
 })
 
-const isDesktop = breakpoints.greaterOrEqual('lg')
-
-definePageMeta({
-  layout: 'default',
-})
+const hasTableOfContents = computed(() => tocLinks.value.length >= 1)
 
 useStaggeredAnimation()
 
-// Generate dynamic OG image for the blog post
 defineOgImageComponent('BlogPost', {
   author: post.value.author ?? appConfig.site.author,
   date: post.value.date,
@@ -93,70 +72,66 @@ useBreadcrumbStructuredData([
 </script>
 
 <template>
-  <div
-    v-if="post"
-    class="w-full"
-  >
-    <!-- Table of Contents - teleported to left sidebar on desktop only -->
-    <ClientOnly>
-      <Teleport
-        v-if="isDesktop"
-        to="#left-sidebar-content"
-      >
-        <div class="animate pt-4">
-          <TableOfContents :links="tocLinks" />
-        </div>
-      </Teleport>
-    </ClientOnly>
+  <BaseGridLayout variant="left-sidebar">
+    <template
+      v-if="hasTableOfContents"
+      #sidebar-left
+    >
+      <TableOfContents :links="tocLinks" />
+    </template>
 
-    <!-- Main content -->
-    <article class="w-full">
-      <div class="animate mb-6">
-        <Breadcrumbs
-          :items="[
-            { name: 'Home', url: '/' },
-            { name: 'Posts', url: '/posts' },
-            { name: post.title },
-          ]"
-        />
-      </div>
-
-      <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-full prose lg:max-w-none prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
-        <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
-          <span v-if="post.author">{{ post.author }}</span>
-
-          <NuxtTime
-            v-if="post.date"
-            :datetime="post.date"
-            month="2-digit"
-            day="2-digit"
-            year="numeric"
+    <div
+      v-if="post"
+      class="w-full"
+    >
+      <article class="w-full">
+        <div class="animate mb-6">
+          <Breadcrumbs
+            :items="[
+              { name: 'Home', url: '/' },
+              { name: 'Posts', url: '/posts' },
+              { name: post.title },
+            ]"
           />
-
-          <span>{{ readingTimeText }}</span>
         </div>
 
-        <ContentRenderer :value="post" />
-      </div>
+        <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-full prose lg:max-w-none prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
+          <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
+            <span v-if="post.author">{{ post.author }}</span>
 
-      <div
-        v-if="post.tags && post.tags.length > 0"
-        class="animate my-8"
-      >
-        <div class="flex gap-2 items-center">
-          <span class="text-sm text-[var(--color-text-muted)]">Tags:</span>
+            <NuxtTime
+              v-if="post.date"
+              :datetime="post.date"
+              month="2-digit"
+              day="2-digit"
+              year="numeric"
+            />
 
-          <BaseTags :tags="post.tags" />
+            <span>{{ readingTimeText }}</span>
+          </div>
+
+          <ContentRenderer :value="post" />
         </div>
-      </div>
 
-      <div class="animate">
-        <ShareLinks
-          :title="post.title"
-          :description="post.description"
-          variant="inline"
-        />
-      </div>
-    </article>
-  </div>
+        <div
+          v-if="post.tags && post.tags.length > 0"
+          class="animate my-8"
+        >
+          <div class="flex gap-2 items-center">
+            <span class="text-sm text-[var(--color-text-muted)]">Tags:</span>
+
+            <BaseTags :tags="post.tags" />
+          </div>
+        </div>
+
+        <div class="animate">
+          <ShareLinks
+            :title="post.title"
+            :description="post.description"
+            variant="inline"
+          />
+        </div>
+      </article>
+    </div>
+  </BaseGridLayout>
 </template>

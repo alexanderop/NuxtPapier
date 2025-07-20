@@ -32,7 +32,7 @@ watch(
   <header>
     <BaseSkipLink />
 
-    <div class="bg-[var(--color-header-bg)] w-full">
+    <div class="bg-[var(--color-background)] w-full">
       <div
         id="nav-container"
         class="px-4 py-4 flex w-full items-center justify-between relative sm:px-6 sm:py-6"
@@ -62,7 +62,7 @@ watch(
               menuItemStyles,
               // Mobile styles: toggle between 'grid' and 'hidden'
               menuOpen
-                ? 'grid mt-4 w-44 grid-cols-2 place-content-center gap-2 absolute top-full left-1/2 -translate-x-1/2 bg-[var(--color-header-bg)] rounded-lg shadow-lg z-50'
+                ? 'grid mt-4 w-44 grid-cols-2 place-content-center gap-2 absolute top-full left-1/2 -translate-x-1/2 bg-[var(--color-background)] rounded-lg shadow-lg z-50'
                 : 'hidden',
             ]"
           >

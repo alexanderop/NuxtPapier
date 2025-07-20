@@ -16,6 +16,7 @@ export default antfu(
     },
     rules: {
       'arrow-spacing': 'error',
+      'complexity': ['warn', { max: 15 }],
       'dot-notation': 'off',
       'max-params': 'off',
       'no-array-constructor': 'error',
@@ -143,6 +144,7 @@ export default antfu(
       'vue/new-line-between-multi-line-property': ['error', {
         minLineOfMultilineProperty: 2,
       }],
+      'vue/no-empty-component-block': 'error',
       'vue/no-mutating-props': 'error',
       'vue/no-ref-object-reactivity-loss': 'error',
       'vue/no-required-prop-with-default': ['error', {

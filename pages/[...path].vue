@@ -53,18 +53,20 @@ if (route.path !== '/') {
 </script>
 
 <template>
-  <div v-if="page">
-    <Breadcrumbs
-      v-if="route.path !== '/'"
-      :items="[
-        { name: 'Home', url: '/' },
-        { name: page?.title || '' },
-      ]"
-      class="mb-8"
-    />
+  <BaseGridLayout variant="default">
+    <div v-if="page">
+      <Breadcrumbs
+        v-if="route.path !== '/'"
+        :items="[
+          { name: 'Home', url: '/' },
+          { name: page?.title || '' },
+        ]"
+        class="mb-8"
+      />
 
-    <article class="prose-lg max-w-none prose dark:prose-invert">
-      <ContentRenderer :value="page" />
-    </article>
-  </div>
+      <article class="prose-lg max-w-none prose dark:prose-invert">
+        <ContentRenderer :value="page" />
+      </article>
+    </div>
+  </BaseGridLayout>
 </template>

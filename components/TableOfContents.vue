@@ -5,7 +5,7 @@ import { tocKey } from './tocKey'
 
 const { links = [] } = defineProps<{
   /** Array of table of contents links with hierarchy */
-  links?: TocLink[]
+  links?: readonly TocLink[]
 }>()
 
 const { activeId, scrollToHeading } = useTableOfContents()

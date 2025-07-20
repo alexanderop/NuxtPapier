@@ -37,12 +37,12 @@ useStaggeredAnimation()
 </script>
 
 <template>
-  <div>
+  <BaseGridLayout variant="default">
     <article
       v-if="page"
       class="animate prose-lg max-w-none prose dark:prose-invert"
     >
       <ContentRenderer :value="page" />
     </article>
-  </div>
+  </BaseGridLayout>
 </template>

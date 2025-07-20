@@ -38,7 +38,7 @@ useStaggeredAnimation()
 </script>
 
 <template>
-  <div>
+  <BaseGridLayout variant="default">
     <div class="animate mb-8">
       <Breadcrumbs
         :items="[
@@ -103,5 +103,5 @@ useStaggeredAnimation()
     >
       No tags found.
     </div>
-  </div>
+  </BaseGridLayout>
 </template>

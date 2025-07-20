@@ -22,7 +22,7 @@ export function useCanonicalURL(path?: string) {
   return `${cleanUrl}${basePath}`
 }
 
-export function useEnhancedSeoMeta(options: {
+interface SeoMetaOptions {
   title?: string
   description?: string
   image?: string
@@ -34,19 +34,33 @@ export function useEnhancedSeoMeta(options: {
   modifiedTime?: string
   tags?: string[]
   path?: string
-}) {
-  const appConfig = useAppConfig()
-  const canonicalUrl = useCanonicalURL(options.path)
+}
 
+interface AppConfig {
+  site: {
+    title: string
+    desc: string
+    ogImage?: string
+    lang: string
+    author: string
+  }
+  socials?: Social[]
+}
+
+function buildBaseSeoMeta(
+  options: SeoMetaOptions,
+  appConfig: AppConfig,
+  canonicalUrl: string,
+): SeoMetaData {
   const metaTitle = options.title ?? appConfig.site.title
   const metaDescription = options.description ?? appConfig.site.desc
   const metaImage = options.image ?? `/${appConfig.site.ogImage}`
-
-  // Default image dimensions for better social media preview
   const imageWidth = options.imageWidth ?? 1200
   const imageHeight = options.imageHeight ?? 630
 
-  const seoMeta: SeoMetaData = {
+  const twitterHandle = appConfig.socials?.find((s: Social) => s.name === 'Twitter')?.href?.split('/').pop()
+
+  return {
     author: options.author ?? appConfig.site.author,
     description: metaDescription,
     ogDescription: metaDescription,
@@ -64,29 +78,42 @@ export function useEnhancedSeoMeta(options: {
     twitterDescription: metaDescription,
     twitterImage: metaImage,
     twitterImageAlt: metaTitle,
-    twitterSite: appConfig.socials?.find((s: Social) => s.name === 'Twitter')?.href?.split('/').pop(),
+    twitterSite: twitterHandle,
     twitterTitle: metaTitle,
   }
+}
 
-  if (canonicalUrl !== '' && canonicalUrl.length > 0) {
+function addArticleMeta(seoMeta: SeoMetaData, options: SeoMetaOptions): void {
+  if (options.type !== 'article')
+    return
+
+  if (options.author != null)
+    seoMeta.articleAuthor = [options.author]
+  if (options.publishedTime != null)
+    seoMeta.articlePublishedTime = options.publishedTime
+  if (options.modifiedTime != null)
+    seoMeta.articleModifiedTime = options.modifiedTime
+  if (options.tags != null && options.tags.length > 0)
+    seoMeta.articleTag = options.tags
+  seoMeta.articleSection = 'Technology'
+}
+
+export function useEnhancedSeoMeta(options: SeoMetaOptions) {
+  const appConfig = useAppConfig()
+  const canonicalUrl = useCanonicalURL(options.path)
+
+  const seoMeta = buildBaseSeoMeta(options, appConfig, canonicalUrl)
+
+  const hasCanonicalUrl = canonicalUrl !== '' && canonicalUrl.length > 0
+  if (hasCanonicalUrl) {
     seoMeta.canonical = canonicalUrl
   }
 
-  if (options.type === 'article') {
-    if (options.author != null)
-      seoMeta.articleAuthor = [options.author]
-    if (options.publishedTime != null)
-      seoMeta.articlePublishedTime = options.publishedTime
-    if (options.modifiedTime != null)
-      seoMeta.articleModifiedTime = options.modifiedTime
-    if (options.tags != null && options.tags.length > 0)
-      seoMeta.articleTag = options.tags
-    seoMeta.articleSection = 'Technology'
-  }
+  addArticleMeta(seoMeta, options)
 
   useSeoMeta(seoMeta)
 
-  if (canonicalUrl !== '' && canonicalUrl.length > 0) {
+  if (hasCanonicalUrl) {
     useHead({
       link: [
         { href: canonicalUrl, rel: 'canonical' },
