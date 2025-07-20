@@ -143,6 +143,7 @@ export default antfu(
       'vue/new-line-between-multi-line-property': ['error', {
         minLineOfMultilineProperty: 2,
       }],
+      'vue/no-empty-component-block': 'error',
       'vue/no-mutating-props': 'error',
       'vue/no-ref-object-reactivity-loss': 'error',
       'vue/no-required-prop-with-default': ['error', {

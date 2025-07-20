@@ -27,6 +27,8 @@ const readingTimeText = computed(() => {
   return minutes === 1 ? '1 min read' : `${minutes} min read`
 })
 
+// TOC data is now handled by the layout itself
+
 definePageMeta({
   layout: 'post',
 })

@@ -1,5 +1,5 @@
 <template>
-  <BaseGridLayout variant="default">
+  <BaseGridLayout variant="full-width">
     <slot />
   </BaseGridLayout>
 </template>
