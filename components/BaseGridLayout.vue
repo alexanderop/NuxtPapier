@@ -16,38 +16,38 @@ const { $slots } = getCurrentInstance()?.proxy || {}
 
 const gridVariants: Record<GridVariant['name'], Omit<GridVariant, 'name'>> = {
   'centered': {
-    gridClass: 'grid-rows-[auto_1fr_auto] grid-cols-1',
-    mainClass: 'px-4 max-w-prose mx-auto w-full row-start-2',
+    gridClass: 'grid-cols-1',
+    mainClass: 'px-4 max-w-prose mx-auto w-full',
     showLeftSidebar: false,
     showRightSidebar: false,
   },
   'default': {
-    gridClass: 'grid-rows-[auto_1fr_1fr_1fr_auto] grid-cols-1 sm:grid-cols-5',
-    mainClass: 'px-4 col-span-1 row-start-2 row-end-5 sm:px-0 sm:col-start-2 sm:col-end-5',
+    gridClass: 'grid-cols-1 sm:grid-cols-5',
+    mainClass: 'px-4 col-span-1 sm:px-0 sm:col-start-2 sm:col-end-5',
     showLeftSidebar: false,
     showRightSidebar: false,
   },
   'full-width': {
-    gridClass: 'grid-rows-[auto_1fr_auto] grid-cols-1',
-    mainClass: 'row-start-2 w-full',
+    gridClass: 'grid-cols-1',
+    mainClass: 'w-full',
     showLeftSidebar: false,
     showRightSidebar: false,
   },
   'left-sidebar': {
-    gridClass: 'grid-rows-[auto_1fr_1fr_1fr_auto] grid-cols-1 sm:grid-cols-5',
-    mainClass: 'px-4 col-span-1 row-start-2 row-end-5 sm:px-0 sm:col-start-2 sm:col-end-5',
+    gridClass: 'grid-cols-1 sm:grid-cols-5',
+    mainClass: 'px-4 col-span-1 sm:px-0 sm:col-start-2 sm:col-end-5',
     showLeftSidebar: true,
     showRightSidebar: false,
   },
   'right-sidebar': {
-    gridClass: 'grid-rows-[auto_1fr_1fr_1fr_auto] grid-cols-1 sm:grid-cols-5',
-    mainClass: 'px-4 col-span-1 row-start-2 row-end-5 sm:px-0 sm:col-start-2 sm:col-end-5',
+    gridClass: 'grid-cols-1 sm:grid-cols-5',
+    mainClass: 'px-4 col-span-1 sm:px-0 sm:col-start-2 sm:col-end-5',
     showLeftSidebar: false,
     showRightSidebar: true,
   },
   'with-sidebars': {
-    gridClass: 'grid-rows-[auto_1fr_1fr_1fr_auto] grid-cols-1 sm:grid-cols-5',
-    mainClass: 'px-4 col-span-1 row-start-2 row-end-5 sm:px-0 sm:col-start-2 sm:col-end-5',
+    gridClass: 'grid-cols-1 sm:grid-cols-5',
+    mainClass: 'px-4 col-span-1 sm:px-0 sm:col-start-2 sm:col-end-5',
     showLeftSidebar: true,
     showRightSidebar: true,
   },
@@ -66,22 +66,14 @@ const hasRightSidebar = computed(() =>
 
 <template>
   <div
-    class="font-mono grid min-h-screen"
+    class="grid"
     :class="currentVariant.gridClass"
   >
-    <!-- Header -->
-    <slot
-      name="header"
-      :class="variant === 'full-width' ? 'col-span-1' : 'col-span-1 row-start-1 row-end-2 sm:col-start-2 sm:col-end-5'"
-    >
-      <TheHeader :class="variant === 'full-width' ? 'col-span-1' : 'col-span-1 row-start-1 row-end-2 sm:col-start-2 sm:col-end-5'" />
-    </slot>
-
     <!-- Left Sidebar -->
     <aside
       v-if="hasLeftSidebar"
       id="left-sidebar"
-      class="hidden sm:col-start-1 sm:row-start-2 sm:col-end-2 sm:row-end-5 sm:block"
+      class="hidden sm:col-start-1 sm:col-end-2 sm:block"
       aria-label="Left sidebar"
     >
       <div
@@ -104,7 +96,7 @@ const hasRightSidebar = computed(() =>
     <aside
       v-if="hasRightSidebar"
       id="right-sidebar"
-      class="hidden sm:col-start-5 sm:row-start-2 sm:col-end-6 sm:row-end-5 sm:block"
+      class="hidden sm:col-start-5 sm:col-end-6 sm:block"
       aria-label="Right sidebar"
     >
       <div
@@ -114,13 +106,5 @@ const hasRightSidebar = computed(() =>
         <slot name="sidebar-right" />
       </div>
     </aside>
-
-    <!-- Footer -->
-    <slot
-      name="footer"
-      :class="variant === 'full-width' || variant === 'centered' ? 'col-span-1' : 'col-span-1 row-start-5 row-end-6 sm:col-start-2 sm:col-end-5'"
-    >
-      <TheFooter :class="variant === 'full-width' || variant === 'centered' ? 'col-span-1' : 'col-span-1 row-start-5 row-end-6 sm:col-start-2 sm:col-end-5'" />
-    </slot>
   </div>
 </template>

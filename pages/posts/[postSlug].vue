@@ -27,11 +27,12 @@ const readingTimeText = computed(() => {
   return minutes === 1 ? '1 min read' : `${minutes} min read`
 })
 
-// TOC data is now handled by the layout itself
-
-definePageMeta({
-  layout: 'post',
+const tocLinks = computed(() => {
+  const toc = post.value?.body?.toc
+  return toc?.links || []
 })
+
+const hasTableOfContents = computed(() => tocLinks.value.length >= 1)
 
 useStaggeredAnimation()
 
@@ -71,57 +72,66 @@ useBreadcrumbStructuredData([
 </script>
 
 <template>
-  <div
-    v-if="post"
-    class="w-full"
-  >
-    <article class="w-full">
-      <div class="animate mb-6">
-        <Breadcrumbs
-          :items="[
-            { name: 'Home', url: '/' },
-            { name: 'Posts', url: '/posts' },
-            { name: post.title },
-          ]"
-        />
-      </div>
+  <BaseGridLayout variant="left-sidebar">
+    <template
+      v-if="hasTableOfContents"
+      #sidebar-left
+    >
+      <TableOfContents :links="tocLinks" />
+    </template>
 
-      <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-full prose lg:max-w-none prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
-        <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
-          <span v-if="post.author">{{ post.author }}</span>
-
-          <NuxtTime
-            v-if="post.date"
-            :datetime="post.date"
-            month="2-digit"
-            day="2-digit"
-            year="numeric"
+    <div
+      v-if="post"
+      class="w-full"
+    >
+      <article class="w-full">
+        <div class="animate mb-6">
+          <Breadcrumbs
+            :items="[
+              { name: 'Home', url: '/' },
+              { name: 'Posts', url: '/posts' },
+              { name: post.title },
+            ]"
           />
-
-          <span>{{ readingTimeText }}</span>
         </div>
 
-        <ContentRenderer :value="post" />
-      </div>
+        <div class="animate prose-lg prose-h1:overflow-wrap-anywhere max-w-full prose lg:max-w-none prose-h1:break-words dark:prose-invert sm:prose-h1:break-normal">
+          <div class="not-prose text-sm text-[var(--color-text-muted)] mb-8 flex flex-wrap gap-4 items-center">
+            <span v-if="post.author">{{ post.author }}</span>
 
-      <div
-        v-if="post.tags && post.tags.length > 0"
-        class="animate my-8"
-      >
-        <div class="flex gap-2 items-center">
-          <span class="text-sm text-[var(--color-text-muted)]">Tags:</span>
+            <NuxtTime
+              v-if="post.date"
+              :datetime="post.date"
+              month="2-digit"
+              day="2-digit"
+              year="numeric"
+            />
 
-          <BaseTags :tags="post.tags" />
+            <span>{{ readingTimeText }}</span>
+          </div>
+
+          <ContentRenderer :value="post" />
         </div>
-      </div>
 
-      <div class="animate">
-        <ShareLinks
-          :title="post.title"
-          :description="post.description"
-          variant="inline"
-        />
-      </div>
-    </article>
-  </div>
+        <div
+          v-if="post.tags && post.tags.length > 0"
+          class="animate my-8"
+        >
+          <div class="flex gap-2 items-center">
+            <span class="text-sm text-[var(--color-text-muted)]">Tags:</span>
+
+            <BaseTags :tags="post.tags" />
+          </div>
+        </div>
+
+        <div class="animate">
+          <ShareLinks
+            :title="post.title"
+            :description="post.description"
+            variant="inline"
+          />
+        </div>
+      </article>
+    </div>
+  </BaseGridLayout>
 </template>
