@@ -35,7 +35,7 @@ watch(
     <div class="bg-[var(--color-background)] w-full">
       <div
         id="nav-container"
-        class="px-4 py-4 flex w-full items-center justify-between relative sm:px-6 sm:py-6"
+        class="px-4 py-4 flex w-full items-center justify-between relative sm:px-0 sm:py-6"
       >
         <NuxtLink
           to="/"
