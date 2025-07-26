@@ -4,7 +4,7 @@ import process from 'node:process'
 export default defineNuxtConfig({
   // GitHub Pages configuration
   app: {
-    baseURL: process.env.NUXT_APP_BASE_URL || '/',
+    baseURL: process.env.NUXT_APP_BASE_URL ?? '/',
   },
 
   colorMode: {
