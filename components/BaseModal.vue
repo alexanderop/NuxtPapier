@@ -128,7 +128,7 @@ defineExpose({
 <template>
   <dialog
     ref="dialogRef"
-    class="modal-dialog bg-transparent backdrop:bg-black/20 backdrop:backdrop-blur-lg backdrop:backdrop-brightness-110 backdrop:backdrop-saturate-150 dark:backdrop:bg-black/30 dark:backdrop:backdrop-blur-xl dark:backdrop:backdrop-brightness-75"
+    class="modal-dialog bg-transparent backdrop:bg-[var(--color-backdrop)] backdrop:backdrop-blur-lg backdrop:backdrop-brightness-110 backdrop:backdrop-saturate-150 dark:backdrop:backdrop-blur-xl dark:backdrop:backdrop-brightness-75"
     :class="overlayClass"
     :aria-label="ariaLabelledby ? undefined : ariaLabel"
     :aria-labelledby="ariaLabelledby || undefined"

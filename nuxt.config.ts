@@ -2,13 +2,20 @@
 import process from 'node:process'
 
 export default defineNuxtConfig({
+  // GitHub Pages configuration
+  app: {
+    baseURL: process.env.NUXT_APP_BASE_URL ?? '/',
+  },
+
   colorMode: {
     classSuffix: '',
     dataValue: 'theme',
     fallback: 'light',
     preference: 'system',
   },
+
   compatibilityDate: '2025-05-15',
+
   content: {
     build: {
       markdown: {
@@ -56,6 +63,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   css: ['~/assets/css/main.css', '~/app.css', '~/assets/css/prose-mobile.css'],
 
   devtools: { enabled: true },
@@ -85,6 +93,7 @@ export default defineNuxtConfig({
     // For better Netlify compatibility, you can optionally use Netlify's provider
     // provider: 'netlify',
   },
+
   modules: [
     '@nuxtjs/sitemap', // Must be before @nuxt/content for v3
     '@nuxt/content',

@@ -75,25 +75,25 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
     <div class="text-center max-w-2xl">
       <!-- ASCII Art -->
       <div class="mb-6 flex justify-center">
-        <pre class="text-4xl text-gray-600 leading-none font-mono select-none dark:text-gray-400">{{ errorInfo.ascii }}</pre>
+        <pre class="text-4xl text-[var(--color-gray-600)] leading-none font-mono select-none dark:text-[var(--color-gray-400)]">{{ errorInfo.ascii }}</pre>
       </div>
 
-      <h1 class="text-6xl text-gray-900 font-bold mb-4 animate-pulse dark:text-gray-100">
+      <h1 class="text-6xl text-[var(--color-gray-900)] font-bold mb-4 animate-pulse dark:text-[var(--color-gray-100)]">
         {{ error.statusCode }}
       </h1>
 
-      <h2 class="text-2xl text-gray-800 font-semibold mb-4 dark:text-gray-200">
+      <h2 class="text-2xl text-[var(--color-gray-800)] font-semibold mb-4 dark:text-[var(--color-gray-200)]">
         {{ errorInfo.title }}
       </h2>
 
-      <p class="text-lg text-gray-600 mb-8 dark:text-gray-400">
+      <p class="text-lg text-[var(--color-gray-600)] mb-8 dark:text-[var(--color-gray-400)]">
         {{ errorInfo.description }}
       </p>
 
       <div class="space-y-4">
         <button
           type="button"
-          class="bg-gradient-to-r text-white font-medium px-8 py-4 rounded-lg inline-flex transform transition-all duration-200 items-center from-blue-600 to-purple-600 hover:shadow-lg hover:scale-105"
+          class="bg-gradient-to-r text-[var(--color-background)] font-medium px-8 py-4 rounded-lg inline-flex transform transition-all duration-200 items-center from-[var(--color-info)] to-[var(--color-alert-note-border)] hover:shadow-lg hover:scale-105"
           @click="handleError"
         >
           <Icon
@@ -103,10 +103,10 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
           Beam me home, Scotty!
         </button>
 
-        <div class="text-sm text-gray-500 dark:text-gray-500">
+        <div class="text-sm text-[var(--color-gray-500)]">
           <button
             type="button"
-            class="underline transition-colors hover:text-gray-700 dark:hover:text-gray-300"
+            class="underline transition-colors hover:text-[var(--color-gray-700)] dark:hover:text-[var(--color-gray-300)]"
             @click="$router.back()"
           >
             ← Take me back to safety
@@ -117,9 +117,9 @@ const errorInfo = errorMessages[error.statusCode] || errorMessages.default
       <!-- Debug info in development -->
       <div
         v-if="$config.public.nodeEnv === 'development' && error.statusMessage"
-        class="mt-8 p-4 text-left rounded-lg bg-gray-100 dark:bg-gray-800"
+        class="mt-8 p-4 text-left rounded-lg bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)]"
       >
-        <p class="text-xs text-gray-600 font-mono dark:text-gray-400">
+        <p class="text-xs text-[var(--color-gray-600)] font-mono dark:text-[var(--color-gray-400)]">
           {{ error.statusMessage }}
         </p>
       </div>

@@ -18,19 +18,19 @@ const iconMap = {
 }
 
 const colorMap = {
-  caution: 'border-red-500 bg-red-50 dark:bg-red-900/20',
-  important: 'border-purple-500 bg-purple-50 dark:bg-purple-900/20',
-  note: 'border-blue-500 bg-blue-50 dark:bg-blue-900/20',
-  tip: 'border-green-500 bg-green-50 dark:bg-green-900/20',
-  warning: 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20',
+  caution: 'border-[var(--color-alert-error-border)] bg-[var(--color-alert-error-bg)]',
+  important: 'border-[var(--color-alert-note-border)] bg-[var(--color-alert-note-bg)]',
+  note: 'border-[var(--color-alert-info-border)] bg-[var(--color-alert-info-bg)]',
+  tip: 'border-[var(--color-alert-success-border)] bg-[var(--color-alert-success-bg)]',
+  warning: 'border-[var(--color-alert-warning-border)] bg-[var(--color-alert-warning-bg)]',
 }
 
 const textColorMap = {
-  caution: 'text-red-600 dark:text-red-400',
-  important: 'text-purple-600 dark:text-purple-400',
-  note: 'text-blue-600 dark:text-blue-400',
-  tip: 'text-green-600 dark:text-green-400',
-  warning: 'text-yellow-600 dark:text-yellow-400',
+  caution: 'text-[var(--color-alert-error-text)]',
+  important: 'text-[var(--color-alert-note-text)]',
+  note: 'text-[var(--color-alert-info-text)]',
+  tip: 'text-[var(--color-alert-success-text)]',
+  warning: 'text-[var(--color-alert-warning-text)]',
 }
 
 const icon = computed(() => iconMap[type])
@@ -58,7 +58,7 @@ const displayTitle = computed(() => title || type.charAt(0).toUpperCase() + type
       </p>
     </div>
 
-    <div class="text-sm text-gray-700 dark:text-gray-300">
+    <div class="text-sm text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)]">
       <slot />
     </div>
   </div>

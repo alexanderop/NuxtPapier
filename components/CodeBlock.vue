@@ -59,7 +59,7 @@ const languageDisplay = computed(() => {
         v-if="isSupported"
         type="button"
         class="text-xs px-2 py-1 rounded flex gap-1 transition-all items-center focus:outline-none hover:bg-surface-subtle focus:ring-2 focus:ring-primary/50"
-        :class="copied ? 'text-green-600 dark:text-green-400' : 'text-text-muted hover:text-text-base'"
+        :class="copied ? 'text-[var(--color-success)]' : 'text-text-muted hover:text-text-base'"
         @click="copy()"
       >
         <Icon
