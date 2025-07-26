@@ -7,13 +7,6 @@ export default defineNuxtConfig({
     baseURL: process.env.NUXT_APP_BASE_URL ?? '/',
   },
 
-  colorMode: {
-    classSuffix: '',
-    dataValue: 'theme',
-    fallback: 'light',
-    preference: 'system',
-  },
-
   compatibilityDate: '2025-05-15',
 
   content: {
@@ -102,7 +95,6 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/image',
     '@unocss/nuxt',
-    '@nuxtjs/color-mode',
     '@vueuse/nuxt',
     'nuxt-jsonld',
     'nuxt-og-image',
