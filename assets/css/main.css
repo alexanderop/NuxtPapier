@@ -25,6 +25,43 @@
   --color-warning: #f59e0b; /* Amber 500 */
   --color-info: var(--color-primary); /* Using primary as info */
 
+  /* Alert background colors for light mode */
+  --color-alert-error-bg: #fef2f2; /* Red 50 */
+  --color-alert-warning-bg: #fffbeb; /* Yellow 50 */
+  --color-alert-success-bg: #f0fdf4; /* Green 50 */
+  --color-alert-info-bg: #eff6ff; /* Blue 50 */
+  --color-alert-note-bg: #f5f3ff; /* Purple 50 */
+
+  /* Alert border colors for light mode */
+  --color-alert-error-border: #ef4444; /* Red 500 */
+  --color-alert-warning-border: #f59e0b; /* Yellow 500 */
+  --color-alert-success-border: #10b981; /* Green 500 */
+  --color-alert-info-border: #3b82f6; /* Blue 500 */
+  --color-alert-note-border: #8b5cf6; /* Purple 500 */
+
+  /* Alert text colors for light mode */
+  --color-alert-error-text: #dc2626; /* Red 600 */
+  --color-alert-warning-text: #d97706; /* Yellow 600 */
+  --color-alert-success-text: #059669; /* Green 600 */
+  --color-alert-info-text: #2563eb; /* Blue 600 */
+  --color-alert-note-text: #7c3aed; /* Purple 600 */
+
+  /* Modal backdrop colors for light mode */
+  --color-backdrop: rgba(0, 0, 0, 0.2);
+  --color-backdrop-hover: rgba(255, 255, 255, 0.05);
+
+  /* Gray scale for light mode */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
   /* Shiki theme colors for light mode */
   --shiki-default-bg: #ffffff;
   --shiki-default: #24292e;
@@ -68,6 +105,43 @@ html[data-theme='dark'] {
   --color-error: #f87171; /* Red 400 - lighter for dark mode */
   --color-warning: #fbbf24; /* Amber 400 - lighter for dark mode */
   --color-info: var(--color-primary); /* Using primary as info */
+
+  /* Alert background colors for dark mode */
+  --color-alert-error-bg: rgba(127, 29, 29, 0.2); /* Red 900/20 */
+  --color-alert-warning-bg: rgba(120, 53, 15, 0.2); /* Yellow 900/20 */
+  --color-alert-success-bg: rgba(6, 78, 59, 0.2); /* Green 900/20 */
+  --color-alert-info-bg: rgba(30, 58, 138, 0.2); /* Blue 900/20 */
+  --color-alert-note-bg: rgba(76, 29, 149, 0.2); /* Purple 900/20 */
+
+  /* Alert border colors for dark mode */
+  --color-alert-error-border: #ef4444; /* Red 500 */
+  --color-alert-warning-border: #f59e0b; /* Yellow 500 */
+  --color-alert-success-border: #10b981; /* Green 500 */
+  --color-alert-info-border: #3b82f6; /* Blue 500 */
+  --color-alert-note-border: #8b5cf6; /* Purple 500 */
+
+  /* Alert text colors for dark mode */
+  --color-alert-error-text: #f87171; /* Red 400 */
+  --color-alert-warning-text: #fbbf24; /* Yellow 400 */
+  --color-alert-success-text: #34d399; /* Green 400 */
+  --color-alert-info-text: #60a5fa; /* Blue 400 */
+  --color-alert-note-text: #a78bfa; /* Purple 400 */
+
+  /* Modal backdrop colors for dark mode */
+  --color-backdrop: rgba(0, 0, 0, 0.3);
+  --color-backdrop-hover: rgba(255, 255, 255, 0.05);
+
+  /* Gray scale for dark mode */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
 
   /* Shiki theme colors for dark mode */
   --shiki-dark-bg: #1e1e1e;

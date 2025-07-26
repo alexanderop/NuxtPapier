@@ -72,7 +72,7 @@ const languageDisplay = computed(() => {
       <div class="flex gap-2 items-center">
         <span
           v-if="codeCopied"
-          class="text-xs text-green-500 font-mono px-2 py-1 rounded flex gap-1 items-center dark:text-green-400"
+          class="text-xs text-[var(--color-success)] font-mono px-2 py-1 rounded flex gap-1 items-center"
         >
           <Icon
             name="mdi:check-circle"
@@ -85,7 +85,7 @@ const languageDisplay = computed(() => {
         <button
           v-if="isSupported"
           type="button"
-          class="text-xs text-text-muted font-mono px-2 py-1 rounded flex gap-1 transition-all duration-200 items-center hover:text-text hover:bg-white/5 active:scale-95"
+          class="text-xs text-text-muted font-mono px-2 py-1 rounded flex gap-1 transition-all duration-200 items-center hover:text-text hover:bg-[var(--color-backdrop-hover)] active:scale-95"
           @click="copy()"
         >
           <Icon
