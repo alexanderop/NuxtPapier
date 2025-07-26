@@ -86,6 +86,7 @@ const languageDisplay = computed(() => {
           v-if="isSupported"
           type="button"
           class="text-xs text-text-muted font-mono px-2 py-1 rounded flex gap-1 transition-all duration-200 items-center hover:text-text hover:bg-[var(--color-backdrop-hover)] active:scale-95"
+          aria-label="Copy code to clipboard"
           @click="copy()"
         >
           <Icon
